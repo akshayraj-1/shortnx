@@ -53,6 +53,7 @@
             this.#closeModal.addEventListener("click", () => this.hideModal());
             this.#btnCopyUrl.addEventListener("click", () => {
                 navigator.clipboard.writeText(this.#shortUrl.textContent);
+                toast.showToast("Copied to clipboard");
             });
             this.#btnWhatsapp.addEventListener("click", () => {
                 window.open(`https://api.whatsapp.com/send?text=${this.#shortUrl.textContent}`);
