@@ -16,10 +16,11 @@ module.exports = {
         'emphasis-short': 'url("/images/emphasizing-short.svg")',
         'emphasis-wide': 'url("/images/emphasizing-wide-.svg")',
         noise: 'url("/images/noise.jpg")',
+        'noise-2': 'url("/images/noise2.jpg")',
         star: 'url("/images/star.svg")',
       },
       fontFamily: {
-        poppins: `Poppins, sans-serif`,
+        'space-grotesk': `Space Grotesk, sans-serif`,
         'gelica-black': `Gelica Black, sans-serif`,
       },
       keyframes: {
@@ -31,10 +32,20 @@ module.exports = {
           '0%': { opacity: '1' },
           '100%': { opacity: '0' },
         },
+        slideInUp: {
+          '0%': { transform: 'translateY(100%)' },
+          '100%': { transform: 'translateY(0)' },
+        },
+        slideOutDown: {
+          '0%': { transform: 'translateY(0)' },
+          '100%': { transform: 'translateY(100%)' },
+        },
       },
       animation: {
         'fade-in': 'fadeIn 0.2s ease-out forwards',
         'fade-out': 'fadeOut 0.2s ease-in forwards',
+        'slide-in-up': 'slideInUp 0.2s ease-out forwards',
+        'slide-out-down': 'slideOutDown 0.2s ease-in forwards',
       },
     },
   },
