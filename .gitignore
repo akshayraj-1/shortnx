@@ -12,7 +12,6 @@ dist
 dist-ssr
 *.local
 
-.env.development
 config/.env.production
 _push.ps1
 
