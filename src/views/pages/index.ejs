@@ -1,31 +1,6 @@
 <%- layout('main') -%>
 
-<%# Modal %>
-<div id="modal-backdrop" class="fixed z-[60] hidden justify-center items-center h-screen w-screen bg-black/70 backdrop-blur-[4px]">
-    <div id="modal-content" class="flex flex-col p-6 md:p-8 w-full max-w-[400px] bg-surface rounded-xl border border-textTertiary/40 shadow-xl shadow-textPrimary/40 ">
-        <div class="flex items-center justify-between">
-            <h3 class="text-xl font-semibold">Your shortened link</h3>
-            <i id="btn-close-modal" class="ri-close-line text-xl text-textSecondary cursor-pointer"></i>
-        </div>
-        <div class="flex justify-evenly items-center mt-8">
-            <i class="p-5 rounded-full border border-textTertiary cursor-pointer" title="WhatsApp" id="btn-share-whatsapp">
-                <img src="/images/whatsapp.svg" alt="WhatsApp" class="size-7">
-            </i>
-            <i class="p-5 rounded-full border border-textTertiary cursor-pointer" title="X" id="btn-share-twitter">
-                <img src="/images/twitter-alt.svg" alt="Twitter" class="size-7">
-            </i>
-            <i class="p-5 rounded-full border border-textTertiary cursor-pointer" title="Email" id="btn-share-email">
-                <img src="/images/envelope.svg" alt="Email" class="size-7">
-            </i>
-        </div>
-        <div class="relative mt-8 mb-4 px-4 py-2.5 rounded-md bg-surfaceVariant/50 border border-textTertiary/40 overflow-hidden">
-            <span id="short-url" class="text-sm text-textPrimary w-full overflow-ellipsis overflow-hidden">https://localhost:3939/ssfras23</span>
-            <i id="btn-copy-url" class="absolute top-0 right-0 flex items-center justify-center px-3 bg-primary text-white h-full ri-file-copy-line cursor-pointer" title="Copy"></i>
-        </div>
-    </div>
-</div>
-
-
+<%- include("../partials/modal.ejs") %>
 <%# Hero %>
 <div class="relative grid grid-cols-1 lg:grid-cols-2 gap-12 px-6 md:px-40 h-full w-full min-h-screen py-40">
 
@@ -35,49 +10,39 @@
             <span class="absolute -top-8 right-0 size-12 bg-star bg-no-repeat bg-contain"></span>
             Shorten urls made easy
         </h1>
-        <p class="text-base text-textSecondary mt-2">Shorten, personalize and optimize your links to boost<br>your online presence
+        <p class="text-base text-textSecondary mt-2">Shorten, personalize and optimize your links to boost<br>your
+            online presence
             and grow your business.</p>
-       <div class="flex items-center gap-2 p-2.5 mt-3 bg-surface w-full max-w-[440px] rounded-full border border-textTertiary/50 shadow-lg shadow-textTertiary/10">
-           <i class="grid place-content-center ri-links-line ms-3 me-1 text-textPrimary text-[20px]"></i>
-           <input id="input-url" class="text-[0.95rem] w-full outline-none border-none" type="text" placeholder="Paste a link to shorten it">
-           <button id="btn-shorten" class="flex items-center justify-center text-sm text-white bg-primary px-6 py-3 rounded-full disabled:cursor-not-allowed">
-               <svg id="spinner" role="status" class="hidden w-4 h-4 me-2 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                   <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
-                   <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
-               </svg>
-               Shorten
-           </button>
-       </div>
+        <div class="flex items-center gap-2 p-2.5 mt-3 bg-surface w-full max-w-[440px] rounded-full border border-textTertiary/50 shadow-lg shadow-textTertiary/10">
+            <i class="grid place-content-center ri-links-line ms-3 me-1 text-textPrimary text-[20px]"></i>
+            <input id="input-url" class="text-[0.95rem] w-full outline-none border-none" type="text"
+                   placeholder="Paste a link to shorten it">
+            <button id="btn-shorten"
+                    class="flex items-center justify-center text-sm text-white bg-primary px-6 py-3 rounded-full disabled:cursor-not-allowed">
+                <svg id="spinner" role="status" class="hidden w-4 h-4 me-2 text-white animate-spin"
+                     viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                          fill="#E5E7EB"/>
+                    <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                          fill="currentColor"/>
+                </svg>
+                Shorten
+            </button>
+        </div>
     </div>
 
     <div class="flex flex-col justify-center items-center w-full">
-        <img class="w-full h-full object-contain select-none -scale-x-100" draggable="false" src="/images/hero2.svg" alt="hero">
+        <img class="w-full h-full object-contain select-none -scale-x-100" draggable="false" src="/images/hero2.svg"
+             alt="hero">
     </div>
 
 </div>
 
 <script>
-    const modal = document.querySelector("#modal-backdrop");
-    const modalContent = document.querySelector("#modal-content");
     const inputUrl = document.querySelector("#input-url");
-    const shortenUrl = document.querySelector("#short-url");
     const spinner = document.querySelector("#spinner");
     const btnShorten = document.querySelector("#btn-shorten");
-    const btnCloseModal = document.querySelector("#btn-close-modal");
-    const btnShareWhatsapp = document.querySelector("#btn-share-whatsapp");
-    const btnShareTwitter = document.querySelector("#btn-share-twitter");
-    const btnShareEmail = document.querySelector("#btn-share-email");
-    const btnCopyUrl = document.querySelector("#btn-copy-url");
-
-    btnCloseModal.addEventListener("click", () => {
-        modalContent.classList.remove("animate-fade-in");
-        modalContent.classList.add("animate-fade-out");
-        modal.classList.add("animate-fade-out");
-        setTimeout(() => {
-            modal.classList.remove("flex");
-            modal.classList.add("hidden");
-        }, 300);
-    });
+    const modal = new Modal();
 
     btnShorten.addEventListener("click", async () => {
         const url = inputUrl.value;
@@ -91,33 +56,13 @@
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ url })
+            body: JSON.stringify({url})
         });
         const data = await response.json();
 
         if (data.success) {
             inputUrl.value = "";
-            const url = data.data.shortenUrl;
-            shortenUrl.textContent = url;
-
-            modal.classList.remove("animate-fade-out");
-            modal.classList.remove("hidden");
-            modal.classList.add("flex");
-            modalContent.classList.remove("animate-fade-out");
-            modalContent.classList.add("animate-fade-in");
-
-            btnShareWhatsapp.addEventListener("click", () => {
-                window.open(`https://api.whatsapp.com/send?text=${url}`);
-            });
-            btnShareTwitter.addEventListener("click", () => {
-                window.open(`https://twitter.com/intent/tweet?text=${url}`);
-            });
-            btnShareEmail.addEventListener("click", () => {
-                window.open(`mailto:?subject=Shorten URL&body=${url}`);
-            });
-            btnCopyUrl.addEventListener("click", () => {
-                navigator.clipboard.writeText(url);
-            });
+            modal.showModal(data.data.shortenUrl);
         }
         spinner.classList.toggle("hidden", true);
         btnShorten.disabled = false;
