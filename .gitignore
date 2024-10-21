@@ -12,7 +12,7 @@ dist
 dist-ssr
 *.local
 
-config/.env.development
+.env.development
 config/.env.production
 _push.ps1
 
