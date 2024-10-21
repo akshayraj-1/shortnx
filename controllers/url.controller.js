@@ -4,7 +4,7 @@ const { isAuthenticated } = require('../middlewares/auth.middleware');
 exports.createShortenUrl = async (req, res) => {
     try {
         const { url } = req.body;
-        if (!url || !new RegExp(/(^https:\/\/.*)/g).test(url)) {
+        if (!url || !new RegExp(/(^https:\/\/.*)|(^http:\/\/.*)/g).test(url)) {
             return res.status(400).json({ success: false, message: "Url is required" });
         }
         const userId = isAuthenticated(req) ? req.session.user._id : null;
@@ -33,6 +33,6 @@ exports.getOriginalUrl = async (req, res) => {
            throw new Error("Url not found");
        }
    } catch (error) {
-       res.render("404", { error: error.message });
+       res.render("pages/404", { title: "Page Not Found", error: error.message });
    }
 }
