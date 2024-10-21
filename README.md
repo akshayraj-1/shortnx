@@ -1,6 +1,6 @@
 # [WIP] URL Shortener
 
-> [!NOTE] 
+> [!WARNING] 
 > This is a work in progress project. Some features may not be implemented yet.
 
 This is a simple URL shortener that allows users to shorten their URLs. It is a simple Node.js project that uses EJS and MongoDB as the database.
