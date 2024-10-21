@@ -1,86 +1,59 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const session = require("express-session");
-
 const path = require("path");
 const dotenv = require("dotenv");
 const ejsmate = require("ejs-mate");
 
-const { isAuthenticated, protectedRoute } = require("./middlewares/auth.middleware");
+// Controllers
+const homeController = require("./controllers/home.controller");
+const authController = require("./controllers/auth.controller");
+const userController = require("./controllers/user.controller");
+const urlController = require("./controllers/url.controller");
 
-const CURRENT_ENV = (process.env.NODE_ENV || 'development').trim();
-console.warn(`[server] Current Environment: ${CURRENT_ENV}`);
-dotenv.config({path: `.env.${CURRENT_ENV}`});
-const PORT = process.env.PORT || 3939;
-const MONGO_DB_URL = process.env.MONGO_DB_URL;
+// Environment Variables
+dotenv.config({ path: path.join(__dirname, "config", `.env.${process.env.NODE_ENV.trim()}`) });
 
+// Express Setup
 const app = express();
+app.use(express.static(path.join(__dirname, "public")));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(session({
+    resave: false,
+    saveUninitialized: true,
+    secret: process.env.SESSION_SECRET,
+    cookie: { secure: process.env.NODE_ENV === 'production', maxAge: 60000 }
+}));
+
+// EJS/View Engine Setup
 app.engine("ejs", ejsmate);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "src/views"));
 
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true
-}));
+// Home routes
+app.get("/", homeController.getHome);
 
-app.use(express.static(path.join(__dirname, "public")));
-app.use(express.urlencoded({extended: true}))
-app.use(express.json());
+// Auth routes
+app.get("/login", authController.getLogin);
+app.get("/signup", authController.getSignup);
+app.post("/login", authController.loginUser);
+app.post("/signup", authController.signupUser);
 
-// console.warn("[server] Connecting to database...");
-// mongoose.connect(MONGO_DB_URL, { dbName: "url-shortener" }).then(_ => {
-//     app.listen(PORT, () => {
-//         console.info("[server] Connected to database");
-//         console.info(`[server] Server running on port: ${PORT}`);
-//     });
-// }).catch(error => console.error(`[server] Failed to connect to database: ${error}`));
+// User routes
+app.get("/user-dashboard", userController.getDashboard);
+app.get("/user-shorten-urls", userController.getShortenUrls);
 
-app.get("/", (req, res) => {
-    if (isAuthenticated(req)) {
-        res.redirect("/user-dashboard");
-    } else {
-        res.render("index", { title: "URL Shortener" });
-    }
-});
-
-app.get("/login", (req, res) => {
-    if (isAuthenticated(req)) {
-        res.redirect("/user-dashboard");
-    } else {
-        res.render("login", { title: "Login | URL Shortener" });
-    }
-});
-
-app.get("/signup", (req, res) => {
-    if (isAuthenticated(req)) {
-        res.redirect("/user-dashboard");
-    } else {
-        res.render("signup", { title: "Signup | URL Shortener" });
-    }
-});
-
-app.get("/user-dashboard", protectedRoute, (req, res) => {
-    res.render("user-dashboard", { title: res.locals.user.name });
-});
+// Shorten URL
+app.post("/api/short-url", urlController.createShortenUrl);
+app.get("/:shortUrlId", urlController.getOriginalUrl);
 
 
-// For Non-Authenticated Users
-app.get("short-url", (req, res) => {
-    const { url } = req.query;
-    if (!url) {
-        res.json({ success: false, message: "URL is required" });
-        return;
-    }
-    const shortenId = Math.random().toString(36).slice(2, 12);
-
-});
-
-
-// test
-app.listen(PORT, () => {
-    console.info("[server] Connected to database");
-    console.info(`[server] Server running on port: ${PORT}`);
-});
-
+// Connect to database
+console.warn("Connecting to database...");
+mongoose.connect(process.env.MONGO_URI, { dbName: "url-shortener" }).then(_ => {
+    console.info("Connected to database");
+    app.listen(process.env.PORT, () => {
+        console.info(`Server running on port: ${process.env.PORT}`);
+    });
+}).catch(error => console.error(`Failed to connect to database: ${error}`));
