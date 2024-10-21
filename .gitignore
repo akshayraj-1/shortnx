@@ -12,8 +12,8 @@ dist
 dist-ssr
 *.local
 
-.env.development
-.env.production
+config/.env.development
+config/.env.production
 _push.ps1
 
 # Editor directories and files
