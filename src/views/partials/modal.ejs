@@ -1,0 +1,85 @@
+<%# Modal %>
+<div id="modal-wrapper" class="fixed z-[60] hidden justify-center items-center h-screen w-screen bg-black/70 backdrop-blur-[4px]">
+    <div id="modal-container" class="flex flex-col p-6 md:p-8 w-full max-w-[400px] bg-surface rounded-xl border border-textTertiary/40 shadow-xl shadow-textPrimary/40">
+        <div class="flex items-center justify-between">
+            <h3 class="text-xl font-semibold">Your Shortened Link</h3>
+            <button id="modal-close-btn" class="text-xl text-textSecondary" aria-label="Close modal">
+                <i class="ri-close-line"></i>
+            </button>
+        </div>
+        <div class="flex justify-evenly items-center mt-8">
+            <button id="share-whatsapp-btn" class="share-btn p-5 rounded-full border border-textTertiary cursor-pointer" title="Share on WhatsApp">
+                <img src="/images/whatsapp.svg" alt="Share on WhatsApp" class="size-7">
+            </button>
+            <button id="share-twitter-btn" class="share-btn p-5 rounded-full border border-textTertiary cursor-pointer" title="Share on X">
+                <img src="/images/twitter-alt.svg" alt="Share on Twitter" class="size-7">
+            </button>
+            <button id="share-email-btn" class="share-btn p-5 rounded-full border border-textTertiary cursor-pointer" title="Share via Email">
+                <img src="/images/envelope.svg" alt="Share via Email" class="size-7">
+            </button>
+        </div>
+        <div class="relative mt-8 mb-4 px-4 py-2.5 rounded-md bg-surfaceVariant/50 border border-textTertiary/40 overflow-hidden">
+            <span id="short-url" class="text-sm text-textPrimary w-full overflow-ellipsis overflow-hidden"></span>
+            <button id="copy-url-btn" class="absolute top-0 right-0 flex items-center justify-center px-3 bg-primary text-white h-full" title="Copy URL" aria-label="Copy URL">
+                <i class="ri-file-copy-line"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    class Modal {
+        #wrapper;
+        #container;
+        #closeModal;
+        #shortUrl;
+        #btnCopyUrl;
+        #btnWhatsapp;
+        #btnTwitter;
+        #btnEmail;
+
+        constructor() {
+            this.#wrapper = document.querySelector("#modal-wrapper");
+            this.#container = document.querySelector("#modal-container");
+            this.#closeModal = document.querySelector("#modal-close-btn");
+            this.#shortUrl = document.querySelector("#short-url");
+            this.#btnCopyUrl = document.querySelector("#copy-url-btn");
+            this.#btnWhatsapp = document.querySelector("#share-whatsapp-btn");
+            this.#btnTwitter = document.querySelector("#share-twitter-btn");
+            this.#btnEmail = document.querySelector("#share-email-btn");
+            this.#init();
+        }
+        #init() {
+            this.#closeModal.addEventListener("click", () => this.hideModal());
+            this.#btnCopyUrl.addEventListener("click", () => {
+                navigator.clipboard.writeText(this.#shortUrl.textContent);
+            });
+            this.#btnWhatsapp.addEventListener("click", () => {
+                window.open(`https://api.whatsapp.com/send?text=${this.#shortUrl.textContent}`);
+            });
+            this.#btnTwitter.addEventListener("click", () => {
+                window.open(`https://twitter.com/intent/tweet?text=${this.#shortUrl.textContent}`);
+            });
+            this.#btnEmail.addEventListener("click", () => {
+                window.open(`mailto:?subject=Shorten URL&body=${this.#shortUrl.textContent}`);
+            });
+        }
+        showModal(url) {
+            this.#shortUrl.textContent = url;
+            this.#wrapper.classList.remove("animate-fade-out");
+            this.#wrapper.classList.remove("hidden");
+            this.#wrapper.classList.add("flex");
+            this.#container.classList.remove("animate-fade-out");
+            this.#container.classList.add("animate-fade-in");
+        }
+        hideModal() {
+            this.#container.classList.remove("animate-fade-in");
+            this.#container.classList.add("animate-fade-out");
+            this.#container.classList.add("animate-fade-out");
+            setTimeout(() => {
+                this.#wrapper.classList.remove("flex");
+                this.#wrapper.classList.add("hidden");
+            }, 300);
+        }
+    }
+</script>
