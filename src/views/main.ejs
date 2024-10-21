@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <%- block('head').toString() %>
+    <%- block("head").toString() %>
     <link rel="stylesheet" href="/output.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet"/>
-    <title><%= title %></title>
+    <title><%= title || "URL Shortener" %></title>
 </head>
 <body>
-<%- include('partials/navbar.ejs') %>
+<%- include("partials/navbar.ejs") %>
 <section class="relative size-full before:absolute before:size-full before:bg-noise before:bg-no-repeat before:bg-center before:bg-cover before:opacity-50 before:blur">
     <%- body -%>
 </section>
-<%- block('footer').toString() %>
-<%- block('scripts').toString() %>
+<%- block("footer").toString() %>
+<%- block("scripts").toString() %>
 </body>
 </html>
