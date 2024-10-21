@@ -1,14 +1,12 @@
-function isAuthenticated(req, fallback = null) {
+exports.isAuthenticated = (req) => {
     return req.session && req.session.user;
 }
 
-function protectedRoute(req, res, next) {
-    if (isAuthenticated(req)) {
+exports.checkUserAuth = (req, res, next) => {
+    if (this.isAuthenticated(req)) {
         res.locals.user = req.session.user;
         next();
     } else {
-        res.redirect('/login');
+        return res.redirect('/login');
     }
 }
-
-module.exports = { isAuthenticated, protectedRoute }
