@@ -21,7 +21,21 @@ module.exports = {
       fontFamily: {
         poppins: `Poppins, sans-serif`,
         'gelica-black': `Gelica Black, sans-serif`,
-      }
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0', transform: 'scale(0.95)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        fadeOut: {
+          '0%': { opacity: '1' },
+          '100%': { opacity: '0' },
+        },
+      },
+      animation: {
+        'fade-in': 'fadeIn 0.2s ease-out forwards',
+        'fade-out': 'fadeOut 0.2s ease-in forwards',
+      },
     },
   },
   plugins: [],
