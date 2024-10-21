@@ -1,24 +1,25 @@
-<%- layout('main') -%>
+<%- layout("main") -%>
 
+<%-include("../partials/toast.ejs") %>
 <%- include("../partials/modal.ejs") %>
 <%# Hero %>
-<div class="relative grid grid-cols-1 lg:grid-cols-2 gap-12 px-6 md:px-40 h-full w-full min-h-screen py-40">
+<section class="relative grid grid-cols-1 lg:grid-cols-2 gap-12 px-6 md:px-40 size-full py-40">
 
     <div class="flex flex-col justify-center items-start gap-5 h-full w-full">
-        <span class="text-sm text-primary bg-primary/5 rounded-full px-5 py-2.5">Let's make with simply one click 👈</span>
+        <span class="text-base text-primary bg-primary/5 rounded-full px-5 py-2.5">Let's make with simply one click 👈</span>
         <h1 class="relative text-[55px] md:text-[5.1rem] leading-none font-gelica-black font-bold">
             <span class="absolute -top-8 right-0 size-12 bg-star bg-no-repeat bg-contain"></span>
             Shorten urls made easy
         </h1>
-        <p class="text-base text-textSecondary mt-2">Shorten, personalize and optimize your links to boost<br>your
-            online presence
-            and grow your business.</p>
-        <div class="flex items-center gap-2 p-2.5 mt-3 bg-surface w-full max-w-[440px] rounded-full border border-textTertiary/50 shadow-lg shadow-textTertiary/10">
-            <i class="grid place-content-center ri-links-line ms-3 me-1 text-textPrimary text-[20px]"></i>
-            <input id="input-url" class="text-[0.95rem] w-full outline-none border-none" type="text"
+        <p class="text-base text-textSecondary mt-2">
+            Shorten, personalize and optimize your links to boost<br>your online presence and grow your business.
+        </p>
+        <div class="flex items-center gap-2 p-2.5 mt-3.5 bg-surface w-full max-w-[450px] rounded-full border border-textTertiary/50 shadow-lg shadow-textTertiary/10">
+            <img class="size-[1.1rem] object-contain -rotate-45 select-none ms-3 me-2" draggable="false" src="/images/link-horizontal.svg" alt="link">
+            <input id="input-url" class="text-base w-full outline-none border-none" type="text"
                    placeholder="Paste a link to shorten it">
             <button id="btn-shorten"
-                    class="flex items-center justify-center text-sm text-white bg-primary px-6 py-3 rounded-full disabled:cursor-not-allowed">
+                    class="flex items-center justify-center text-[0.9rem] text-white bg-primary px-6 py-3 rounded-full disabled:cursor-not-allowed">
                 <svg id="spinner" role="status" class="hidden w-4 h-4 me-2 text-white animate-spin"
                      viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -31,18 +32,49 @@
         </div>
     </div>
 
-    <div class="flex flex-col justify-center items-center w-full">
+    <div class="flex flex-col justify-center items-center w-full overflow-hidden">
         <img class="w-full h-full object-contain select-none -scale-x-100" draggable="false" src="/images/hero2.svg"
              alt="hero">
     </div>
 
-</div>
+</section>
+
+<section class="relative flex flex-col items-center px-6 size-full min-h-screen bg-surface/70">
+<!--    <div class="relative -mt-5 flex flex-wrap gap-x-12 gap-y-6 w-full md:w-[80vw] max-w-[880px] p-6 md:p-9 rounded-xl bg-surface shadow-lg shadow-textSecondary/5">-->
+<!--        <span class="flex flex-col justify-center items-start text-base me-auto md:text-xl font-semibold">-->
+<!--            We have great achievement-->
+<!--            <span class="flex items-center gap-2 ">to show-->
+<!--                <span class="inline-block w-20 h-0.5 rounded-full bg-textPrimary"></span>-->
+<!--            </span>-->
+<!--        </span>-->
+<!--        <div class="flex justify-center items-center gap-5">-->
+<!--            <img class="size-16 p-3.5 border border-textTertiary rounded-lg" draggable="false" src="/images/link.png" alt="urls">-->
+<!--            <div class="flex flex-col items-start">-->
+<!--                <span class="text-4xl font-semibold">30K+</span>-->
+<!--                <span class="text-[0.75rem] text-textSecondary">Powering Links</span>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="flex justify-center items-center gap-5">-->
+<!--            <img class="size-16 p-3.5 border border-textTertiary rounded-lg" draggable="false" src="/images/click.png" alt="urls">-->
+<!--            <div class="flex flex-col items-start">-->
+<!--                <span class="text-4xl font-semibold">2M+</span>-->
+<!--                <span class="text-[0.75rem] text-textSecondary">Serving Clicks</span>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+    <h2 class="text-[45px] md:text-[3.5rem] leading-none font-bold font-gelica-black mt-28">More than a link shortener</h2>
+    <p class="text-textSecondary text-base text-center mt-4 w-full max-w-[700px]">Effortlessly Track, Analyze, and Optimize Every Connection in One Place.</p>
+    <div>
+
+    </div>
+</section>
 
 <script>
     const inputUrl = document.querySelector("#input-url");
     const spinner = document.querySelector("#spinner");
     const btnShorten = document.querySelector("#btn-shorten");
     const modal = new Modal();
+    const toast = new Toast();
 
     btnShorten.addEventListener("click", async () => {
         const url = inputUrl.value;
@@ -63,6 +95,8 @@
         if (data.success) {
             inputUrl.value = "";
             modal.showModal(data.data.shortenUrl);
+        } else {
+            toast.showToast(data.message);
         }
         spinner.classList.toggle("hidden", true);
         btnShorten.disabled = false;
