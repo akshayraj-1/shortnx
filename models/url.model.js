@@ -6,20 +6,24 @@ const urlSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    targetUrl: {
+    originalUrl: {
         type: String,
         required: true
     },
     creator: {
         type: mongoose.Types.ObjectId,
-        default: "anonymous"
+        default: null
+    },
+    status: {
+        type: String,
+        default: "active"
     },
     clicks: {
         type: Number,
         default: 0
     }
-});
+}, { timestamps: true, versionKey: false });
 
 const UrlModel = mongoose.model("Url", urlSchema);
 
-export default UrlModel;
+module.exports = UrlModel;
