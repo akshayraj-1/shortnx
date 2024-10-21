@@ -5,7 +5,7 @@ exports.createShortenUrl = async (req, res) => {
     try {
         const { url } = req.body;
         if (!url || !new RegExp(/(^https:\/\/.*)|(^http:\/\/.*)/g).test(url)) {
-            return res.status(400).json({ success: false, message: "Url is required" });
+            return res.status(400).json({ success: false, message: "Please enter a valid url" });
         }
         const userId = isAuthenticated(req) ? req.session.user._id : null;
         const urlDoc = new UrlModel({
