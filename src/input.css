@@ -23,3 +23,13 @@ html, body {
     text-textPrimary
     font-space-grotesk;
 }
+
+.toast-info {
+    @apply bg-background text-textPrimary;
+}
+.toast-error {
+    @apply bg-red-500 text-white;
+}
+.toast-success {
+    @apply bg-green-600 text-white;
+}
