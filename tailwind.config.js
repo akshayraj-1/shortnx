@@ -17,9 +17,6 @@ module.exports = {
         noise: "url('/images/noise.jpg')",
         star: "url('/images/star.svg')",
       },
-      fontSize: {
-        base: "1.05rem",
-      },
       fontFamily: {
         "space-grotesk": "Space Grotesk, sans-serif",
         "gelica-black": "Gelica Black, sans-serif",
