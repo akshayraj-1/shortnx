@@ -1,5 +1,5 @@
-<div id="toast-container" class="hidden absolute z-[70] bottom-5 md:bottom-9 left-0 right-0 px-6 w-full select-none">
-    <div id="toast" class="relative mx-auto w-full md:w-fit px-4 md:px-6 py-3 text-base rounded-lg bg-surface shadow-xl shadow-boxShadow"></div>
+<div id="toast-container" class="hidden fixed z-[70] bottom-5 md:bottom-9 left-0 right-0 px-6 w-full select-none">
+    <div id="toast" class="relative mx-auto w-full md:w-fit px-4 md:px-6 py-3 text-sm sm:text-base rounded-lg bg-surface shadow-xl shadow-boxShadow"></div>
 </div>
 
 <script>
@@ -7,18 +7,26 @@
         #container;
         #toast;
         #queue = [];
+        types = {
+            info: "toast-info",
+            success: "toast-success",
+            warning: "toast-warning",
+            error: "toast-error"
+        };
         constructor() {
             this.#container = document.querySelector("#toast-container");
             this.#toast = document.querySelector("#toast");
         }
-        showToast(message) {
-            this.#queue.push(message);
+        showToast(message, type = this.types.info) {
+            if (this.#queue.length > 0 && this.#queue[this.#queue.length - 1].message === message) return;
+            this.#queue.push({ message, type });
             if (this.#queue.length === 1) this.#processQueue();
         }
 
         #processQueue() {
             if (!this.#queue.length) return;
-            this.#toast.innerHTML = this.#queue[0];
+            this.#toast.innerHTML = this.#queue[0].message;
+            this.#toast.classList.add(this.#queue[0].type);
             this.#container.classList.remove("animate-slide-out-down");
             this.#container.classList.remove("hidden");
             this.#container.classList.add("animate-slide-in-up");
@@ -27,6 +35,7 @@
                 this.#queue.shift();
                 await new Promise(resolve => setTimeout(() => {
                     this.#container.classList.add("hidden");
+                    this.#toast.classList.remove(this.#queue[0].type);
                     resolve();
                 }, 200));
                 this.#processQueue();
