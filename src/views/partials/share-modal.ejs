@@ -1,6 +1,6 @@
-<%# Modal %>
+<%# ShareModal %>
 <div id="modal-wrapper" class="fixed z-[60] hidden justify-center items-center h-screen w-screen bg-black/70 backdrop-blur-[4px]">
-    <div id="modal-container" class="flex flex-col p-6 md:p-8 w-full max-w-[400px] bg-surface rounded-xl ring ring-border shadow-xl shadow-black/40">
+    <div id="modal-container" class="flex flex-col p-6 md:p-8 w-full max-w-[400px] bg-surface rounded-xl shadow-xl shadow-black/40">
         <div class="flex items-center justify-between">
             <h3 class="text-xl font-semibold">Your Shortened Link</h3>
             <button id="modal-close-btn" class="text-xl text-textSecondary" aria-label="Close modal">
@@ -18,8 +18,8 @@
                 <img src="/images/envelope.svg" alt="Share via Email" class="size-7">
             </button>
         </div>
-        <div class="relative mt-8 mb-4 px-4 py-2.5 rounded-md bg-surfaceVariant ring-1 ring-inset ring-border overflow-hidden">
-            <span id="short-url" class="text-sm text-textPrimary w-full overflow-ellipsis overflow-hidden"></span>
+        <div class="relative font-medium mt-8 mb-4 px-4 py-2.5 rounded-md bg-surfaceSecondary ring-1 ring-inset ring-border overflow-hidden">
+            <span id="short-url" class="text-base text-textPrimary w-full overflow-ellipsis overflow-hidden"></span>
             <button id="copy-url-btn" class="absolute top-0 right-0 flex items-center justify-center px-3 bg-primary text-white h-full" title="Copy URL" aria-label="Copy URL">
                 <i class="ri-file-copy-line"></i>
             </button>
@@ -28,7 +28,7 @@
 </div>
 
 <script>
-    class Modal {
+    class ShareModal {
         #wrapper;
         #container;
         #closeModal;
