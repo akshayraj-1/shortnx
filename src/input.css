@@ -12,24 +12,46 @@
 
 * {
     @apply
-    m-0 p-0 box-border;
+    m-0 p-0
+    box-border;
 }
 
 html, body {
     @apply
-    w-full h-full
     flex flex-col
-    bg-background
+    w-full h-full
+    font-space-grotesk
     text-textPrimary
-    font-space-grotesk;
+    bg-background;
+}
+
+::-webkit-scrollbar {
+    @apply
+    w-2.5;
+}
+::-webkit-scrollbar-track {
+    @apply
+    bg-surface;
+}
+::-webkit-scrollbar-thumb {
+    @apply
+    bg-textSecondary/40
+    rounded-full
+    hover:bg-textSecondary/50;
 }
 
 .toast-info {
-    @apply bg-background text-textPrimary;
+    @apply
+    text-textPrimary
+    bg-background ;
 }
 .toast-error {
-    @apply bg-red-500 text-white;
+    @apply
+    text-white
+    bg-red-500;
 }
 .toast-success {
-    @apply bg-green-600 text-white;
+    @apply
+    text-white
+    bg-green-600;
 }
