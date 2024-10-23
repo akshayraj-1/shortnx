@@ -1,5 +1,29 @@
-<%# Button %>
-<% const btnStyles = {
-    "primary": "flex items-center gap-1 text-[0.9rem] text-white px-4 py-2.5 bg-primary rounded-md hover:shadow-lg hover:shadow-primary/15 transition-shadow cursor-pointer",
-    "secondary": ""
-} %>
+<%# Button Component %>
+<%
+
+const btnStyles = {
+    "primary": "relative text-[0.9rem] text-white px-4 py-2.5 bg-primary rounded-md cursor-pointer transition-shadow hover:shadow-lg hover:shadow-primary/15",
+    "secondary": "relative text-[0.9rem] text-gray-700 px-4 py-2.5 bg-secondary rounded-md cursor-pointer transition-colors hover:bg-secondary-dark",
+    "tertiary": "relative text-base text-primary cursor-pointer before:absolute before:bottom-0 before:w-0 before:h-0.5 before:bg-primary before:transition-all hover:before:w-full"
+};
+
+%>
+
+<%
+var btnClassnames = btnClassnames || '';
+var btnVariant = btnVariant || 'primary';
+var btnDisabled = btnDisabled || false;
+var btnHref = btnHref || "#";
+%>
+
+<% if (btnType === "button") { %>
+    <button class="<%= btnStyles[btnVariant] %> <%= btnClassnames %> <%= btnDisabled ? 'cursor-not-allowed opacity-50' : '' %>"
+            <%= btnDisabled ? 'disabled' : '' %>>
+        <%- btnChildren %>
+    </button>
+<% } else if (btnType === "link") { %>
+    <a class="<%= btnStyles[btnVariant] %> <%= btnClassnames %> <%= btnDisabled ? 'opacity-50 cursor-not-allowed pointer-events-none' : '' %>"
+       href="<%= btnHref %>">
+        <%- btnChildren %>
+    </a>
+<% } %>
