@@ -9,9 +9,9 @@
     <title><%= title || "URL Shortener" %></title>
 </head>
 <body>
-<%- include("partials/navbar.ejs") %>
-<%- include("partials/toast.ejs") %>
-<%- include("partials/share-modal.ejs") %>
+<%- include("components/layouts/Navbar.ejs") %>
+<%- include("components/toasts/Toast.ejs") %>
+<%- include("components/modals/ShareModal.ejs") %>
 <div class="relative flex flex-col size-full before:absolute before:size-full before:bg-noise before:bg-no-repeat before:bg-center before:bg-cover before:opacity-50 before:blur">
     <%- body -%>
 </div>
