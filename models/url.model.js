@@ -4,11 +4,11 @@ const urlSchema = new mongoose.Schema({
     shortenUrl: {
         type: String,
         required: true,
-        unique: true
+        unique: [true, "Shorten url already exists"]
     },
     originalUrl: {
         type: String,
-        required: true
+        required: [true, "Please provide a valid url"]
     },
     creator: {
         type: mongoose.Types.ObjectId,
@@ -16,6 +16,7 @@ const urlSchema = new mongoose.Schema({
     },
     status: {
         type: String,
+        enum: ["active", "inactive"],
         default: "active"
     },
     clicks: {
