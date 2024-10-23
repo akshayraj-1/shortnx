@@ -4,6 +4,6 @@ exports.getHome = (req, res) => {
     if (isAuthenticated(req)) {
         return res.redirect("/user-dashboard");
     } else {
-        return res.render("pages/index", { title: "URL Shortener" });
+        return res.render("pages/home", { title: "URL Shortener" });
     }
 }
