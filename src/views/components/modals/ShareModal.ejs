@@ -1,13 +1,13 @@
 <%# ShareModal %>
-<div id="modal-wrapper" class="fixed z-[60] hidden justify-center items-center px-6 h-screen w-screen bg-black/70 backdrop-blur-[4px]">
-    <div id="modal-container" class="flex flex-col p-6 md:p-8 w-full max-w-[400px] bg-surface rounded-xl shadow-xl shadow-black/20">
+<div id="modal-wrapper" class="fixed z-[60] hidden justify-center items-center w-screen h-screen px-6 bg-black/70 backdrop-blur-[4px]">
+    <div id="modal-container" class="flex flex-col w-full max-w-[400px] p-6 md:p-8 bg-surface rounded-xl shadow-xl shadow-black/20">
         <div class="flex items-center justify-between">
-            <h3 class="text-lg sm:text-xl font-semibold">Your Shortened Link</h3>
+            <h3 class="text-lg sm:text-xl font-bold">Your Shortened Link</h3>
             <button id="modal-close-btn" class="text-xl text-textSecondary" aria-label="Close modal">
                 <i class="ri-close-line"></i>
             </button>
         </div>
-        <div class="flex justify-evenly items-center mt-8 gap-3">
+        <div class="flex items-center justify-evenly mt-8 gap-3">
             <button id="share-whatsapp-btn" class="share-btn p-5 rounded-full ring-1 ring-inset ring-border cursor-pointer" title="Share on WhatsApp">
                 <img src="/images/whatsapp.svg" alt="Share on WhatsApp" class="size-7">
             </button>
@@ -18,9 +18,9 @@
                 <img src="/images/envelope.svg" alt="Share via Email" class="size-7">
             </button>
         </div>
-        <div class="relative font-medium mt-8 mb-4 px-4 py-2.5 rounded-md bg-surfaceSecondary ring-1 ring-inset ring-border overflow-hidden">
-            <span id="short-url" class="text-xs sm:text-base text-textPrimary w-full overflow-ellipsis overflow-hidden"></span>
-            <button id="copy-url-btn" class="absolute top-0 right-0 flex items-center justify-center px-3 bg-primary text-white h-full" title="Copy URL" aria-label="Copy URL">
+        <div class="relative mt-8 mb-4 px-4 py-2.5 font-medium bg-surfaceSecondary rounded-md ring-1 ring-inset ring-border overflow-hidden">
+            <span id="short-url" class="w-full text-xs sm:text-base text-textPrimary overflow-ellipsis overflow-hidden"></span>
+            <button id="copy-url-btn" class="absolute top-0 right-0 flex items-center justify-center h-full px-3 bg-primary text-white" title="Copy URL" aria-label="Copy URL">
                 <i class="ri-file-copy-line"></i>
             </button>
         </div>
@@ -72,6 +72,7 @@
             this.#wrapper.classList.add("flex");
             this.#container.classList.remove("animate-fade-out");
             this.#container.classList.add("animate-fade-in");
+            window.onscroll = function () { window.scrollTo(0, 0); };
         }
         hideModal() {
             this.#container.classList.remove("animate-fade-in");
@@ -80,6 +81,7 @@
             setTimeout(() => {
                 this.#wrapper.classList.remove("flex");
                 this.#wrapper.classList.add("hidden");
+                window.onscroll = () => {};
             }, 300);
         }
     }
