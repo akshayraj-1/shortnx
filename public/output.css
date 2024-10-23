@@ -1284,11 +1284,6 @@ html, body{
   width: 0px;
 }
 
-.before\:rounded-full::before{
-  content: var(--tw-content);
-  border-radius: 9999px;
-}
-
 .before\:bg-primary::before{
   content: var(--tw-content);
   --tw-bg-opacity: 1;
@@ -1333,11 +1328,6 @@ html, body{
   transition-duration: 150ms;
 }
 
-.hover\:text-primary:hover{
-  --tw-text-opacity: 1;
-  color: rgb(97 57 255 / var(--tw-text-opacity));
-}
-
 .hover\:shadow-lg:hover{
   --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
@@ -1347,12 +1337,6 @@ html, body{
 .hover\:shadow-primary\/15:hover{
   --tw-shadow-color: rgb(97 57 255 / 0.15);
   --tw-shadow: var(--tw-shadow-colored);
-}
-
-.hover\:transition-colors:hover{
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
 }
 
 .hover\:before\:w-full:hover::before{
