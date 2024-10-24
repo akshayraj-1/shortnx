@@ -12,7 +12,7 @@ const userController = require("./src/controllers/user.controller");
 const urlController = require("./src/controllers/url.controller");
 
 // Environment Variables
-dotenv.config({ path: path.join(__dirname, `.env.${process.env.NODE_ENV.trim()}`) });
+dotenv.config({ path: path.join(__dirname, `.env.${process.env.NODE_ENV?.trim()}`) });
 
 // Express Setup
 const app = express();
@@ -29,7 +29,7 @@ app.use(session({
 // EJS/View Engine Setup
 app.engine("ejs", ejsmate);
 app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "src/views"));
+app.set("views", path.join(__dirname, "src"));
 
 // Home routes
 app.get("/", homeController.getHome);
