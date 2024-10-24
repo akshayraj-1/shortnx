@@ -33,7 +33,7 @@ npm install
 MONGO_URI=<your_mongodb_uri>
 SESSION_SECRET=<your_session_secret>
 ```
-_Replace `<your_mongodb_uri>` with your MongoDB connection string and `<your_session_secret>` with a strong session secret in the `config/.env.development` or `config/.env.production` file._
+_Replace `<your_mongodb_uri>` with your MongoDB connection string and `<your_session_secret>` with a strong session secret in the `.env.development` or `.env.production` file._
 
 ### Run the development server
 
