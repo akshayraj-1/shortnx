@@ -49,6 +49,11 @@ app.get("/user-shorten-urls", userController.getShortenUrls);
 app.post("/api/short-url", urlController.createShortenUrl);
 app.get("/:shortUrlId", urlController.getOriginalUrl);
 
+// 404
+app.use((req, res) => {
+    res.status(404).render("pages/404", { title: "Page Not Found" });
+});
+
 
 // Connect to database
 console.warn("Connecting to database...");
