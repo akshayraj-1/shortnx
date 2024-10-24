@@ -6,13 +6,13 @@ const dotenv = require("dotenv");
 const ejsmate = require("ejs-mate");
 
 // Controllers
-const homeController = require("./controllers/home.controller");
-const authController = require("./controllers/auth.controller");
-const userController = require("./controllers/user.controller");
-const urlController = require("./controllers/url.controller");
+const homeController = require("./src/controllers/home.controller");
+const authController = require("./src/controllers/auth.controller");
+const userController = require("./src/controllers/user.controller");
+const urlController = require("./src/controllers/url.controller");
 
 // Environment Variables
-dotenv.config({ path: path.join(__dirname, "config", `.env.${process.env.NODE_ENV.trim()}`) });
+dotenv.config({ path: path.join(__dirname, `.env.${process.env.NODE_ENV.trim()}`) });
 
 // Express Setup
 const app = express();
