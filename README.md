@@ -30,7 +30,7 @@ npm install
 
 **3. Set up the configuration file**
 
-_Add your MongoDB connection string and other required values in the `.env.development` or `.env.production` file._
+Add your MongoDB connection string and other required values in the `.env.development` or `.env.production` file.
 
 ### Run the development server
 
