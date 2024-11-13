@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%- block("head").toString() %>
+    <link rel="stylesheet" href="/css/output.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet"/>
+    <title><%= title || "URL Shortener" %></title>
+</head>
+<body>
+<div class="relative flex flex-col size-full bg-colorSurface">
+    <div class="relative flex size-full overflow-hidden">
+        <div class="flex-1 px-6 md:px-9 overflow-y-scroll no-scrollbar">
+            <%- body -%>
+        </div>
+        <div class="hidden md:flex flex-1 h-screen bg-cover bg-center bg-no-repeat overflow-hidden" style="background-image: url('/images/login.png')">
+            <img class="p-12 size-full object-contain" draggable="false" src="/images/login_1.png" alt="image">
+        </div>
+    </div>
+</div>
+<%- block("footer").toString() %>
+<script src="/js/components/Toast.js"></script>
+<%- block("scripts").toString() %>
+</body>
+</html>

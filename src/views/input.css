@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: 'Gelica Black';
+    src: url('/fonts/gelica-black.woff2') format('woff2');
+    font-weight: 900;
+    font-style: normal;
+}
+
+* {
+    @apply
+    m-0 p-0
+    box-border;
+}
+
+html, body {
+    @apply
+    flex flex-col
+    w-full h-full
+    font-space-grotesk
+    text-textPrimary
+    bg-colorBackground;
+}
+
+::-webkit-scrollbar {
+    @apply
+    w-2.5;
+}
+::-webkit-scrollbar-track {
+    @apply
+    bg-colorSurface;
+}
+::-webkit-scrollbar-thumb {
+    @apply
+    bg-textSecondary/40
+    rounded-full
+    hover:bg-textSecondary/50;
+}
+
+.page-padding {
+    @apply
+    px-6
+    sm:px-10 md:px-20
+    lg:px-36;
+}
+
+.gradient-blur-bg {
+    @apply
+    before:absolute
+    before:size-full
+    before:bg-gradientBlur
+    before:bg-no-repeat
+    before:bg-center
+    before:bg-cover
+    before:opacity-30
+    before:blur-xl;
+}
+
+.modal-backdrop {
+    @apply
+    fixed z-50 top-0 left-0
+    justify-center items-center
+    px-6 w-screen h-screen
+    bg-black/70;
+}
+
+.toast-info {
+    @apply
+    text-textPrimary
+    bg-colorBackground ;
+}
+.toast-error {
+    @apply
+    text-white
+    bg-red-500;
+}
+.toast-success {
+    @apply
+    text-white
+    bg-green-600;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/*Stole this from https://css-loaders.com/blob/#14*/
+.loader {
+    height: 50px;
+    aspect-ratio: 2;
+    border: 10px solid #000;
+    box-sizing: border-box;
+    background:
+            radial-gradient(farthest-side,#fff 98%,#0000) left/20px 20px,
+            radial-gradient(farthest-side,#fff 98%,#0000) left/20px 20px,
+            radial-gradient(farthest-side,#fff 98%,#0000) center/20px 20px,
+            radial-gradient(farthest-side,#fff 98%,#0000) right/20px 20px,
+            #000;
+    background-repeat: no-repeat;
+    filter: blur(4px) contrast(10);
+    animation: l14 1s infinite;
+}
+@keyframes l14 {
+    100%  {background-position:right,left,center,right}
+}
+/**/
+
