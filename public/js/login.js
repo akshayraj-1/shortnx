@@ -4,11 +4,5 @@ const btnLogin = document.getElementById("btnLogin");
 const toast = new Toast();
 
 btnLogin.addEventListener("click", async () => {
-    try {
 
-    } catch (error) {
-        toast.showToast(error.message, toast.types.error);
-    } finally {
-        
-    }
 });

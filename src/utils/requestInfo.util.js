@@ -4,20 +4,21 @@ function getClientBrowser(req) {
     // [HTTP_USER_AGENT] => Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:129.0) Gecko/20100101 Firefox/129.0
     // [HTTP_SEC_CH_UA] => Not.A/Brand; v="8",Chromium; v="126",Google Chrome; v="126"
     // [HTTP_SEC_CH_UA] => "Not/A)Brand";v="8", "Chromium";v="126", "Google Chrome";v="126"
-    if (new RegExp(/Chrome/gi).test(browser)) {
-        return "Google Chrome";
-    } else if (new RegExp(/Firefox/gi).test(browser)) {
-        return "Firefox";
-    } else if (new RegExp(/Safari/gi).test(browser)) {
-        return "Safari";
-    } else if (new RegExp(/Edge/gi).test(browser)) {
-        return "MS Edge";
-    } else if (new RegExp(/OPERA|OPR/gi).test(browser)) {
-        return "Opera";
-    } else if (new RegExp(/Brandi/gi).test(browser)) {
-        return "Brave";
-    } else {
-        return "Unknown";
+    switch (true) {
+        case /\bChrome\b/gi.test(browser):
+            return "Google Chrome";
+        case /\bFirefox\b/gi.test(browser):
+            return "Firefox";
+        case /\bSafari\b/gi.test(browser):
+            return "Safari";
+        case /\bEdge\b/gi.test(browser):
+            return "MS Edge";
+        case /\b(OPERA|OPR)\b/gi.test(browser):
+            return "Opera";
+        case /\bBrave\b/gi.test(browser):
+            return "Brave";
+        default:
+            return "Unknown";
     }
 }
 
@@ -25,29 +26,34 @@ function getClientPlatform(req) {
     const platform = req.headers['sec-ch-ua-platform'] || req.headers['user-agent'];
     // [HTTP_SEC_CH_UA_PLATFORM] => "Windows"
     // [HTTP_USER_AGENT] => Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36
-    if (new RegExp(/Windows/gi).test(platform)) {
-        return "Windows";
-    } else if (new RegExp(/Linux/gi).test(platform)) {
-        return "Linux";
-    } else if (new RegExp(/Mac/gi).test(platform)) {
-        return "Mac";
-    } else if (new RegExp(/Android/gi).test(platform)) {
-        return "Android";
-    } else if (new RegExp(/iOS/gi).test(platform)) {
-        return "iOS";
-    } else {
-        return "Unknown";
+    switch (true) {
+        case /\bWindows\b/gi.test(platform):
+            return "Windows";
+        case /\bLinux\b/gi.test(platform):
+            return "Linux";
+        case /\bMac\b/gi.test(platform):
+            return "Mac";
+        case /\bAndroid\b/gi.test(platform):
+            return "Android";
+        case /\biOS\b/gi.test(platform):
+            return "iOS";
+        default:
+            return "Unknown";
     }
 }
 
 function getClientDevice(req) {
     const device = getClientPlatform(req);
-    if (device === "Windows" || device === "Linux" || device === "Mac") {
-        return "Desktop";
-    } else if (device === "Android" || device === "iOS") {
-        return "Mobile";
-    } else {
-        return "Unknown";
+    switch (device) {
+        case "Windows":
+        case "Linux":
+        case "Mac":
+            return "Desktop";
+        case "Android":
+        case "iOS":
+            return "Mobile";
+        default:
+            return "Unknown";
     }
 }
 

@@ -1,4 +1,4 @@
-<nav class="fixed top-0 z-10 flex justify-between items-center w-full py-6 page-padding bg-colorBackground select-none">
+<nav class="fixed top-0 z-10 flex justify-between items-center w-full py-6 page-padding bg-colorBackground/90 backdrop-blur-lg select-none">
     <a href="/"><img class="h-4 md:h-6 object-contain" src="/images/logo.svg" alt="logo"/></a>
     <div class="hidden sm:flex items-center gap-9">
         <%- include("./Button.ejs", {
@@ -11,7 +11,7 @@
         <%- include("./Button.ejs", {
             btnType: "link",
             btnChildren: '<span>Get Started <i class="ri-arrow-right-up-line opacity-90"></i></span>',
-            btnHref: "/signup"
+            btnHref: "/signUp"
         }) -%>
     </div>
     <button class="sm:hidden ri-menu-line text-[1.3rem] cursor-pointer" id="btn-menu"></button>

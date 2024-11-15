@@ -1,28 +1,32 @@
 <%- layout("layouts/auth-layout") -%>
 
-<div class="flex flex-col py-20 mx-auto size-full max-w-[450px]">
+<%# Sign Up %>
+<section class="flex flex-col py-20 mx-auto size-full max-w-[450px]">
     <a href="/" class="self-start">
         <img class="h-5 sm:h-6 object-contain" src="/images/logo.svg" alt="logo"/>
     </a>
     <h2 class="mt-14 text-2xl sm:text-3xl font-bold">Create an account!</h2>
     <div class="flex flex-col gap-1 mt-9">
-        <label class="text-[0.9rem] font-semibold" for="name">Name</label>
+        <label class="text-[0.9rem] font-semibold" for="name">Name<span class="text-sm text-textSecondary select-none">*</span></label>
         <input type="text" name="name" id="name"
-               class="px-3 py-2.5 text-textPrimary bg-colorSurface border border-colorBorder outline-none rounded-lg placeholder:text-[0.9rem]"
+               class="px-3 py-2.5 text-textPrimary bg-colorSurface border border-colorBorder outline-none rounded-lg placeholder:text-[0.9rem] focus:ring-1 focus:ring-colorBorder"
                required/>
     </div>
     <div class="flex flex-col gap-1 mt-4">
-        <label class="text-[0.9rem] font-semibold" for="email">Email address</label>
+        <label class="text-[0.9rem] font-semibold" for="email">Email address<span class="text-sm text-textSecondary select-none">*</span></label>
         <input type="email" name="email" id="email"
-               class="px-3 py-2.5 text-textPrimary bg-colorSurface border border-colorBorder outline-none rounded-lg placeholder:text-[0.9rem]"
+               class="px-3 py-2.5 text-textPrimary bg-colorSurface border border-colorBorder outline-none rounded-lg placeholder:text-[0.9rem] focus:ring-1 focus:ring-colorBorder"
                required/>
     </div>
     <div class="flex flex-col gap-1 mt-4">
-        <label class="text-[0.9rem] font-semibold" for="password">Password</label>
+        <label class="text-[0.9rem] font-semibold" for="password">Password<span class="text-sm text-textSecondary select-none">*</span></label>
         <input type="password" name="password" id="password"
-               class="px-3 py-2.5 text-textPrimary bg-colorSurface border border-colorBorder outline-none rounded-lg placeholder:text-[0.9rem]"
+               class="px-3 py-2.5 text-textPrimary bg-colorSurface border border-colorBorder outline-none rounded-lg placeholder:text-[0.9rem] focus:ring-1 focus:ring-colorBorder"
                required/>
     </div>
+    <span class="mt-3.5 text-sm text-textSecondary">
+        By signing up, you agree to our <a class="underline hover:text-colorPrimary" href="/terms-of-services">terms of services</a> and <a class="underline hover:text-colorPrimary" href="/privacy">privacy policy</a>
+    </span>
     <%- include('../partials/Button.ejs', {
         btnId: "btnSignUp",
         btnClassnames: "text-base mt-10 w-full",
@@ -45,6 +49,6 @@
             btnChildren: "Login"
         }) -%>
     </p>
-</div>
+</section>
 
 <% block("scripts").append("<script src='/js/signup.js'></script>") %>

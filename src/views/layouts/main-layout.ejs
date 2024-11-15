@@ -11,12 +11,12 @@
 <body>
 
 <%- include("../partials/Navbar.ejs") %>
-<div class="relative flex flex-col size-full gradient-blur-bg">
+<div class="relative flex flex-col w-full">
     <%- body -%>
 </div>
-<%- block("footer").toString() %>
-<script src="/js/components/ShareModal.js"></script>
-<script src='/js/components/Toast.js'></script>
+<%- include("../partials/Footer.ejs") %>
+<script src="/ShareModal.js"></script>
+<script src='/Toast.js'></script>
 <%- block("scripts").toString() %>
 </body>
 </html>

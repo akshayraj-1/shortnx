@@ -6,23 +6,24 @@ const modal = new ShareModal();
 const toast = new Toast();
 
 btnShorten.addEventListener("click", async () => {
+    const url = inputUrl.value;
+    if (!url) return;
+
+    spinner.classList.toggle("hidden", false);
+    arrowRight.classList.toggle("hidden", true);
+    btnShorten.disabled = true;
+
     try {
-        const url = inputUrl.value;
-        if (!url) return;
-
-        spinner.classList.toggle("hidden", false);
-        arrowRight.classList.toggle("hidden", true);
-        btnShorten.disabled = true;
-
-        const response = await fetch("/api/short-url", {
+        const response = await fetch("/api/short-url/create", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ url })
         });
         const data = await response.json();
-
-        if (!data.success) throw new Error(data.message);
-
+        if (!data.success) {
+            toast.showToast(data.message, toast.types.error);
+            return;
+        }
         inputUrl.value = "";
         modal.showModal(data.data.shortenUrl);
 

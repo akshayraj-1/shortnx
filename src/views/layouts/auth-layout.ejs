@@ -9,9 +9,9 @@
     <title><%= title || "URL Shortener" %></title>
 </head>
 <body>
-<div class="relative flex flex-col size-full bg-colorSurface">
+<div class="relative flex flex-col w-full bg-colorSurface overflow-hidden">
     <div class="relative flex size-full overflow-hidden">
-        <div class="flex-1 px-6 md:px-9 overflow-y-scroll no-scrollbar">
+        <div class="relative flex-1 px-6 md:px-9 overflow-y-scroll no-scrollbar">
             <%- body -%>
         </div>
         <div class="hidden md:flex flex-1 h-screen bg-cover bg-center bg-no-repeat overflow-hidden" style="background-image: url('/images/login.png')">
@@ -19,8 +19,9 @@
         </div>
     </div>
 </div>
-<%- block("footer").toString() %>
-<script src="/js/components/Toast.js"></script>
+<script src="/Toast.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.0.2/firebase-auth-compat.js"></script>
 <%- block("scripts").toString() %>
 </body>
 </html>

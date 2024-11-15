@@ -10,4 +10,5 @@ class LoadingModal {
         this.#backdrop.appendChild(this.#loader);
         document.body.prepend(this.#backdrop);
     }
+    // TODO: Complete this
 }

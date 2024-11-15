@@ -68,7 +68,7 @@ class ShareModal {
         this.#backdrop.classList.add("flex");
         this.#container.classList.remove("animate-fade-out");
         this.#container.classList.add("animate-fade-in");
-        window.onscroll = function () { window.scrollTo(0, 0); };
+        document.body.style.overflow = "hidden";
     }
     hideModal() {
         this.#container.classList.remove("animate-fade-in");
@@ -77,7 +77,7 @@ class ShareModal {
         setTimeout(() => {
             this.#backdrop.classList.remove("flex");
             this.#backdrop.classList.add("hidden");
-            window.onscroll = () => {};
+            document.body.style.overflow = "auto";
         }, 300);
     }
 }
