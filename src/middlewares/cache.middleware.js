@@ -1,6 +1,6 @@
 exports.enableCache = (req, res, next) => {
-    res.set("Cache-Control", "public, max-age=31536000");
-    res.set("Expires", new Date(Date.now() + 31536000000).toUTCString());
+    res.set("Cache-Control", "public, max-age=604800"); // 7 days
+    res.set("Expires", new Date(Date.now() + 604800000).toUTCString());
     next();
 }
 
