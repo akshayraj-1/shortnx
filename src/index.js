@@ -17,7 +17,8 @@ dotenv.config({ path: path.join(__dirname, `.env.${process.env.NODE_ENV?.trim()}
 
 // Express Setup
 const app = express();
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "../public")));
+app.use(express.static(path.join(__dirname, "components")));
 app.use(express.urlencoded({ extended: true })); // extended -> true (parse with qs lib); false (parse with querystring lib)
 app.use(express.json());
 app.use(cookieParser());
@@ -38,21 +39,25 @@ app.set("views", path.join(__dirname, "views"));
 
 // Home routes
 app.get("/", homeController.getHome);
+
+// Other Routes
 app.get('/favicon.ico', (req, res) => res.status(204));
+app.get("/terms-of-services", (req, res) => res.render("pages/tos",  { title: "Terms of Services" }));
+app.get("/privacy", (req, res) => res.render("pages/privacy", { title: "Privacy Policy" }));
 
 // Auth routes
 app.get("/login", authController.getLogin);
 app.get("/signup", authController.getSignup);
-app.post("/api/login", authController.loginUser);
-app.post("/api/signup", authController.signupUser);
-app.post("/api/google-auth", authController.googleAuth);
+app.post("/api/auth/login", authController.login);
+app.post("/api/auth/signup", authController.signUp);
+app.post("/api/auth/google", authController.googleAuth);
 
 // User routes
-app.get("/user-dashboard", userController.getDashboard);
-app.get("/api//user-shorten-urls", userController.getShortenUrls);
+app.get("/dashboard", userController.getDashboard);
 
 // Shorten URL routes
-app.post("/api/short-url", urlController.createShortenUrl);
+app.post("/api/short-url/create", urlController.createShortenUrl);
+app.get("/api/short-url/get/:userId", urlController.getShortenUrls);
 app.get("/:shortUrlId", urlController.getOriginalUrl);
 
 // 404
