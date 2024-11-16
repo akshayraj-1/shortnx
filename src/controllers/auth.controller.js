@@ -1,41 +1,50 @@
 const UserModel = require("../models/user.model");
 const { isAuthenticated, checkUserAuth } = require('../middlewares/auth.middleware');
+const { signInWithEmail, signUpWithEmail } = require("../services/firebase-services");
 
-// Get Login Page
-exports.getLogin = (req, res) => {
+// Render the login page
+function getLogin (req, res) {
     isAuthenticated(req)
         ? res.redirect("/user-dashboard")
         : res.render("pages/login", { title: "Login | URL Shortener" });
 }
 
-// Get Signup Page
-exports.getSignup = (req, res) => {
+// Render the signup page
+function getSignup (req, res) {
     isAuthenticated(req)
         ? res.redirect("/user-dashboard")
         : res.render("pages/signup", { title: "Sign Up | URL Shortener" });
 }
 
-exports.login = async (req, res) => {
+// User login with email and password
+async function login (req, res) {
     const { email, password } = req.body;
-    // TODO: Implement login
-}
-
-exports.signUp = async (req, res) => {
-    const { name, email, password } = req.body;
-    if (!name || !email || !password) {
-        res.json({ success: false, message: "All fields are required" });
-        return;
-    }
-
+    if (!email || !password) return res.json({ success: false, message: "All fields are required" });
     try {
-        // TODO: Implement the signup
-        return res.json({success: true, message: "User created successfully"});
+        const response = await signInWithEmail(email, password);
+        res.json({ success: true, message: "User logged in successfully", data: response });
     } catch (error) {
         console.log(error.message);
-        return res.json({ success: false, message: error.code });
+        res.json({ success: false, message: error.message });
     }
 }
 
-exports.googleAuth = (req, res) => {
+// User signup with email and password
+async function signUp(req, res) {
+    const { name, email, password } = req.body;
+    if (!name || !email || !password) return res.json({ success: false, message: "All fields are required" });
+    try {
+        const response = await signUpWithEmail(email, password);
+        res.json({ success: true, message: "User created successfully", data: response });
+    } catch (error) {
+        console.log(error.message);
+        res.json({ success: false, message: error });
+    }
+}
+
+// User login/signup with google
+function googleAuth (req, res) {
     // TODO: Implement google auth
 }
+
+module.exports = { getLogin, getSignup, login, signUp, googleAuth };

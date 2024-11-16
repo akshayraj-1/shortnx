@@ -12,36 +12,36 @@ class ShareModal {
         this.#backdrop = document.createElement("div");
         this.#backdrop.className = "modal-backdrop hidden";
         this.#backdrop.innerHTML = `
-            <div class="modal-container flex flex-col w-full max-w-[400px] p-6 md:p-8 bg-colorSurface rounded-xl">
+            <div id="modal-container" class="flex flex-col w-full max-w-[400px] p-6 md:p-8 bg-colorSurface rounded-xl">
                 <div class="flex items-center justify-between">
                     <h3 class="text-lg sm:text-xl font-bold">Your Shortened Link</h3>
-                    <i class="modal-share-btn-close text-xl text-textSecondary cursor-pointer ri-close-line"></i>
+                    <i id="modal-share-btn-close" class="text-xl text-textSecondary cursor-pointer ri-close-line"></i>
                 </div>
                 <div class="flex items-center justify-evenly mt-8 gap-3">
-                    <button class="modal-share-btn-whatsapp p-5 rounded-full ring-1 ring-inset ring-colorBorder cursor-pointer size-[4.5rem]" title="Share on WhatsApp">
+                    <button id="modal-share-btn-whatsapp" class="p-5 rounded-full ring-1 ring-inset ring-colorBorder cursor-pointer size-[4.5rem]" title="Share on WhatsApp">
                         <img src="/images/whatsapp.svg" alt="Share on WhatsApp">
                     </button>
-                    <button class="modal-share-btn-twitter p-5 rounded-full ring-1 ring-colorBorder cursor-pointer size-[4.5rem]" title="Share on X">
+                    <button id="modal-share-btn-twitter" class="p-5 rounded-full ring-1 ring-colorBorder cursor-pointer size-[4.5rem]" title="Share on X">
                         <img src="/images/twitter-alt.svg" alt="Share on Twitter">
                     </button>
-                    <button class="modal-share-btn-email p-5 rounded-full ring-1 ring-inset ring-colorBorder cursor-pointer size-[4.5rem]" title="Share via Email">
+                    <button id="modal-share-btn-email" class="p-5 rounded-full ring-1 ring-inset ring-colorBorder cursor-pointer size-[4.5rem]" title="Share via Email">
                         <img src="/images/envelope.svg" alt="Share via Email">
                     </button>
                 </div>
                 <div class="relative mt-8 mb-4 px-4 py-2.5 font-medium bg-colorSurfaceSecondary rounded-md ring-1 ring-inset ring-colorBorder overflow-hidden">
                     <span id="short-url" class="w-full text-xs sm:text-base text-textPrimary overflow-ellipsis overflow-hidden"></span>
-                    <i class="modal-share-btn-copy absolute top-0 right-0 flex items-center justify-center h-full px-3 bg-colorPrimary text-white cursor-pointer ri-file-copy-line" title="Copy URL" aria-label="Copy URL"></i>
+                    <i id="modal-share-btn-copy" class="absolute top-0 right-0 flex items-center justify-center h-full px-3 bg-colorPrimary text-white cursor-pointer ri-file-copy-line" title="Copy URL" aria-label="Copy URL"></i>
                 </div>
             </div>
         `;
         document.body.prepend(this.#backdrop);
-        this.#container = document.querySelector(".modal-container");
-        this.#closeModal = document.querySelector(".modal-share-btn-close");
-        this.#shortUrl = document.querySelector("#short-url");
-        this.#btnCopyUrl = document.querySelector(".modal-share-btn-copy");
-        this.#btnWhatsapp = document.querySelector(".modal-share-btn-whatsapp");
-        this.#btnTwitter = document.querySelector(".modal-share-btn-twitter");
-        this.#btnEmail = document.querySelector(".modal-share-btn-email");
+        this.#container = document.getElementById("modal-container");
+        this.#closeModal = document.getElementById("modal-share-btn-close");
+        this.#shortUrl = document.getElementById("short-url");
+        this.#btnCopyUrl = document.getElementById("modal-share-btn-copy");
+        this.#btnWhatsapp = document.getElementById("modal-share-btn-whatsapp");
+        this.#btnTwitter = document.getElementById("modal-share-btn-twitter");
+        this.#btnEmail = document.getElementById("modal-share-btn-email");
         this.#init();
     }
     #init() {

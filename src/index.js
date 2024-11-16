@@ -19,7 +19,9 @@ dotenv.config({ path: path.join(__dirname, `.env.${process.env.NODE_ENV?.trim()}
 const app = express();
 app.use(express.static(path.join(__dirname, "../public")));
 app.use(express.static(path.join(__dirname, "components")));
-app.use(express.urlencoded({ extended: true })); // extended -> true (parse with qs lib); false (parse with querystring lib)
+// extended -> true (parse with qs lib: can parse nested objects);
+// extended -> false (parse with querystring lib: cannot parse nested objects)
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(session({
