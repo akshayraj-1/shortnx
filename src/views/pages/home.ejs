@@ -32,11 +32,58 @@
 
 <%# Feature %>
 <section class="relative flex flex-col items-center page-padding min-h-screen size-full bg-colorSurface/70">
-    <span class="mt-16 mb-5 w-full text-[15px] text-colorPrimary text-start sm:text-center uppercase font-sans font-medium">Benefits</span>
-    <h2 class="w-full text-[40px] md:text-[3.5rem] font-gelica-black font-bold leading-none text-start sm:text-center">More than a link shortener</h2>
-    <p class="mt-4 w-full max-w-[700px] text-base text-textSecondary text-start sm:text-center">Effortlessly Track, Analyze, and Optimize Every Connection in One Place.</p>
+    <span class="self-start sm:self-center px-5 py-1 mt-16 text-[15px] text-colorPrimary uppercase font-sans font-medium border border-colorPrimary/50 rounded-full">Benefits</span>
+    <h2 class="mt-6 w-full text-[40px] md:text-[3.5rem] font-gelica-black font-bold leading-none text-start sm:text-center">More than a link shortener</h2>
+    <p class="mt-5 w-full max-w-[700px] text-base text-textSecondary text-start sm:text-center">Effortlessly Track, Analyze, and Optimize Every Connection in One Place.</p>
     <div>
 
     </div>
 </section>
-<% block("scripts").append("<script src='/js/home.js'></script>") %>
+<% block("scripts").append(`
+<script>
+    const inputUrl = document.querySelector("#input-url");
+    const spinner = document.querySelector("[aria-label='spinner']");
+    const arrowRight = document.querySelector("[aria-label='arrow-right']");
+    const btnShorten = document.querySelector("#btn-shorten");
+    const modal = new ShareModal();
+    const toast = new Toast();
+
+    inputUrl.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            btnShorten.click();
+        }
+    });
+
+    btnShorten.addEventListener("click", async () => {
+        const url = inputUrl.value;
+        if (!url) return;
+
+        spinner.classList.toggle("hidden", false);
+        arrowRight.classList.toggle("hidden", true);
+        btnShorten.disabled = true;
+
+        try {
+            const response = await fetch("/api/short-url/create", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ url })
+            });
+            const data = await response.json();
+            if (!data.success) {
+                toast.showToast(data.message, toast.types.error);
+                return;
+            }
+            inputUrl.value = "";
+            modal.showModal(data.data.shortenUrl);
+
+        } catch (error) {
+            toast.showToast(error.message, toast.types.error);
+        } finally {
+            spinner.classList.toggle("hidden", true);
+            arrowRight.classList.toggle("hidden", false);
+            btnShorten.disabled = false;
+        }
+    });
+</script>
+`) %>
