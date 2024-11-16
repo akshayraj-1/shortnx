@@ -1,10 +1,10 @@
-exports.isAuthenticated = (req) => {
+function isAuthenticated(req) {
     const access_token = req.cookies.access_token;
     // TODO: Validate the access token using firebase admin
     return false;
 }
 
-exports.checkUserAuth = (req, res, next) => {
+function checkUserAuth(req, res, next) {
     if (this.isAuthenticated(req)) {
         res.locals.user = req.session.user;
         next();
@@ -12,3 +12,5 @@ exports.checkUserAuth = (req, res, next) => {
         res.redirect("/login");
     }
 }
+
+module.exports = { isAuthenticated, checkUserAuth };
