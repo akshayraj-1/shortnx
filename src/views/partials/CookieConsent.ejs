@@ -1,0 +1,54 @@
+<%# Cookie Consent Popup %>
+<div id="cookie-popup" class="fixed z-[10] bottom-6 hidden justify-center sm:justify-end px-6 w-full sm:w-fit sm:right-0">
+    <div class="flex flex-col gap-2.5 px-6 py-5 w-full max-w-sm bg-colorSurface rounded-xl shadow-2xl shadow-black/20">
+        <div class="self-start flex items-center justify-center gap-2.5">
+            <img class="size-5" src="/images/cookie.png" alt="cookie"/>
+            <h2 class="text-base font-semibold">Cookie Consent</h2>
+        </div>
+        <p class="text-sm text-textSecondary">
+            This website uses cookies to ensure you get the best experience on our website.
+        </p>
+        <div class="flex items-center gap-2.5 mt-2">
+            <%- include("./Button.ejs", {
+                btnClassnames: "flex-1",
+                btnChildren: "I Understand",
+                btnOnClick: "consentCookie()"
+            }) -%>
+            <%- include("./Button.ejs", {
+                btnType: "link",
+                btnHref: "/privacy",
+                btnVariant: "secondary",
+                btnClassnames: "flex-1",
+                btnChildren: "Learn More"
+            }) -%>
+        </div>
+    </div>
+</div>
+
+<%- block("scripts").append(
+`
+<script>
+    window.addEventListener("DOMContentLoaded", () => {
+        const cookieConsent = window.localStorage.getItem("cookieConsent") || false;
+        if (!cookieConsent && !window.location.pathname.includes("privacy")) {
+            const cookiePopup = document.getElementById("cookie-popup");
+            setTimeout(() => {
+                cookiePopup.classList.remove("hidden");
+                cookiePopup.classList.add("flex");
+                cookiePopup.classList.add("animate-slide-in-up");
+            }, 500);
+        }
+    });
+
+    function consentCookie() {
+        window.localStorage.setItem("cookieConsent", "true");
+        const cookiePopup = document.getElementById("cookie-popup");
+        cookiePopup.classList.add("animate-slide-out-down");
+        setTimeout(() => {
+            cookiePopup.classList.remove("flex");
+            cookiePopup.classList.add("hidden");
+        }, 200);
+    }
+</script>
+`
+) -%>
