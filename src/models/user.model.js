@@ -22,6 +22,23 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ["google", "email"],
         required: true
+    },
+    status: {
+        type: String,
+        enum: ["active", "inactive"],
+        default: "active"
+    },
+    isEmailVerified: {
+        type: Boolean,
+        default: false
+    },
+    lastLogin: {
+        type: String,
+        default: Date.now()
+    },
+    refreshToken: {
+        type: String,
+        default: null
     }
 }, { timestamps: true, versionKey: false });
 
