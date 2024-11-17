@@ -26,7 +26,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(session({
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     secret: process.env.SESSION_SECRET,
     cookie: {
         secure: process.env.NODE_ENV === 'production',
