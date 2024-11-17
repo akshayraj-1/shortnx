@@ -25,7 +25,7 @@ async function createShortenUrl(req, res) {
     if (!url || !/^https?:\/\/.*$/.test(url)) {
         return res.status(400).json({ success: false, message: "Please enter a valid url" });
     }
-    const userId = isAuthenticated(req) ? req.session.user.uid : null;
+    const userId = await isAuthenticated(req) ? req.session.user.uid : null;
 
     try {
         const urlDoc = new UrlModel({
