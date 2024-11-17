@@ -15,8 +15,8 @@ class FormValidation {
 
     static validateName(input, showError = true) {
         return this.validateInput(input,
-            /^[a-zA-Z\s]{1,50}$/,
-            showError ? "Name must be between 1-50 chars" : null);
+            /^[a-zA-Z\s]{6,50}$/,
+            showError ? "Name must be between 6-50 chars" : null);
     }
 
     static validatePassword(input, showError = true) {
@@ -25,7 +25,7 @@ class FormValidation {
         if (value.length < 8 || value.length > 30) {
             error = "Password must be between 8-30 chars";
         } else if (!value.match(/^(?=.*[A-Za-z])(?=.*\d)/)) {
-            error = "Password must have at least one letter and one number";
+            error = "Password must have at least one letter and number";
         } else if (!value.match(/(?=.*[@$!%*#?&])/)) {
             error = "Password must have at least one special char";
         }
@@ -39,6 +39,7 @@ class FormValidation {
         const container = input.parentElement;
         let error = container.querySelector(".error-label");
         if (!message) {
+            // Remove error
             if (error) {
                 input.classList.remove("ring-1", "ring-red-400");
                 input.classList.add("focus:ring-1", "focus:ring-colorBorder");
@@ -46,6 +47,7 @@ class FormValidation {
             }
             return;
         }
+        // Add error
         input.classList.remove("focus:ring-1", "focus:ring-colorBorder");
         input.classList.add("ring-1", "ring-red-400");
         input.focus();
@@ -53,7 +55,7 @@ class FormValidation {
             error.textContent = message;
         } else {
             error = document.createElement("span");
-            error.className = "error-label text-xs text-red-400";
+            error.className = "error-label text-[0.8rem] text-red-400";
             error.textContent = message;
             input.insertAdjacentElement("afterend", error);
         }
