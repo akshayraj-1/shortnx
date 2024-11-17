@@ -1,7 +1,7 @@
-function getFirebaseErrorMessage(error) {
+function getAuthErrorMessage(error) {
     switch (error.code) {
         case "auth/email-already-in-use":
-            return "This email is already registered";
+            return "Email is already registered";
         case "auth/wrong-password":
             return "Password is incorrect";
         case "auth/user-not-found":
@@ -23,4 +23,4 @@ function getFirebaseErrorMessage(error) {
     }
 }
 
-module.exports = getFirebaseErrorMessage;
+module.exports = getAuthErrorMessage;
