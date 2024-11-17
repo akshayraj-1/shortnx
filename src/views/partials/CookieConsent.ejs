@@ -30,14 +30,12 @@
 <script>
     window.addEventListener("DOMContentLoaded", () => {
         const cookieConsent = window.localStorage.getItem("cookieConsent") || false;
-        if (!cookieConsent && !window.location.pathname.includes("privacy")) {
-            const cookiePopup = document.getElementById("cookie-popup");
-            setTimeout(() => {
-                cookiePopup.classList.remove("hidden");
-                cookiePopup.classList.add("flex");
-                cookiePopup.classList.add("animate-slide-in-up");
-            }, 500);
-        }
+        const cookiePopup = document.getElementById("cookie-popup");
+        setTimeout(() => {
+            cookiePopup.classList.remove("hidden");
+            cookiePopup.classList.add("flex");
+            cookiePopup.classList.add("animate-slide-in-up");
+        }, 500);
     });
 
     function consentCookie() {
