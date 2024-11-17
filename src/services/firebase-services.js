@@ -20,15 +20,17 @@ admin.initializeApp({
 async function signInWithEmail(email, password) {
     const response = await auth.signInWithEmailAndPassword(authInstance, email, password);
     await auth.signOut(authInstance); // Clearing the session
-    console.log(response);
     return response;
 }
 
 async function signUpWithEmail(email, password) {
     const response = await auth.createUserWithEmailAndPassword(authInstance, email, password);
     await auth.signOut(authInstance); // Clearing the session
-    console.log(response);
     return response;
 }
 
-module.exports = { signInWithEmail, signUpWithEmail };
+async function verifyIdToken(idToken) {
+    return await admin.auth().verifyIdToken(idToken);
+}
+
+module.exports = { signInWithEmail, signUpWithEmail, verifyIdToken };
