@@ -13,6 +13,9 @@ dist
 dist-ssr
 *.local
 
+log.json
+log2.json
+
 src/configs/firebase-service-account.json
 src/configs/firebase-config.json
 src/.env.production
