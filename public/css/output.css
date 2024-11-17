@@ -684,12 +684,12 @@ video {
   margin-top: 0.5rem;
 }
 
-.mt-3\.5{
-  margin-top: 0.875rem;
+.mt-3{
+  margin-top: 0.75rem;
 }
 
-.mt-4{
-  margin-top: 1rem;
+.mt-3\.5{
+  margin-top: 0.875rem;
 }
 
 .mt-5{
@@ -1186,6 +1186,10 @@ video {
   line-height: 2rem;
 }
 
+.text-\[0\.8rem\]{
+  font-size: 0.8rem;
+}
+
 .text-\[0\.9rem\]{
   font-size: 0.9rem;
 }
@@ -1256,9 +1260,9 @@ video {
   color: rgb(97 57 255 / var(--tw-text-opacity));
 }
 
-.text-red-500{
+.text-red-400{
   --tw-text-opacity: 1;
-  color: rgb(239 68 68 / var(--tw-text-opacity));
+  color: rgb(248 113 113 / var(--tw-text-opacity));
 }
 
 .text-textPrimary{
@@ -1274,11 +1278,6 @@ video {
 .text-white{
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
-}
-
-.text-red-400{
-  --tw-text-opacity: 1;
-  color: rgb(248 113 113 / var(--tw-text-opacity));
 }
 
 .underline{
@@ -1334,11 +1333,6 @@ video {
 .ring-colorBorder{
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(219 219 222 / var(--tw-ring-opacity));
-}
-
-.ring-red-500{
-  --tw-ring-opacity: 1;
-  --tw-ring-color: rgb(239 68 68 / var(--tw-ring-opacity));
 }
 
 .ring-red-400{
@@ -1603,10 +1597,10 @@ html, body{
   transition-duration: 150ms;
 }
 
-.after\:text-sm::after{
+.after\:text-xs::after{
   content: var(--tw-content);
-  font-size: 0.875rem;
-  line-height: 1.25rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
 }
 
 .after\:text-textSecondary::after{
