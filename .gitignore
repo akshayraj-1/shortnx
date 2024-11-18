@@ -16,10 +16,9 @@ dist-ssr
 log.json
 log2.json
 
-src/configs/firebase-service-account.json
-src/configs/firebase-config.json
-src/.env.production
-_push.ps1
+configs
+.env.production
+*.ps1
 
 # Editor directories and files
 .vscode/*
