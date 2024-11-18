@@ -622,6 +622,10 @@ video {
   right: 0px;
 }
 
+.right-auto{
+  right: auto;
+}
+
 .top-0{
   top: 0px;
 }
@@ -658,6 +662,10 @@ video {
 
 .me-2{
   margin-inline-end: 0.5rem;
+}
+
+.me-3{
+  margin-inline-end: 0.75rem;
 }
 
 .ms-2{
@@ -716,12 +724,21 @@ video {
   display: block;
 }
 
+.inline{
+  display: inline;
+}
+
 .flex{
   display: flex;
 }
 
 .hidden{
   display: none;
+}
+
+.size-4{
+  width: 1rem;
+  height: 1rem;
 }
 
 .size-5{
@@ -822,12 +839,10 @@ video {
 @keyframes fadeIn{
   0%{
     opacity: 0;
-    transform: scale(0.95);
   }
 
   100%{
     opacity: 1;
-    transform: scale(1);
   }
 }
 
@@ -1006,6 +1021,10 @@ video {
   border-width: 1px;
 }
 
+.border-t{
+  border-top-width: 1px;
+}
+
 .border-none{
   border-style: none;
 }
@@ -1027,6 +1046,10 @@ video {
 .border-slate-400{
   --tw-border-opacity: 1;
   border-color: rgb(148 163 184 / var(--tw-border-opacity));
+}
+
+.border-t-colorBorder\/30{
+  border-top-color: rgb(219 219 222 / 0.3);
 }
 
 .bg-colorBackground{
@@ -1525,32 +1548,6 @@ html, body{
   scrollbar-width: none;
 }
 
-/*Stole this from https://css-loaders.com/blob/#14*/
-
-.loader {
-  height: 50px;
-  aspect-ratio: 2;
-  border: 10px solid #000;
-  box-sizing: border-box;
-  background:
-            radial-gradient(farthest-side,#fff 98%,#0000) left/20px 20px,
-            radial-gradient(farthest-side,#fff 98%,#0000) left/20px 20px,
-            radial-gradient(farthest-side,#fff 98%,#0000) center/20px 20px,
-            radial-gradient(farthest-side,#fff 98%,#0000) right/20px 20px,
-            #000;
-  background-repeat: no-repeat;
-  filter: blur(4px) contrast(10);
-  animation: l14 1s infinite;
-}
-
-@keyframes l14 {
-  100%  {
-    background-position:right,left,center,right
-  }
-}
-
-/**/
-
 .placeholder\:text-\[0\.9rem\]::-moz-placeholder{
   font-size: 0.9rem;
 }
@@ -1655,6 +1652,11 @@ html, body{
   pointer-events: none;
 }
 
+.disabled\:bg-colorPrimaryDark:disabled{
+  --tw-bg-opacity: 1;
+  background-color: rgb(81 48 217 / var(--tw-bg-opacity));
+}
+
 @media (min-width: 640px){
   .sm\:right-0{
     right: 0px;
@@ -1675,10 +1677,6 @@ html, body{
   .sm\:w-fit{
     width: -moz-fit-content;
     width: fit-content;
-  }
-
-  .sm\:justify-end{
-    justify-content: flex-end;
   }
 
   .sm\:self-center{
@@ -1755,5 +1753,4 @@ html, body{
     display: flex;
   }
 }
-
 
