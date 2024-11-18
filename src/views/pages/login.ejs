@@ -56,14 +56,14 @@
 
     [email, password].forEach(input => input.addEventListener("input", () => {
         if (input.value) {
-            FormValidation.toggleErrorState(input);
+            InputValidation.toggleErrorState(input);
         }
     }));
 
     btnLogin.addEventListener("click", async () => {
 
-        if (!FormValidation.validateEmail(email) ||
-            !FormValidation.validateInput(password, null, "Please enter your password")
+        if (!InputValidation.validateEmail(email) ||
+            !InputValidation.validateInput(password, null, "Please enter your password")
         ) return;
 
         const userData = {
@@ -72,6 +72,7 @@
         };
 
         try {
+            changeButtonState(btnLogin, "loading", "Logging in...");
             const response = await fetch("/api/auth/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -80,16 +81,16 @@
 
             const result = await response.json();
             if (result.success) {
-                window.location.href = "/dashboard";
+                window.location.replace("/dashboard");
             } else {
                 const message = result.message || "Something went wrong";
                 if (message.toLowerCase().includes("email")) {
-                    FormValidation.toggleErrorState(email, message);
+                    InputValidation.toggleErrorState(email, message);
                 } else if (message.toLowerCase().includes("password")) {
-                    FormValidation.toggleErrorState(password, message);
+                    InputValidation.toggleErrorState(password, message);
                 } else if (message.toLowerCase().includes("invalid credentials")) {
-                    FormValidation.toggleErrorState(email, message);
-                    FormValidation.toggleErrorState(password, message);
+                    InputValidation.toggleErrorState(email, message);
+                    InputValidation.toggleErrorState(password, message);
                 } else {
                     toast.showToast(message, toast.types.error);
                 }
@@ -97,8 +98,8 @@
 
         } catch (error) {
             toast.showToast(error.message, toast.types.error);
+            changeButtonState(btnLogin, "normal", "Login");
         }
-
     });
 </script>
 `) %>
