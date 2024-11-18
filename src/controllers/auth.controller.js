@@ -1,7 +1,8 @@
 const UserModel = require("../models/user.model");
-const { isAuthenticated, checkUserAuth } = require('../middlewares/auth.middleware');
+const { isAuthenticated } = require('../middlewares/auth.middleware');
 const { signInWithEmail, signUpWithEmail } = require("../services/firebase-services");
 const getAuthErrorMessage = require("../utils/authError.util");
+const logManager = require("../utils/logManager.util");
 
 // Render the login page
 async function getLogin (req, res) {
@@ -33,7 +34,7 @@ async function login (req, res) {
         res.cookie("id_token", idToken, { httpOnly: true });
         res.status(200).json({ success: true, message: "User logged in successfully" });
     } catch (error) {
-        console.log(error.message);
+        logManager.logError(error);
         res.json({ success: false, message: getAuthErrorMessage(error) });
     }
 }
@@ -58,12 +59,12 @@ async function signUp(req, res) {
         res.cookie("id_token", idToken, { httpOnly: true });
         res.status(201).json({ success: true, message: "User created successfully" });
     } catch (error) {
-        console.log(error.message);
+        logManager.logError(error);
         res.json({ success: false, message: getAuthErrorMessage(error) });
     }
 }
 
-// User login/signup with google
+// User login/signup with Google
 function googleAuth (req, res) {
     // TODO: Implement google auth
 }
