@@ -1,4 +1,12 @@
-class FormValidation {
+/**
+ * @description
+ * Just a helper class for form validation
+ * Right now it has just validations for email, password, name,
+ * but you can also validate other types of input values using the generic validateInput method
+ * Please remember to wrap your given input element in some sort of container like `<div><input type="email"></div>`
+ */
+
+class InputValidation {
 
     static validateInput(input, regexp = null, errorMessage = null) {
         const value = input.value;
@@ -33,7 +41,6 @@ class FormValidation {
             /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,30}$/,
             showError ? error : null);
     }
-
 
     static toggleErrorState(input, message = null) {
         const container = input.parentElement;
