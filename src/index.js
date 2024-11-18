@@ -1,3 +1,4 @@
+// Importing modules
 const express = require("express");
 const mongoose = require("mongoose");
 const session = require("express-session");
@@ -26,7 +27,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(session({
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: true, // true -> session will be created even if there is no data being stored
     secret: process.env.SESSION_SECRET,
     cookie: {
         secure: process.env.NODE_ENV === 'production',
@@ -50,6 +51,7 @@ app.get("/privacy", (req, res) => res.render("pages/privacy", { title: "Privacy 
 // Auth routes
 app.get("/login", authController.getLogin);
 app.get("/signup", authController.getSignup);
+// Could have used router for these kind of routes but why bother
 app.post("/api/auth/login", authController.login);
 app.post("/api/auth/signup", authController.signUp);
 app.post("/api/auth/google", authController.googleAuth);
