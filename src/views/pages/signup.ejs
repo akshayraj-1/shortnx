@@ -60,15 +60,15 @@
 
     [name, email, password].forEach(input => input.addEventListener("input", () => {
         if (input.value) {
-            FormValidation.toggleErrorState(input);
+            InputValidation.toggleErrorState(input);
         }
     }));
 
     btnSignUp.addEventListener("click", async () => {
 
-        if (!FormValidation.validateName(name) ||
-            !FormValidation.validateEmail(email) ||
-            !FormValidation.validatePassword(password)
+        if (!InputValidation.validateName(name) ||
+            !InputValidation.validateEmail(email) ||
+            !InputValidation.validatePassword(password)
         ) return;
 
         const userData = {
@@ -78,6 +78,7 @@
         };
 
         try {
+            changeButtonState(btnSignUp, "loading", "Signing up...");
             const response = await fetch("/api/auth/signup", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -86,13 +87,13 @@
 
             const result = await response.json();
             if (result.success) {
-                window.location.href = "/dashboard";
+                window.location.replace("/dashboard");
             } else {
                 const message = result.message || "Something went wrong";
                 if (message.toLowerCase().includes("email")) {
-                    FormValidation.toggleErrorState(email, message);
+                    InputValidation.toggleErrorState(email, message);
                 } else if (message.toLowerCase().includes("password")) {
-                    FormValidation.toggleErrorState(password, message);
+                    InputValidation.toggleErrorState(password, message);
                 } else {
                     toast.showToast(message, toast.types.error);
                 }
@@ -100,6 +101,7 @@
 
         } catch (error) {
             toast.showToast("Something went wrong", toast.types.error);
+            changeButtonState(btnSignUp, "normal", "Sign Up");
         }
     });
 </script>
