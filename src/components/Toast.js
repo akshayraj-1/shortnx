@@ -13,7 +13,7 @@ class Toast {
         this.#container = document.createElement("div");
         this.#container.className = "hidden fixed z-[51] bottom-5 md:bottom-9 left-0 right-0 w-full px-6 select-none";
         this.#toast = document.createElement("div");
-        this.#toast.className = "relative mx-auto w-full md:w-fit max-w-[400px] px-4 md:px-6 py-2.5 text-sm sm:text-base bg-colorSurface rounded-lg shadow-xl shadow-toastShadow toast-info";
+        this.#toast.className = "relative mx-auto w-full md:w-fit max-w-sm px-4 md:px-6 py-2.5 text-sm sm:text-base bg-colorSurface rounded-md shadow-xl shadow-toastShadow toast-info";
         this.#container.prepend(this.#toast);
         document.body.prepend(this.#container);
     }
