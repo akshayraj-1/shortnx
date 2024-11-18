@@ -28,7 +28,7 @@ class LoadingModal {
         document.body.style.overflow = "hidden";
     }
 
-    dismiss() {
+    hide() {
         this.#backdrop.classList.remove("animate-fade-in");
         this.#backdrop.classList.add("animate-fade-out");
         setTimeout(() => {
