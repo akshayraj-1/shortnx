@@ -93,6 +93,7 @@
                     InputValidation.toggleErrorState(password, message);
                 } else {
                     toast.showToast(message, toast.types.error);
+                    changeButtonState(btnLogin, "normal", "Login");
                 }
             }
 
