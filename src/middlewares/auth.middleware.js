@@ -5,6 +5,8 @@ const logManager = require("../utils/logManager.util");
 async function isAuthenticated(req) {
     const idToken = req.cookies.id_token || req.session.id_token;
     const exp = req.session.id_token_exp || 0;
+    if (!idToken) return false;
+
     if (idToken && Date.now() < exp) {
         logManager.logInfo("Token found in session for user:", req.session?.user?.uid);
         return true;
