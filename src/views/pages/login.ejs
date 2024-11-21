@@ -53,6 +53,7 @@
     const password = document.getElementById("password");
     const btnLogin = document.getElementById("btnLogin");
     const toast = new Toast();
+    const loadingModal = new LoadingModal();
 
     [email, password].forEach(input => input.addEventListener("input", () => {
         if (input.value) {
@@ -72,7 +73,7 @@
         };
 
         try {
-            changeButtonState(btnLogin, "loading", "Logging in...");
+            loadingModal.show();
             const response = await fetch("/api/auth/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -93,13 +94,13 @@
                     InputValidation.toggleErrorState(password, message);
                 } else {
                     toast.showToast(message, toast.types.error);
-                    changeButtonState(btnLogin, "normal", "Login");
                 }
             }
 
         } catch (error) {
             toast.showToast(error.message, toast.types.error);
-            changeButtonState(btnLogin, "normal", "Login");
+        } finally {
+            loadingModal.hide();
         }
     });
 </script>
