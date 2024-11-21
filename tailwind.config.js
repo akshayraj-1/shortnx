@@ -6,13 +6,14 @@ module.exports = {
       colors: {
         colorPrimary: "#6139ff",
         colorPrimaryDark: "#5130d9",
+        colorAccent: "#8566ff",
         colorBackground: "#f8f9fb",
         colorSurface: "#ffffff", // Card, Modals background
         colorSurfaceSecondary: "#fafbfc", // Textbox background
         colorBorder: "#dbdbde",
         colorBorderHover: "#d7d7d9",
         textPrimary: "#2f2e41",
-        textSecondary: "#878899"
+        textSecondary: "#878899",
       },
       boxShadow: {
         toastShadow: "0 4px 6px -4px rgba(218,218,218,0.1);",
