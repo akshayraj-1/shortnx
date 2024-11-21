@@ -57,6 +57,7 @@
     const btnSignUp = document.getElementById("btnSignUp");
     const btnGoogleLogin = document.getElementById("btnGoogleLogin");
     const toast = new Toast();
+    const loadingModal = new LoadingModal();
 
     [name, email, password].forEach(input => input.addEventListener("input", () => {
         if (input.value) {
@@ -78,7 +79,7 @@
         };
 
         try {
-            changeButtonState(btnSignUp, "loading", "Signing up...");
+            loadingModal.show();
             const response = await fetch("/api/auth/signup", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -96,13 +97,13 @@
                     InputValidation.toggleErrorState(password, message);
                 } else {
                     toast.showToast(message, toast.types.error);
-                    changeButtonState(btnSignUp, "normal", "Sign Up")
                 }
             }
 
         } catch (error) {
             toast.showToast("Something went wrong", toast.types.error);
-            changeButtonState(btnSignUp, "normal", "Sign Up");
+        } finally {
+            loadingModal.hide();
         }
     });
 </script>
