@@ -1,6 +1,8 @@
 const UserModel = require("../models/user.model");
+const querystring = require("querystring");
 const { isAuthenticated } = require('../middlewares/auth.middleware');
-const { signInWithEmail, signUpWithEmail } = require("../services/firebase-services");
+const { getGoogleOAuthURL, getUserFromAuthCode } = require("../services/google-oauth");
+const { getUserByEmail, createUser, createCustomToken, signInWithEmail, signUpWithEmail } = require("../services/firebase-services");
 const getAuthErrorMessage = require("../utils/authError.util");
 const logManager = require("../utils/logManager.util");
 
@@ -18,6 +20,13 @@ async function getSignup (req, res) {
         : res.render("pages/signup", { title: "Sign Up | URL Shortener" });
 }
 
+// Get the Google auth URL
+async function getGoogleAuth (req, res) {
+    await isAuthenticated(req)
+        ? res.redirect("/dashboard")
+        : res.redirect(getGoogleOAuthURL());
+}
+
 // User login with email and password
 async function login (req, res) {
     const { email, password } = req.body;
@@ -30,6 +39,7 @@ async function login (req, res) {
             { userId: response.user.uid },
             { $set: { lastLogin: Date.now(), refreshToken: refreshToken } }
         );
+        logManager.logInfo("IdToken", idToken);
         req.session.id_token = idToken;
         res.cookie("id_token", idToken, { httpOnly: true });
         res.status(200).json({ success: true, message: "User logged in successfully" });
@@ -65,8 +75,40 @@ async function signUp(req, res) {
 }
 
 // User login/signup with Google
-function googleAuth (req, res) {
-    // TODO: Implement google auth
+async function googleAuth(req, res) {
+    const { code } = req.query;
+    try {
+        const authUser = await getUserFromAuthCode(code);
+        const firebaseUser = await createUserIfNotExists({
+            uid: authUser.sub,
+            name: authUser.name,
+            email: authUser.email,
+            photoURL: authUser.picture,
+            emailVerified: authUser.email_verified,
+            providerId: "google.com"
+        });
+        console.log(firebaseUser);
+        const customToken = await createCustomToken(firebaseUser.uid);
+        logManager.logInfo(customToken);
+        res.session = { id_token: customToken };
+        res.cookie("id_token", customToken, { httpOnly: true });
+        res.status(302).redirect("/dashboard");
+    } catch (error) {
+        res.status(302).redirect("/auth/login");
+        logManager.logError(error);
+    }
 }
 
-module.exports = { getLogin, getSignup, login, signUp, googleAuth };
+
+async function createUserIfNotExists(user) {
+    try {
+        const firebaseUser = await getUserByEmail(user.email);
+        if (firebaseUser) return firebaseUser;
+        return await createUser(user);
+    } catch (error) {
+        if (error.code === "auth/user-not-found") return await createUser(user);
+        throw error;
+    }
+}
+
+module.exports = { getLogin, getSignup, getGoogleAuth, login, signUp, googleAuth };

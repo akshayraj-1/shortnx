@@ -18,6 +18,10 @@ admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
 });
 
+async function getUserByEmail(email) {
+    return await admin.auth().getUserByEmail(email);
+}
+
 async function signInWithEmail(email, password) {
     const response = await auth.signInWithEmailAndPassword(authInstance, email, password);
     await auth.signOut(authInstance); // Clearing the session
@@ -28,6 +32,21 @@ async function signUpWithEmail(email, password) {
     const response = await auth.createUserWithEmailAndPassword(authInstance, email, password);
     await auth.signOut(authInstance); // Clearing the session
     return response;
+}
+
+async function createUser({ uid, displayName, email, photoURL, emailVerified, providerId }) {
+    return await admin.auth().createUser({
+        uid,
+        displayName,
+        email,
+        emailVerified,
+        photoURL,
+        providerData: [{ uid, providerId, displayName, email, photoURL }]
+    });
+}
+
+async function createCustomToken(uid) {
+    return await admin.auth().createCustomToken(uid);
 }
 
 // Verify the user's id token
@@ -59,4 +78,4 @@ async function refreshIdToken(refreshToken) {
     }
 }
 
-module.exports = { signInWithEmail, signUpWithEmail, verifyIdToken, refreshIdToken };
+module.exports = { getUserByEmail, createUser, createCustomToken, signInWithEmail, signUpWithEmail, verifyIdToken, refreshIdToken };

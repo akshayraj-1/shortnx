@@ -71,4 +71,4 @@ const getShortenUrls = [checkUserAuth, (req, res, next) => {
 }];
 
 
-module.exports = { createShortenUrl, getShortenUrls, getOriginalUrl };
+module.exports = { createShortenURL: createShortenUrl, getShortenUrls, getOriginalUrl };

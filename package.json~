@@ -6,7 +6,7 @@
     "dev": "set NODE_ENV=development && nodemon src/index.js",
     "dev2": "concurrently \"set NODE_ENV=development && node src/index.js\" \"npx tailwindcss -i src/views/input.css -o public/css/output.css --watch\"",
     "start": "set NODE_ENV=production && node src/index.js",
-    "start2": "concurrently \"set NODE_ENV=production && node src/index.js\" \"npx tailwindcss -i src/views/input.css -o public/css/output.css --watch\""
+    "start2": "concurrently \"set NODE_ENV=production && node src/index.js\" \"npx tailwindcss -i src/views/input.css -o public/css/output.css --watch\"",
   },
   "author": "",
   "license": "ISC",
@@ -20,7 +20,6 @@
     "express-session": "^1.18.1",
     "firebase": "^11.0.2",
     "firebase-admin": "^13.0.0",
-    "google-auth-library": "^9.15.0",
     "mongoose": "^8.7.2"
   },
   "devDependencies": {

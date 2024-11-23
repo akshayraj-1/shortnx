@@ -44,23 +44,23 @@ app.set("views", path.join(__dirname, "views"));
 app.get("/", homeController.getHome);
 
 // Other Routes
-app.get('/favicon.ico', (req, res) => res.status(204));
 app.get("/terms-of-services", (req, res) => res.render("pages/tos",  { title: "Terms of Services" }));
 app.get("/privacy", (req, res) => res.render("pages/privacy", { title: "Privacy Policy" }));
 
 // Auth routes
-app.get("/login", authController.getLogin);
-app.get("/signup", authController.getSignup);
 // Could have used router for these kind of routes but why bother
+app.get("/auth/login", authController.getLogin);
+app.get("/auth/signup", authController.getSignup);
+app.get("/auth/google", authController.getGoogleAuth);
 app.post("/api/auth/login", authController.login);
 app.post("/api/auth/signup", authController.signUp);
-app.post("/api/auth/google", authController.googleAuth);
+app.get("/api/auth/google/callback/", authController.googleAuth);
 
 // User routes
 app.get("/dashboard", userController.getDashboard);
 
 // Shorten URL routes
-app.post("/api/short-url/create", urlController.createShortenUrl);
+app.post("/api/short-url/create", urlController.createShortenURL);
 app.get("/api/short-url/get/:userId", urlController.getShortenUrls);
 app.get("/:shortUrlId", urlController.getOriginalUrl);
 

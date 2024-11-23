@@ -19,6 +19,7 @@ async function isAuthenticated(req) {
         return true;
     } catch (error) {
         logManager.logError(error);
+        logManager.logInfo("Auth Middleware Error:", error.message);
         // Refresh Token if the token is expired
         if (error.code === "auth/id-token-expired") {
             try {
@@ -38,7 +39,7 @@ async function isAuthenticated(req) {
 
 async function checkUserAuth(req, res, next) {
     const isAuth = await isAuthenticated(req);
-    isAuth ? next() : res.redirect("/login");
+    isAuth ? next() : res.redirect("/auth/login");
 }
 
 module.exports = { isAuthenticated, checkUserAuth };
