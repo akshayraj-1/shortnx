@@ -1,37 +1,32 @@
-const UserModel = require("../models/user.model");
-const  { verifyIdToken, refreshIdToken } = require("../services/firebase-services");
+const { validateAccessToken, decodeToken, getAccessToken } = require("../utils/token.util");
 const logManager = require("../utils/logManager.util");
+const UserModel = require("../models/user.model");
 
 async function isAuthenticated(req) {
-    const idToken = req.cookies.id_token || req.session.id_token;
-    const exp = req.session.id_token_exp || 0;
-    if (!idToken) return false;
-
-    if (idToken && Date.now() < exp) {
-        logManager.logInfo("Token found in session for user:", req.session?.user?.uid);
-        return true;
-    }
+    const accessToken = req.cookies.access_token || req.session.access_token;
+    if (!accessToken) return false;
     try {
-        const data = await verifyIdToken(idToken);
-        req.session.id_token_exp = data.exp;
-        req.session.user = { uid: data.uid };
-        logManager.logInfo("Token verified for user", req.session.user.uid);
+        const payload = await validateAccessToken(accessToken);
+        const user = await UserModel.findOne({ userId: payload.userId });
+        if (!user) return false;
+        req.session.user = { userId: payload.userId };
+        logManager.logInfo("User authenticated:", JSON.stringify(decodeToken(accessToken)));
         return true;
     } catch (error) {
+        console.log(error);
         logManager.logError(error);
-        logManager.logInfo("Auth Middleware Error:", error.message);
-        // Refresh Token if the token is expired
-        if (error.code === "auth/id-token-expired") {
-            try {
-                const user = await UserModel.findOne({ userId: req.session.user.uid }, { refreshToken: 1 });
-                const data = await refreshIdToken(user.refreshToken);
-                await UserModel.updateOne({ userId: req.session?.user?.uid }, { $set: { refreshToken: data.refresh_token } });
-                req.session.id_token_exp = data.exp;
-                logManager.logInfo("Token Refreshed for user:", req.session?.user?.uid);
-                return true;
-            } catch (error) {
-                logManager.logError(error);
-            }
+        if (error.code === "ACCESS_TOKEN_EXPIRED") {
+            const { userId } = decodeToken(accessToken);
+            const user = await UserModel.findOne({ userId });
+            if (!user) return false;
+            const refreshToken = user.refreshToken;
+            if (!refreshToken) return false;
+            const newAccessToken = await getAccessToken(refreshToken);
+            req.session.access_token = newAccessToken;
+            req.cookies.access_token = newAccessToken;
+            req.session.user = { userId };
+            logManager.logInfo("User re-authenticated:", JSON.stringify(decodeToken(newAccessToken)));
+            return true;
         }
         return false;
     }
