@@ -1,10 +1,10 @@
-const UserModel = require("../models/user.model");
-const querystring = require("querystring");
 const { isAuthenticated } = require('../middlewares/auth.middleware');
 const { getGoogleOAuthURL, getUserFromAuthCode } = require("../services/google-oauth");
-const { getUserByEmail, createUser, createCustomToken, signInWithEmail, signUpWithEmail } = require("../services/firebase-services");
-const getAuthErrorMessage = require("../utils/authError.util");
+const { generateRandomString } = require("../utils/random.util");
+const { hashPassword, comparePassword } = require("../utils/hash.util");
+const { getRefreshToken, getAccessToken } = require("../utils/token.util");
 const logManager = require("../utils/logManager.util");
+const UserModel = require("../models/user.model");
 
 // Render the login page
 async function getLogin (req, res) {
@@ -32,20 +32,22 @@ async function login (req, res) {
     const { email, password } = req.body;
     if (!email || !password) return res.json({ success: false, message: "All fields are required" });
     try {
-        const response = await signInWithEmail(email, password);
-        const idToken = response._tokenResponse.idToken;
-        const refreshToken = response._tokenResponse.refreshToken;
+        const user = await UserModel.findOne({ email, provider: "email" });
+        if (!user || !await comparePassword(password, user.password)) {
+            return res.json({ success: false, message: "Invalid Credentials" });
+        }
+        const refreshToken = await getRefreshToken(user.userId);
+        const accessToken = await getAccessToken(refreshToken);
         await UserModel.updateOne(
-            { userId: response.user.uid },
+            { email: email },
             { $set: { lastLogin: Date.now(), refreshToken: refreshToken } }
         );
-        logManager.logInfo("IdToken", idToken);
-        req.session.id_token = idToken;
-        res.cookie("id_token", idToken, { httpOnly: true });
+        req.session.access_token = accessToken;
+        res.cookie("access_token", accessToken, { httpOnly: true });
         res.status(200).json({ success: true, message: "User logged in successfully" });
     } catch (error) {
         logManager.logError(error);
-        res.json({ success: false, message: getAuthErrorMessage(error) });
+        res.json({ success: false, message: "Something went wrong" });
     }
 }
 
@@ -54,23 +56,27 @@ async function signUp(req, res) {
     const { name, email, password } = req.body;
     if (!name || !email || !password) return res.json({ success: false, message: "All fields are required" });
     try {
-        const response = await signUpWithEmail(email, password);
-        const idToken = response._tokenResponse.idToken;
-        const refreshToken = response._tokenResponse.refreshToken;
+        if (await UserModel.findOne({ email })) {
+            return res.json({ success: false, message: "Email already exists" });
+        }
+        const userId = generateRandomString(32, { symbols: false });
+        const refreshToken = await getRefreshToken(userId);
+        const accessToken = await getAccessToken(refreshToken);
         const user = new UserModel({
+            userId: userId,
             name: name,
             email: email,
-            userId: response.user.uid,
+            password: await hashPassword(password),
             provider: "email",
-            refreshToken: refreshToken
+            refreshToken: refreshToken,
         });
         await user.save();
-        req.session.id_token = idToken;
-        res.cookie("id_token", idToken, { httpOnly: true });
+        req.session.access_token = accessToken;
+        res.cookie("access_token", accessToken, { httpOnly: true });
         res.status(201).json({ success: true, message: "User created successfully" });
     } catch (error) {
         logManager.logError(error);
-        res.json({ success: false, message: getAuthErrorMessage(error) });
+        res.json({ success: false, message: "Something went wrong" });
     }
 }
 
@@ -79,35 +85,35 @@ async function googleAuth(req, res) {
     const { code } = req.query;
     try {
         const authUser = await getUserFromAuthCode(code);
-        const firebaseUser = await createUserIfNotExists({
-            uid: authUser.sub,
-            name: authUser.name,
-            email: authUser.email,
-            photoURL: authUser.picture,
-            emailVerified: authUser.email_verified,
-            providerId: "google.com"
-        });
-        console.log(firebaseUser);
-        const customToken = await createCustomToken(firebaseUser.uid);
-        logManager.logInfo(customToken);
-        res.session = { id_token: customToken };
-        res.cookie("id_token", customToken, { httpOnly: true });
+        const existingUser = await UserModel.findOne({ email: authUser.email });
+        let refreshToken;
+        if (existingUser) {
+            refreshToken = await getRefreshToken(existingUser.userId);
+            await UserModel.updateOne(
+                { email: authUser.email },
+                { $set: { lastLogin: Date.now(), refreshToken: refreshToken } }
+            );
+        } else {
+            const userId = generateRandomString(32, { symbols: false });
+            refreshToken = await getRefreshToken(userId);
+            const user = new UserModel({
+                userId: userId,
+                name: authUser.name,
+                email: authUser.email,
+                picture: authUser.picture,
+                provider: "google",
+                isEmailVerified: authUser.email_verified,
+                refreshToken: refreshToken,
+            });
+            await user.save();
+        }
+        const accessToken = await getAccessToken(refreshToken);
+        req.session.access_token = accessToken;
+        res.cookie("access_token", accessToken, { httpOnly: true });
         res.status(302).redirect("/dashboard");
     } catch (error) {
         res.status(302).redirect("/auth/login");
         logManager.logError(error);
-    }
-}
-
-
-async function createUserIfNotExists(user) {
-    try {
-        const firebaseUser = await getUserByEmail(user.email);
-        if (firebaseUser) return firebaseUser;
-        return await createUser(user);
-    } catch (error) {
-        if (error.code === "auth/user-not-found") return await createUser(user);
-        throw error;
     }
 }
 
