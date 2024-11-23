@@ -29,10 +29,8 @@ npm install
 ```
 
 **3. Set up the configuration file**
-
-- Add your MongoDB connection string and other required values in the `src/.env.development` or `src/.env.production` file.
-- Add your firebase project configuration json file in the `src/configs/` folder with name `firebase-config.json`. Learn more about firebase configuration json file [here](https://firebase.google.com/docs/web/learn-more#config-object).
-- Add your firebase service account json file in the `src/configs/` folder with name `firebase-service-account.json`. Learn more about firebase service account json file [here](https://firebase.google.com/docs/admin/setup#initialize_the_sdk).
+- Add your MongoDB URI and other required values in the `src/.env.development` or `src/.env.production` file.
+- Add your `Google Client ID`, `Google Client Secret` for the [Google OAuth 2.0](https://developers.google.com/identity/protocols/oauth2) authentication in the `src/.env.development` or `src/.env.production` file.
 
 ### Run the development server
 
