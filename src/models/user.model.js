@@ -14,19 +14,23 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    password: {
+        type: String,
+        required: this.provider === "email"
+    },
     photoUrl: {
         type: String,
         default: "/images/user-avatar.png"
-    },
-    provider: {
-        type: String,
-        enum: ["google", "email"],
-        required: true
     },
     status: {
         type: String,
         enum: ["active", "inactive"],
         default: "active"
+    },
+    provider: {
+        type: String,
+        required: true,
+        enum: ["email", "google"],
     },
     isEmailVerified: {
         type: Boolean,
