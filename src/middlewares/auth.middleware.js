@@ -6,17 +6,11 @@ async function isAuthenticated(req, res) {
     const accessToken = req.cookies.access_token || req.session.access_token;
     try {
         const payload = await validateAccessToken(accessToken);
+        // Assign the user details to the session
         if (!req.session || !req.session.user) {
             const user = await UserModel.findOne({ userId: payload.userId });
-            if (!user) throw new Error("Could not validate the user");
-            req.session.user = {
-                userId: user.userId,
-                name: user.name,
-                email: user.email,
-                picture: user.picture,
-                verified: user.verified,
-                status: user.status
-            };
+            if (!user) return false;
+            req.session.user = { userId: user.userId, name: user.name, email: user.email };
         }
         logManager.logInfo("Access token validated");
         return true;
@@ -26,14 +20,10 @@ async function isAuthenticated(req, res) {
             const user = await UserModel.findOne({ userId: payload.userId });
             if (!user) return false;
             const newAccessToken = await getAccessToken(user.refreshToken);
+            // Assign the new access token and the user details to the session
             req.session.access_token = newAccessToken;
             res.cookie("access_token", newAccessToken, { httpOnly: true });
-            req.session.user = {
-                userId: user.userId,
-                name: user.name,
-                email: user.email,
-                picture: user.picture,
-            };
+            req.session.user = { userId: user.userId, name: user.name, email: user.email };
             logManager.logInfo("Access token refreshed");
             return true;
         }
