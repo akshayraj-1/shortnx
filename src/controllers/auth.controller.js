@@ -8,21 +8,21 @@ const UserModel = require("../models/user.model");
 
 // Render the login page
 async function getLogin (req, res) {
-    await isAuthenticated(req)
+    await isAuthenticated(req, res)
         ? res.redirect("/dashboard")
         : res.render("pages/login", { title: "Login | URL Shortener" });
 }
 
 // Render the signup page
 async function getSignup (req, res) {
-    await isAuthenticated(req)
+    await isAuthenticated(req, res)
         ? res.redirect("/dashboard")
         : res.render("pages/signup", { title: "Sign Up | URL Shortener" });
 }
 
 // Get the Google auth URL
 async function getGoogleAuth (req, res) {
-    await isAuthenticated(req)
+    await isAuthenticated(req, res)
         ? res.redirect("/dashboard")
         : res.redirect(getGoogleOAuthURL());
 }
@@ -102,7 +102,7 @@ async function googleAuth(req, res) {
                 email: authUser.email,
                 picture: authUser.picture,
                 provider: "google",
-                isEmailVerified: authUser.email_verified,
+                verified: authUser.email_verified,
                 refreshToken: refreshToken,
             });
             await user.save();
