@@ -1,6 +1,6 @@
 const UrlModel = require("../models/url.model");
 const UrlAnalyticsModel = require("../models/urlanalytics.model");
-const { isAuthenticated, checkUserAuth } = require('../middlewares/auth.middleware');
+const { isAuthenticated, validateAuthUser } = require('../middlewares/auth.middleware');
 const { disableCache } = require("../middlewares/cache.middleware");
 const clientRequestInfo = require("../utils/requestInfo.util");
 
@@ -25,7 +25,7 @@ async function createShortenUrl(req, res) {
     if (!url || !/^https?:\/\/.*$/.test(url)) {
         return res.status(400).json({ success: false, message: "Please enter a valid url" });
     }
-    const userId = await isAuthenticated(req) ? req.session.user.uid : null;
+    const userId = await isAuthenticated(req, res) ? req.session.user.userId : null;
 
     try {
         const urlDoc = new UrlModel({
@@ -54,19 +54,16 @@ const getOriginalUrl = [disableCache, async (req, res) => {
             { $inc: { clicks: 1 } }
         );
         const { originalUrl } = urlDoc;
-        if (originalUrl) {
-            await updateUrlAnalytics(req, shortUrlId, originalUrl);
-            res.status(302).redirect(originalUrl);
-        } else {
-            res.render("pages/404", {title: "Page Not Found", error: "Url not found"});
-        }
+        if (!originalUrl)  throw new Error("Url not found");
+        await updateUrlAnalytics(req, shortUrlId, originalUrl);
+        res.status(302).redirect(originalUrl);
     } catch (error) {
         res.render("pages/404", {title: "Page Not Found", error: error.message});
     }
 }];
 
 // Get all shorten urls of user
-const getShortenUrls = [checkUserAuth, (req, res, next) => {
+const getShortenUrls = [validateAuthUser, (req, res, next) => {
     // TODO: Implement get shorten urls of user
 }];
 
