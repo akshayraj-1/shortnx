@@ -12,10 +12,12 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
+        trim: true,
         required: true
     },
     password: {
         type: String,
+        trim: true,
         required: this.provider === "email"
     },
     photoUrl: {
@@ -32,7 +34,7 @@ const userSchema = new mongoose.Schema({
         required: true,
         enum: ["email", "google"],
     },
-    isEmailVerified: {
+    verified: {
         type: Boolean,
         default: false
     },
