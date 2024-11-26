@@ -1,4 +1,7 @@
-<nav class="fixed top-0 z-10 flex justify-between items-center w-full py-6 page-padding bg-colorBackground/90 backdrop-blur-lg select-none">
+<%
+var navBg = navBg || "bg-colorSurface/85";
+%>
+<nav class="fixed top-0 z-10 flex justify-between items-center w-full py-6 page-padding <%= navBg %> backdrop-blur-xl select-none">
     <a href="/"><img class="h-4 md:h-6 object-contain" src="/images/logo.svg" alt="logo"/></a>
     <div class="hidden sm:flex items-center gap-9">
         <%- include("./Button.ejs", {
