@@ -49,16 +49,18 @@ const getOriginalUrl = [disableCache, async (req, res) => {
     const { shortUrlId } = req.params;
 
     try {
-        const urlDoc = await UrlModel.updateOne(
+        const urlDoc = await UrlModel.findOneAndUpdate(
             { shortenUrl: shortUrlId, status: "active" },
             { $inc: { clicks: 1 } }
         );
         const { originalUrl } = urlDoc;
         if (!originalUrl)  throw new Error("Url not found");
         await updateUrlAnalytics(req, shortUrlId, originalUrl);
-        res.status(302).redirect(originalUrl);
+        // TODO: Add meta tags
+        res.render("pages/redirect", { meta: "", title: "URL Shortener", url: originalUrl });
     } catch (error) {
-        res.render("pages/404", {title: "Page Not Found", error: error.message});
+        console.log(error);
+        res.render("pages/404", { title: "Page Not Found", error: error.message });
     }
 }];
 
