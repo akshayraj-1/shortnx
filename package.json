@@ -21,6 +21,7 @@
     "express-session": "^1.18.1",
     "google-auth-library": "^9.15.0",
     "jsonwebtoken": "^9.0.2",
+    "metadata-scraper": "^0.2.61",
     "mongoose": "^8.7.2"
   },
   "devDependencies": {
