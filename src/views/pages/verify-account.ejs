@@ -1,0 +1,23 @@
+<%- layout("layouts/main-layout.ejs") -%>
+
+<section class="relative flex flex-col justify-center items-center page-padding size-full bg-colorBackground">
+    <div>
+        <img src="/images/email.svg" alt="email"/>
+        <h2>Verify you email</h2>
+        <p>We have just sent you an email to your email address <strong><%= user.email %></strong>.
+        Please click on the link in the mail to verify your account.
+        </p>
+        <%- include("../partials/Button.ejs", {
+            btnId: "btnResend",
+            btnClassnames: "w-full",
+            btnChildren: "Resend"
+        }) -%>
+        <%- include("../partials/Button.ejs", {
+            btnType: "link",
+            btnHref: "/dashboard",
+            btnVariant: "tertiary",
+            btnClassnames: "hover:before:w-0",
+            btnChildren: "I've verified my account"
+        }) -%>
+    </div>
+</section>
