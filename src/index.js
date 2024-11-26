@@ -44,8 +44,15 @@ app.set("views", path.join(__dirname, "views"));
 app.get("/", homeController.getHome);
 
 // Other Routes
-app.get("/terms-of-services", (req, res) => res.render("pages/tos",  { title: "Terms of Services" }));
-app.get("/privacy", (req, res) => res.render("pages/privacy", { title: "Privacy Policy" }));
+app.get("/cookies-policy", (req, res) => {
+    res.render("pages/legal/cookies-policy", { title: "Cookie Policy" });
+});
+app.get("/privacy-policy", (req, res) => {
+    res.render("pages/legal/privacy-policy", { title: "Privacy Policy" });
+});
+app.get("/terms-of-services", (req, res) => {
+    res.render("pages/legal/terms-of-services",  { title: "Terms of Services" });
+});
 
 // Auth routes
 // Could have used router for these kind of routes but why bother
