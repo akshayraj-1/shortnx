@@ -1,6 +1,6 @@
-const { checkUserAuth } = require("../middlewares/auth.middleware");
+const { validateAuthUser } = require("../middlewares/auth.middleware");
 
-const getDashboard = [checkUserAuth, (req, res, next) => {
+const getDashboard = [validateAuthUser, (req, res, next) => {
     res.render("pages/dashboard", { title: "Dashboard" });
 }];
 
