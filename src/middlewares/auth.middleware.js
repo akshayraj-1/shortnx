@@ -2,39 +2,50 @@ const { validateAccessToken, decodeToken, getAccessToken } = require("../utils/t
 const logManager = require("../utils/logManager.util");
 const UserModel = require("../models/user.model");
 
-async function isAuthenticated(req) {
+async function isAuthenticated(req, res) {
     const accessToken = req.cookies.access_token || req.session.access_token;
-    if (!accessToken) return false;
     try {
         const payload = await validateAccessToken(accessToken);
-        const user = await UserModel.findOne({ userId: payload.userId });
-        if (!user) return false;
-        req.session.user = { userId: payload.userId };
-        logManager.logInfo("User authenticated:", JSON.stringify(decodeToken(accessToken)));
+        if (!req.session || !req.session.user) {
+            const user = await UserModel.findOne({ userId: payload.userId });
+            if (!user) throw new Error("Could not validate the user");
+            req.session.user = {
+                userId: user.userId,
+                name: user.name,
+                email: user.email,
+                picture: user.picture,
+                verified: user.verified,
+                status: user.status
+            };
+        }
+        logManager.logInfo("Access token validated");
         return true;
     } catch (error) {
-        console.log(error);
-        logManager.logError(error);
         if (error.code === "ACCESS_TOKEN_EXPIRED") {
-            const { userId } = decodeToken(accessToken);
-            const user = await UserModel.findOne({ userId });
+            const payload = decodeToken(accessToken);
+            const user = await UserModel.findOne({ userId: payload.userId });
             if (!user) return false;
-            const refreshToken = user.refreshToken;
-            if (!refreshToken) return false;
-            const newAccessToken = await getAccessToken(refreshToken);
+            const newAccessToken = await getAccessToken(user.refreshToken);
             req.session.access_token = newAccessToken;
-            req.cookies.access_token = newAccessToken;
-            req.session.user = { userId };
-            logManager.logInfo("User re-authenticated:", JSON.stringify(decodeToken(newAccessToken)));
+            res.cookie("access_token", newAccessToken, { httpOnly: true });
+            req.session.user = {
+                userId: user.userId,
+                name: user.name,
+                email: user.email,
+                picture: user.picture,
+            };
+            logManager.logInfo("Access token refreshed");
             return true;
         }
+        req.session?.destroy();
         return false;
     }
 }
 
-async function checkUserAuth(req, res, next) {
-    const isAuth = await isAuthenticated(req);
-    isAuth ? next() : res.redirect("/auth/login");
+async function validateAuthUser(req, res, next) {
+    await isAuthenticated(req, res)
+        ? next()
+        : res.redirect("/auth/login");
 }
 
-module.exports = { isAuthenticated, checkUserAuth };
+module.exports = { isAuthenticated, validateAuthUser };
