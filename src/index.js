@@ -48,13 +48,13 @@ app.get("/", homeController.getHome);
 
 // Other Routes
 app.get("/cookies-policy", (req, res) => {
-    res.render("pages/legal/cookies-policy", { title: "Cookie Policy" });
+    res.render("pages/legal/cookies-policy", { title: "Cookie Policy | Shortn" });
 });
 app.get("/privacy-policy", (req, res) => {
-    res.render("pages/legal/privacy-policy", { title: "Privacy Policy" });
+    res.render("pages/legal/privacy-policy", { title: "Privacy Policy | Shortn" });
 });
 app.get("/terms-of-services", (req, res) => {
-    res.render("pages/legal/terms-of-services",  { title: "Terms of Services" });
+    res.render("pages/legal/terms-of-services",  { title: "Terms of Services | Shortn" });
 });
 
 // Auth routes
