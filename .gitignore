@@ -17,9 +17,17 @@ dist-ssr
 *.js~
 *.ejs~
 *.json~
-
-log.json
-log2.json
+*.md~
+*.png~
+*.jpg~
+*.gif~
+*.jpeg~
+*.svg~
+*.ico~
+*.woff~
+.vercel
+vercel.json
+my-notes.txt
 
 configs
 .env.production
@@ -35,3 +43,4 @@ configs
 *.njsproj
 *.sln
 *.sw?
+
