@@ -30,6 +30,7 @@
 <script>
     window.addEventListener("DOMContentLoaded", () => {
         const cookieConsent = window.localStorage.getItem("cookieConsent") || false;
+        if (cookieConsent) return;
         const cookiePopup = document.getElementById("cookie-popup");
         setTimeout(() => {
             cookiePopup.classList.remove("hidden");
