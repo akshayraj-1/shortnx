@@ -774,10 +774,6 @@ video {
   height: 100%;
 }
 
-.h-4{
-  height: 1rem;
-}
-
 .h-5{
   height: 1.25rem;
 }
@@ -1769,12 +1765,12 @@ html, body{
     display: flex;
   }
 
-  .md\:h-7{
-    height: 1.75rem;
-  }
-
   .md\:h-6{
     height: 1.5rem;
+  }
+
+  .md\:h-7{
+    height: 1.75rem;
   }
 
   .md\:w-fit{
