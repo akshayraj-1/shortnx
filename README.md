@@ -5,6 +5,7 @@
 
 This is a simple URL shortener that allows users to shorten their URLs. It is a simple Node.js project that uses EJS and MongoDB as the database.
 
+**Check out the preview at:** [shortn.fun](https://shortn.fun)
 
 ## Quick Start
 Follow these steps to run the project locally.
