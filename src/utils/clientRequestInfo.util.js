@@ -58,7 +58,7 @@ function getClientDevice(req) {
 }
 
 async function clientRequestInfo(req) {
-    const ip = req.ip === "::1" ? "127.0.0.1" : req.ip;
+    const ip = req.headers['x-forwarded-for']?.split(",")[0] || req.ip;
     const info = await fetch("https://ipinfo.io/" + ip + "/json");
     const data = await info.json();
     const browser = getClientBrowser(req);
