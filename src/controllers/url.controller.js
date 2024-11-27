@@ -2,7 +2,8 @@ const UrlModel = require("../models/url.model");
 const UrlAnalyticsModel = require("../models/urlanalytics.model");
 const { isAuthenticated, validateAuthUser } = require('../middlewares/auth.middleware');
 const { disableCache } = require("../middlewares/cache.middleware");
-const clientRequestInfo = require("../utils/requestInfo.util");
+const clientRequestInfo = require("../utils/clientRequestInfo.util");
+const getMetaData = require("metadata-scraper");
 
 /**
  * @throws { Error } - Can throw error
@@ -47,7 +48,6 @@ async function createShortenUrl(req, res) {
 // Get the original url
 const getOriginalUrl = [disableCache, async (req, res) => {
     const { shortUrlId } = req.params;
-
     try {
         const urlDoc = await UrlModel.findOneAndUpdate(
             { shortenUrl: shortUrlId, status: "active" },
@@ -55,9 +55,9 @@ const getOriginalUrl = [disableCache, async (req, res) => {
         );
         const { originalUrl } = urlDoc;
         if (!originalUrl)  throw new Error("Url not found");
+        const metadata = await getMetaData(originalUrl);
         await updateUrlAnalytics(req, shortUrlId, originalUrl);
-        // TODO: Add meta tags
-        res.render("pages/redirect", { meta: "", title: "URL Shortener", url: originalUrl });
+        res.render("pages/redirect", { meta: metadata, title: "URL Shortener", url: originalUrl });
     } catch (error) {
         console.log(error);
         res.render("pages/404", { title: "Page Not Found", error: error.message });
