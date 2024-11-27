@@ -10,14 +10,14 @@ const UserModel = require("../models/user.model");
 async function getLogin (req, res) {
     await isAuthenticated(req, res)
         ? res.redirect("/dashboard")
-        : res.render("pages/login", { title: "Login | URL Shortener" });
+        : res.render("pages/login", { title: "Login | Shortn" });
 }
 
 // Render the signup page
 async function getSignup (req, res) {
     await isAuthenticated(req, res)
         ? res.redirect("/dashboard")
-        : res.render("pages/signup", { title: "Sign Up | URL Shortener" });
+        : res.render("pages/signup", { title: "Sign Up | Shortn" });
 }
 
 // Get the Google auth URL
