@@ -5,7 +5,7 @@ const { isAuthenticated } = require("../middlewares/auth.middleware");
 async function getHome(req, res) {
     await isAuthenticated(req, res)
         ? res.redirect("/dashboard")
-        : res.render("pages/home", { title: "URL Shortener", navBg: "bg-colorBackground/85" });
+        : res.render("pages/home", { title: "Shortn", navBg: "bg-colorBackground/85" });
 }
 
 module.exports = { getHome };
