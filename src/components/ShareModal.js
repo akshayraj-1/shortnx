@@ -29,7 +29,7 @@ class ShareModal {
                     </button>
                 </div>
                 <div class="relative mt-8 mb-4 px-4 py-2.5 font-medium bg-colorSurfaceSecondary rounded-md ring-1 ring-inset ring-slate-300 overflow-hidden">
-                    <span id="short-url" class="w-full text-xs sm:text-base text-textPrimary overflow-ellipsis overflow-hidden"></span>
+                    <span id="short-url" class="w-full text-sm sm:text-base text-textPrimary overflow-ellipsis overflow-hidden"></span>
                     <i id="modal-share-btn-copy" class="absolute top-0 right-0 flex items-center justify-center h-full px-3 bg-colorPrimary text-white cursor-pointer ri-file-copy-line" title="Copy URL" aria-label="Copy URL"></i>
                 </div>
             </div>
