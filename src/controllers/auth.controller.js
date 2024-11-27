@@ -88,6 +88,9 @@ async function googleAuth(req, res) {
         const existingUser = await UserModel.findOne({ email: authUser.email });
         let refreshToken;
         if (existingUser) {
+            // User already exists but not linked with Google
+            if (existingUser.provider === "email") return res.status(302).redirect("/auth/login");
+            // User already exists and linked with Google
             refreshToken = await getRefreshToken(existingUser.userId);
             await UserModel.updateOne(
                 { email: authUser.email },
