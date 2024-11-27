@@ -31,14 +31,14 @@ async function createShortenUrl(req, res) {
     try {
         const urlDoc = new UrlModel({
             originalUrl: url,
-            shortenUrl: Math.random().toString(36).slice(2, 10),
+            shortenUrl: Math.random().toString(36).slice(2, 8),
             creator: userId
         });
         await urlDoc.save();
         res.status(201).json({
             success: true,
             message: "Url created successfully",
-            data: { originalUrl: url, shortenUrl: req.headers.host + "/" + urlDoc.shortenUrl }
+            data: { originalUrl: url, shortenUrl: process.env.SERVER_BASE_URL + "/" + urlDoc.shortenUrl }
         });
     } catch (error) {
         res.status(500).json({success: false, message: error.message});
