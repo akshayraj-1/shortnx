@@ -1717,10 +1717,6 @@ html, body{
     display: none;
   }
 
-  .sm\:h-6{
-    height: 1.5rem;
-  }
-
   .sm\:w-fit{
     width: -moz-fit-content;
     width: fit-content;
@@ -1775,6 +1771,10 @@ html, body{
 
   .md\:h-7{
     height: 1.75rem;
+  }
+
+  .md\:h-6{
+    height: 1.5rem;
   }
 
   .md\:w-fit{
