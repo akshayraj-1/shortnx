@@ -18,17 +18,17 @@ class ShareModal {
                     <i id="modal-share-btn-close" class="text-xl text-textSecondary cursor-pointer ri-close-line"></i>
                 </div>
                 <div class="flex items-center justify-evenly mt-8 gap-3">
-                    <button id="modal-share-btn-whatsapp" class="p-5 rounded-full ring-1 ring-inset ring-colorBorder cursor-pointer size-[4.5rem]" title="Share on WhatsApp">
+                    <button id="modal-share-btn-whatsapp" class="p-5 rounded-full ring-1 ring-inset ring-slate-300 cursor-pointer size-[4.5rem]" title="Share on WhatsApp">
                         <img src="/images/whatsapp.svg" alt="Share on WhatsApp">
                     </button>
-                    <button id="modal-share-btn-twitter" class="p-5 rounded-full ring-1 ring-colorBorder cursor-pointer size-[4.5rem]" title="Share on X">
+                    <button id="modal-share-btn-twitter" class="p-5 rounded-full ring-1 ring-slate-300 cursor-pointer size-[4.5rem]" title="Share on X">
                         <img src="/images/twitter-alt.svg" alt="Share on Twitter">
                     </button>
-                    <button id="modal-share-btn-email" class="p-5 rounded-full ring-1 ring-inset ring-colorBorder cursor-pointer size-[4.5rem]" title="Share via Email">
+                    <button id="modal-share-btn-email" class="p-5 rounded-full ring-1 ring-inset ring-slate-300 cursor-pointer size-[4.5rem]" title="Share via Email">
                         <img src="/images/envelope.svg" alt="Share via Email">
                     </button>
                 </div>
-                <div class="relative mt-8 mb-4 px-4 py-2.5 font-medium bg-colorSurfaceSecondary rounded-md ring-1 ring-inset ring-colorBorder overflow-hidden">
+                <div class="relative mt-8 mb-4 px-4 py-2.5 font-medium bg-colorSurfaceSecondary rounded-md ring-1 ring-inset ring-slate-300 overflow-hidden">
                     <span id="short-url" class="w-full text-xs sm:text-base text-textPrimary overflow-ellipsis overflow-hidden"></span>
                     <i id="modal-share-btn-copy" class="absolute top-0 right-0 flex items-center justify-center h-full px-3 bg-colorPrimary text-white cursor-pointer ri-file-copy-line" title="Copy URL" aria-label="Copy URL"></i>
                 </div>

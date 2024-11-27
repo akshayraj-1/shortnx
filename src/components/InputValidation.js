@@ -49,13 +49,13 @@ class InputValidation {
             // Remove error
             if (error) {
                 input.classList.remove("ring-1", "ring-red-400");
-                input.classList.add("focus:ring-1", "focus:ring-colorBorder");
+                input.classList.add("focus:ring-1", "focus:ring-slate-300");
                 error.remove();
             }
             return;
         }
         // Add error
-        input.classList.remove("focus:ring-1", "focus:ring-colorBorder");
+        input.classList.remove("focus:ring-1", "focus:ring-slate-300");
         input.classList.add("ring-1", "ring-red-400");
         input.focus();
         if (error) {
