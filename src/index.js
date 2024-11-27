@@ -1,6 +1,7 @@
 // Importing modules
 const express = require("express");
 const mongoose = require("mongoose");
+const MongoStore = require("connect-mongo");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const path = require("path");
@@ -29,10 +30,12 @@ app.use(session({
     resave: false,
     saveUninitialized: true, // true -> session will be created even if there is no data being stored
     secret: process.env.SESSION_SECRET,
-    cookie: {
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: 1000 * 60 * 60 * 24
-    }
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGO_URI,
+        dbName: "url-shortener",
+        crypto: { secret: process.env.SESSION_SECRET }
+    }),
+    cookie: { secure: process.env.NODE_ENV === 'production' }
 }));
 
 // EJS/View Engine Setup
@@ -79,7 +82,7 @@ app.use((req, res) => {
 
 // Connect to database
 console.warn("Connecting to database...");
-mongoose.connect(process.env.MONGO_URI, { dbName: "url-shortener" }).then(_ => {
+mongoose.connect(process.env.MONGO_URI, { dbName: "url-shortener", serverSelectionTimeoutMS: 5000 }).then(_ => {
     console.info("Connected to database!");
     app.listen(process.env.PORT, () => {
         console.info(`Server running on port: ${process.env.PORT}`);
