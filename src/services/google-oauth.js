@@ -1,11 +1,10 @@
 const { OAuth2Client } = require("google-auth-library");
-const querystring = require("querystring");
 
 function getOAuthClientInstance() {
     return new OAuth2Client({
         clientId: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        redirectUri: `${process.env.SERVER_BASE_URL}:${process.env.PORT}/api/auth/google/callback`
+        redirectUri: `${process.env.SERVER_BASE_URL}/api/auth/google/callback`
     });
 }
 
