@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,6 +8,7 @@
     src: url('/fonts/gelica-black.woff2') format('woff2');
     font-weight: 900;
     font-style: normal;
+    font-display: swap;
 }
 
 * {
@@ -20,7 +21,7 @@ html, body {
     @apply
     flex flex-col
     w-full h-full
-    font-space-grotesk
+    font-poppins
     text-textPrimary
     bg-colorBackground;
 }
@@ -35,9 +36,9 @@ html, body {
 }
 ::-webkit-scrollbar-thumb {
     @apply
-    bg-textSecondary/40
+    bg-textSecondary/20
     rounded-full
-    hover:bg-textSecondary/50;
+    hover:bg-textSecondary/40;
 }
 
 .page-padding {
@@ -50,11 +51,11 @@ html, body {
 .bg-gradient-blur {
     @apply
     before:absolute
-    before:right-0 before:top-0 before:bottom-6 before:-z-[1]
+    before:right-0 before:bottom-6 before:-z-[1]
     before:size-full
     before:bg-[url('/images/blur.jpg')]
     before:bg-no-repeat before:bg-right-bottom before:bg-contain
-    before:opacity-5 before:blur-2xl;
+    before:opacity-[0.08] before:blur-2xl;
 }
 
 .modal-backdrop {
@@ -101,5 +102,21 @@ html, body {
 .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
+}
+
+.gsap-fade-in-up {
+    @apply opacity-0 translate-y-5;
+}
+
+.gsap-fade-in-left {
+    @apply opacity-0 -translate-x-5;
+}
+
+.gsap-fade-in-right {
+    @apply opacity-0 translate-x-5;
+}
+
+.gsap-fade-in-down {
+    @apply opacity-0 -translate-y-5;
 }
 
