@@ -684,10 +684,6 @@ video {
   margin-inline-start: 0.75rem;
 }
 
-.mt-1\.5{
-  margin-top: 0.375rem;
-}
-
 .mt-10{
   margin-top: 2.5rem;
 }
@@ -845,10 +841,6 @@ video {
 
 .max-w-md{
   max-width: 28rem;
-}
-
-.max-w-screen-md{
-  max-width: 768px;
 }
 
 .max-w-sm{
@@ -1367,8 +1359,8 @@ video {
   font-size: 14px;
 }
 
-.text-\[40px\]{
-  font-size: 40px;
+.text-\[35px\]{
+  font-size: 35px;
 }
 
 .text-\[50px\]{
@@ -1395,10 +1387,6 @@ video {
   line-height: 1.75rem;
 }
 
-.text-\[35px\]{
-  font-size: 35px;
-}
-
 .font-bold{
   font-weight: 700;
 }
@@ -1419,36 +1407,48 @@ video {
   text-transform: lowercase;
 }
 
-.leading-none{
-  line-height: 1;
-}
-
-.leading-3{
-  line-height: .75rem;
-}
-
 .leading-\[110\%\]{
   line-height: 110%;
 }
 
-.leading-\[102\%\]{
-  line-height: 102%;
+.leading-none{
+  line-height: 1;
 }
 
-.leading-\[105\%\]{
-  line-height: 105%;
+.leading-\[111\%\]{
+  line-height: 111%;
 }
 
-.leading-\[106\%\]{
-  line-height: 106%;
+.leading-\[112\%\]{
+  line-height: 112%;
 }
 
-.leading-\[107\%\]{
-  line-height: 107%;
+.leading-\[120\%\]{
+  line-height: 120%;
 }
 
-.leading-\[108\%\]{
-  line-height: 108%;
+.leading-9{
+  line-height: 2.25rem;
+}
+
+.leading-10{
+  line-height: 2.5rem;
+}
+
+.leading-\[3\]{
+  line-height: 3;
+}
+
+.leading-\[2\]{
+  line-height: 2;
+}
+
+.leading-\[1\.5\]{
+  line-height: 1.5;
+}
+
+.leading-\[1\.4\]{
+  line-height: 1.4;
 }
 
 .tracking-wider{
@@ -1510,12 +1510,6 @@ video {
 .shadow-card{
   --tw-shadow: rgba(149, 157, 165, 0.07) 0px 8px 24px;;
   --tw-shadow-colored: 0px 8px 24px; var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-
-.shadow-card-soft{
-  --tw-shadow: rgba(149, 157, 165, 0.03) 0px 5px 25px;;
-  --tw-shadow-colored: 0px 5px 25px; var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
@@ -1911,10 +1905,6 @@ html, body{
     width: fit-content;
   }
 
-  .sm\:grid-cols-2{
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .sm\:flex-row{
     flex-direction: row;
   }
@@ -2016,10 +2006,6 @@ html, body{
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .md\:grid-cols-3{
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
   .md\:place-self-end{
     place-self: end;
   }
@@ -2052,24 +2038,12 @@ html, body{
     padding-top: 6.3rem;
   }
 
-  .md\:text-\[3\.5rem\]{
-    font-size: 3.5rem;
-  }
-
-  .md\:text-\[5\.1rem\]{
-    font-size: 5.1rem;
-  }
-
-  .md\:text-\[5rem\]{
-    font-size: 5rem;
+  .md\:text-\[3\.4rem\]{
+    font-size: 3.4rem;
   }
 
   .md\:text-\[4\.5rem\]{
     font-size: 4.5rem;
-  }
-
-  .md\:text-\[3\.4rem\]{
-    font-size: 3.4rem;
   }
 }
 
