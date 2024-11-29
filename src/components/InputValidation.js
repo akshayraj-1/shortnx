@@ -48,7 +48,7 @@ class InputValidation {
         if (!message) {
             // Remove error
             if (error) {
-                input.classList.remove("ring-1", "ring-red-400");
+                input.classList.remove("ring-1", "ring-red-500");
                 input.classList.add("focus:ring-1", "focus:ring-slate-300");
                 error.remove();
             }
@@ -56,13 +56,13 @@ class InputValidation {
         }
         // Add error
         input.classList.remove("focus:ring-1", "focus:ring-slate-300");
-        input.classList.add("ring-1", "ring-red-400");
+        input.classList.add("ring-1", "ring-red-500");
         input.focus();
         if (error) {
             error.textContent = message;
         } else {
             error = document.createElement("span");
-            error.className = "error-label text-[0.8rem] text-red-400";
+            error.className = "error-label text-[0.8rem] text-red-500";
             error.textContent = message;
             input.insertAdjacentElement("afterend", error);
         }
