@@ -18,8 +18,8 @@ module.exports = {
         "card-soft": "rgba(149, 157, 165, 0.03) 0px 5px 25px;",
       },
       fontFamily: {
-        "space-grotesk": "Space Grotesk, sans-serif",
-        "gelica-black": "Gelica Black, sans-serif",
+        "gelica-black": ["Gelica Black, sans-serif"],
+        poppins: ["Poppins", "sans-serif"],
       },
       keyframes: {
         fadeIn: {
