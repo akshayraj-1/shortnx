@@ -4,21 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <%- block("head").toString() %>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="/images/login.png" as="image">
+    <link rel="preload" href="/images/login_1.png" as="image">
     <link rel="stylesheet" href="/css/output.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet"/>
     <title><%= title || "Shortn - URL Shortener" %></title>
 </head>
-<body>
-<div class="relative flex flex-col w-full bg-colorSurface overflow-hidden">
-    <div class="relative flex size-full overflow-hidden">
-        <div class="hidden md:flex flex-1 h-screen bg-cover bg-center bg-no-repeat overflow-hidden" style="background-image: url('/images/login.png')">
-            <img class="p-12 size-full object-contain" draggable="false" src="/images/login_1.png" alt="image">
-        </div>
-        <div class="relative flex-1 px-6 md:px-9 overflow-y-scroll no-scrollbar">
-            <%- body -%>
-        </div>
-    </div>
+<body class="relative flex flex-row size-full overflow-hidden">
+<div class="hidden md:flex flex-1 h-screen bg-cover bg-center bg-no-repeat overflow-hidden" style="background-image: url('/images/login.png')">
+    <img class="p-12 size-full object-contain" draggable="false" src="/images/login_1.png" alt="image">
 </div>
+<div class="relative flex-1 px-6 md:px-9 overflow-y-scroll">
+    <%- body -%>
+</div>
+
 <script src="/Toast.js"></script>
 <script src="/LoadingModal.js"></script>
 <script src="/InputValidation.js"></script>
