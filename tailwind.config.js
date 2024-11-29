@@ -6,18 +6,16 @@ module.exports = {
       colors: {
         colorPrimary: "#6139ff",
         colorPrimaryDark: "#5130d9",
-        colorAccent: "#8566ff",
-        colorBackground: "#f8f9fa",
+        colorAccent: "#8f7cf5",
+        colorBackground: "#ffffff",
         colorSurface: "#ffffff", // Card, Modals background
-        colorSurfaceSecondary: "#fafbfc", // Textbox background
+        colorSurfaceSecondary: "#f9fafb", // Textbox background
         textPrimary: "#2f2e41",
-        textSecondary: "#878899",
+        textSecondary: "rgba(46,45,64,0.7)",
       },
       boxShadow: {
-        toastShadow: "0 4px 6px -4px rgba(218,218,218,0.1);",
-      },
-      backgroundImage: {
-        gradientBlur: "url('/images/blur.jpg')",
+        card: "rgba(149, 157, 165, 0.07) 0px 8px 24px;",
+        "card-soft": "rgba(149, 157, 165, 0.03) 0px 5px 25px;",
       },
       fontFamily: {
         "space-grotesk": "Space Grotesk, sans-serif",
