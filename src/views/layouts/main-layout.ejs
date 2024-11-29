@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%- block("head").toString() %>
+    <title><%= title || "Shortn - URL Shortener" %></title>
+</head>
+<body>
+
+<!--<%- include("../partials/Navbar2.ejs") %>-->
+<div class="relative flex flex-col w-full">
+    <%- body -%>
+</div>
+
+<script src="/ShareModal.js"></script>
+<script src='/Toast.js'></script>
+<%- block("scripts").toString() %>
+</body>
+</html>
