@@ -47,14 +47,24 @@ html, body {
     lg:px-36;
 }
 
-.gradient-blur-bg {
+.bg-gradient-blur {
     @apply
     before:absolute
-    before:left-0 before:top-0 before:-z-[1]
+    before:right-0 before:top-0 before:bottom-6 before:-z-[1]
     before:size-full
-    before:bg-gradientBlur
+    before:bg-[url('/images/blur.jpg')]
+    before:bg-no-repeat before:bg-right-bottom before:bg-contain
+    before:opacity-[0.03] before:blur-2xl;
+}
+
+.bg-gradient-blur-top {
+    @apply
+    before:absolute
+    before:right-0 before:top-0 before:z-[1]
+    before:size-full
+    before:bg-[url('/images/blur_top.png')]
     before:bg-no-repeat before:bg-center before:bg-cover
-    before:opacity-30 before:blur-2xl;
+    before:opacity-40 before:blur-2xl;
 }
 
 .modal-backdrop {
