@@ -1,17 +1,17 @@
 <%- layout("layouts/main-layout") -%>
 
 <%# Hero %>
-<section class="relative flex z-[1] items-center gap-12 py-40 page-padding gradient-blur-bg">
+<section class="relative flex z-[1] items-center gap-12 py-32 page-padding min-h-screen bg-gradient-blur">
     <div class="flex flex-[1.2] flex-col items-start justify-center gap-5 h-full w-full">
         <span class="px-5 py-2.5 text-sm sm:text-base text-colorPrimary bg-colorPrimary/5 rounded-full">Let's make with simply one click 👈</span>
         <h1 class="relative text-[50px] md:text-[5.1rem] font-gelica-black font-bold leading-none">
             Shorten urls made easy
         </h1>
-        <p class="mt-2 text-base text-textSecondary">
-            Shorten, personalize and optimize your links to boost<br>your online presence and grow your business.
+        <p class="mt-2 max-w-md text-base text-textPrimary/80">
+            Shorten, personalize and optimize your links to boost your online presence and grow your business.
         </p>
-        <div class="flex items-center gap-2 p-2 mt-3.5 bg-colorSurface rounded-full shadow-toastShadow w-full max-w-[450px] sm:p-2.5">
-            <img class="ms-3 me-2 size-[1.1rem] object-contain -rotate-45 select-none" src="/images/link-horizontal.svg" alt="link" draggable="false">
+        <div class="flex items-center gap-2 p-2 mt-3.5 sm:p-2.5 w-full max-w-[450px] shadow-card rounded-full border border-slate-100">
+            <img class="ms-3 me-2 size-[1.1rem] object-contain -rotate-45 select-none" src="/images/link_horizontal.svg" alt="link" draggable="false">
             <input id="input-url" class="w-full text-[0.9rem] sm:text-base outline-none border-none" type="text" placeholder="Paste a link to shorten it">
             <button id="btn-shorten" class="p-2.5 bg-colorPrimary text-white rounded-full disabled:pointer-events-none">
                 <svg aria-label="spinner" role="status" class="hidden size-6 p-0.5 animate-spin" viewBox="0 0 100 101" width="20px" height="20px" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -26,17 +26,50 @@
     </div>
 
     <div class="hidden flex-1 lg:flex items-center justify-center w-full overflow-hidden">
-        <img class="w-full h-full object-contain select-none -scale-x-100" src="/images/hero2.svg" alt="hero" draggable="false">
+        <img class="w-full object-contain select-none" src="/images/hero2.svg" alt="hero" draggable="false">
     </div>
 </section>
 
 <%# Feature %>
-<section class="relative flex flex-col items-center page-padding min-h-screen size-full bg-colorSurface/70">
-    <span class="self-start sm:self-center px-5 py-1 mt-16 text-[15px] text-colorPrimary uppercase font-sans font-medium border border-colorPrimary/50 rounded-full">Benefits</span>
-    <h2 class="mt-6 w-full text-[40px] md:text-[3.5rem] font-gelica-black font-bold leading-none text-start sm:text-center">More than a link shortener</h2>
-    <p class="mt-5 w-full max-w-[700px] text-base text-textSecondary text-start sm:text-center">Effortlessly Track, Analyze, and Optimize Every Connection in One Place.</p>
-    <div>
+<section class="relative flex flex-col sm:px-16 md:px-24 size-full" >
+    <div class="relative flex flex-col items-center pt-16 pb-20 px-6 sm:px-14 md:px-20 bg-colorSurfaceSecondary rounded-2xl sm:rounded-3xl">
+        <span class="absolute -top-3 left-1/2 -translate-x-1/2 px-5 py-1 text-[14px] text-colorPrimary uppercase font-sans font-medium tracking-wider bg-colorBackground border border-colorBackground rounded-full">Features</span>
+        <h2 class="mt-3 w-full text-[40px] md:text-[3.5rem] font-gelica-black font-bold leading-none text-center">More than a link shortener</h2>
+        <p class="mt-5 w-full max-w-[700px] text-base text-center text-textPrimary/80">Effortlessly Create, Track, Analyze, and Optimize Every Connection in One Place.</p>
+        <div class="grid grid-col-1 sm:grid-cols-2 md:grid-cols-3 gap-x-10 gap-y-8 place-items-center mt-20 w-full">
+            <%- include("../partials/FeatureCard.ejs", {
+            cardIcon: "/images/feature_1.svg",
+            cardTitle: "Create",
+            cardDescription: "Create and manage your links with ease. Make it simple and effective."
+            }) -%>
+            <%- include("../partials/FeatureCard.ejs", {
+            cardIcon: "/images/feature_2.svg",
+            cardTitle: "Track",
+            cardDescription: "Track and analyze your links in real-time. Get insights and make informed decisions."
+            }) -%>
+            <%- include("../partials/FeatureCard.ejs", {
+            cardIcon: "/images/feature_3.svg",
+            cardTitle: "Share",
+            cardDescription: "Share your links on popular platforms. Connect with your audience."
+            }) -%>
+        </div>
+    </div>
+</section>
 
+<%# CTA %>
+<section class="flex justify-center py-24 page-padding w-full">
+    <div class="flex flex-col sm:flex-row justify-center items-center gap-x-10 gap-y-6 px-8 sm:px-12 py-14 sm:py-16 text-white w-full max-w-screen-md bg-[#0a1129] rounded-3xl shadow-black/10 shadow-sm">
+       <div class="flex-1 flex-col items-center justify-center sm:justify-start">
+           <h2 class="text-2xl sm:text-3xl text-center sm:text-start font-semibold">Get started with Shortn.</h2>
+           <p class="mt-2.5 text-[0.9rem] text-center sm:text-start text-white/80">Boost your online presence and grow your business with our easy-to-use link shortener.</p>
+       </div>
+        <%- include("../partials/Button.ejs", {
+            btnType: "link",
+            btnVariant: "primary",
+            btnClassnames: "min-w-36 w-full sm:w-auto",
+            btnChildren: "Sign Up",
+            btnHref: "/auth/signup"
+        }) -%>
     </div>
 </section>
 <%- include("../partials/CookieConsent.ejs") %>
