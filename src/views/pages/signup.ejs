@@ -25,7 +25,7 @@
                required/>
     </div>
     <span class="mt-3.5 text-sm text-textSecondary">
-        By signing up, you agree to our <a class="underline hover:text-colorPrimary" href="/terms-of-services">terms of services</a> and <a class="underline hover:text-colorPrimary" href="/privacy">privacy policy</a>
+        By signing up, you agree to our <a class="text-textPrimary hover:text-colorPrimary" href="/terms-of-services">terms of services</a> and <a class="text-textPrimary hover:text-colorPrimary" href="/privacy-policy">privacy policy</a>
     </span>
     <%- include('../partials/Button.ejs', {
         btnId: "btnSignUp",
@@ -67,6 +67,8 @@
         }
     }));
 
+    password.addEventListener("keypress", (e) => e.key === "Enter" && btnSignUp.click());
+
     btnSignUp.addEventListener("click", async () => {
 
         if (!InputValidation.validateName(name) ||
@@ -103,7 +105,7 @@
             }
 
         } catch (error) {
-            toast.showToast("Something went wrong", toast.types.error);
+            toast.showToast("Something went wrong", toast.types.error || error.message);
         } finally {
             loadingModal.hide();
         }
