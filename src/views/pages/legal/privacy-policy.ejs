@@ -1,8 +1,89 @@
 <%- layout("layouts/main-layout") -%>
 
 <%# Privacy Policy %>
-<section class="flex flex-col items-start py-32 page-padding min-h-screen bg-colorSurface">
-    <h1 id="#privacy-policy" class="text-3xl sm:text-4xl font-semibold">Privacy Policy</h1>
-    <span class="flex gap-1 mt-2.5 font-medium"><i class="ri-calendar-line"></i>Effective 26th Nov, 2024</span>
-<!--    TODO: Add Privacy Policy-->
+<section class="flex flex-col size-full text-base">
+    <div class="pt-32 pb-14 page-padding w-full bg-colorBackground">
+        <h1 id="#cookies-policy" class="text-3xl sm:text-4xl font-semibold">Privacy Policy</h1>
+        <span class="flex gap-1 mt-3 font-medium"><i class="ri-calendar-line"></i>Effective 26th Nov, 2024</span>
+    </div>
+    <div class="flex flex-col items-start pt-4 pb-28 page-padding">
+        <p class="mt-7">
+            This Privacy Policy explains how Shortn - URL Shortener collects, uses, and protects your personal information.
+            Shortn is committed to safeguarding your privacy and ensuring that your personal data is handled securely and responsibly.
+        </p>
+        <h2 id="information-we-collect" class="mt-6 text-xl sm:text-2xl font-semibold">Information We Collect</h2>
+        <p class="mt-1.5">We may collect the following types of information:</p>
+        <ul class="flex flex-col gap-2 mt-2 list-disc list-inside pl-4">
+            <li>
+                <strong>Personal Information</strong>
+                <p class="mt-1.5 pl-5">
+                    Information you provide directly to us, such as your name, email address, and account details when you sign up or contact us.
+                </p>
+            </li>
+            <li>
+                <strong>Usage Data</strong>
+                <p class="mt-1.5 pl-5">
+                    Information about how you interact with our website, including pages visited, links clicked, and other actions taken while using our services.
+                </p>
+            </li>
+            <li>
+                <strong>Device Information</strong>
+                <p class="mt-1.5 pl-5">
+                    Technical information about the device you use to access our website, such as IP address, browser type, and operating system.
+                </p>
+            </li>
+        </ul>
+        <h2 id="how-we-use-information" class="mt-6 text-xl sm:text-2xl font-semibold">How We Use Your Information</h2>
+        <p class="mt-1.5">We use your information to:</p>
+        <ul class="flex flex-col gap-2 mt-1.5 list-disc list-inside pl-4">
+            <li>Provide and improve our services.</li>
+            <li>Authenticate users and ensure secure access to accounts.</li>
+            <li>Analyze website usage to improve functionality and performance.</li>
+            <li>Respond to your inquiries and provide customer support.</li>
+            <li>Comply with legal obligations and enforce our terms of use.</li>
+        </ul>
+        <h2 id="sharing-information" class="mt-6 text-xl sm:text-2xl font-semibold">Sharing Your Information</h2>
+        <p class="mt-1.5">
+            We do not sell or rent your personal information. However, we may share your data with trusted third parties in the following circumstances:
+        </p>
+        <ul class="flex flex-col gap-2 mt-1.5 list-disc list-inside pl-4">
+            <li>
+                With service providers who assist us in operating our website or delivering our services, under strict confidentiality agreements.
+            </li>
+            <li>
+                When required by law or to protect our legal rights.
+            </li>
+            <li>
+                With your consent, or as otherwise disclosed at the time of data collection.
+            </li>
+        </ul>
+        <h2 id="data-security" class="mt-6 text-xl sm:text-2xl font-semibold">How We Protect Your Data</h2>
+        <p class="mt-1.5">
+            We implement appropriate technical and organizational measures to protect your personal data from unauthorized access, loss, or misuse. However, please note that no method of transmission over the Internet or electronic storage is completely secure.
+        </p>
+        <h2 id="your-rights" class="mt-6 text-xl sm:text-2xl font-semibold">Your Rights</h2>
+        <p class="mt-1.5">Depending on your location, you may have the following rights regarding your personal data:</p>
+        <ul class="flex flex-col gap-2 mt-1.5 list-disc list-inside pl-4">
+            <li>Access and obtain a copy of your personal data.</li>
+            <li>Request correction or deletion of inaccurate or outdated data.</li>
+            <li>Restrict or object to the processing of your data.</li>
+            <li>Withdraw consent for data processing where applicable.</li>
+        </ul>
+        <p>To exercise these rights, please contact us using the information provided below.</p>
+        <h2 id="changes" class="mt-6 text-xl sm:text-2xl font-semibold">Changes to This Privacy Policy</h2>
+        <p class="mt-1.5">
+            We may update this Privacy Policy from time to time to reflect changes in our practices or for other operational, legal, or regulatory reasons. We encourage you to review this policy periodically.
+        </p>
+        <h2 id="contact" class="mt-6 text-xl sm:text-2xl font-semibold">Contact Us</h2>
+        <p class="mt-1.5">
+            If you have questions about this Privacy Policy or your personal data, please contact us at:
+            <%- include('../../partials/Button.ejs', {
+            btnType: "link",
+            btnHref: "mailto:support@urlshortener.com",
+            btnVariant: "tertiary",
+            btnClassnames: "text-[0.9rem]",
+            btnChildren: "support@urlshortener.com"
+            }) -%>
+        </p>
+    </div>
 </section>
