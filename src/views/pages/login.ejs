@@ -64,6 +64,8 @@
         }
     }));
 
+    password.addEventListener("keypress", (e) => e.key === "Enter" && btnLogin.click());
+
     btnLogin.addEventListener("click", async () => {
 
         if (!InputValidation.validateEmail(email) ||
