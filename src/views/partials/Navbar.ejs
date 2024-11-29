@@ -1,7 +1,7 @@
 <%
 var navBg = navBg || "bg-colorBackground/80";
 %>
-<nav class="fixed top-0 z-10 flex justify-between items-center w-full py-5 page-padding <%= navBg %> backdrop-blur-xl select-none">
+<nav class="gsap-fade-in-down fixed top-0 z-10 flex justify-between items-center w-full py-5 page-padding <%= navBg %> backdrop-blur-xl select-none">
     <a href="/"><img class="h-6 md:h-7 object-contain" src="/images/logo.svg" alt="logo"/></a>
     <div class="hidden sm:flex items-center gap-9">
         <%- include("./Button.ejs", {
@@ -19,3 +19,14 @@ var navBg = navBg || "bg-colorBackground/80";
     </div>
     <button class="sm:hidden ri-menu-line text-[1.3rem] cursor-pointer" id="btn-menu"></button>
 </nav>
+
+<%- block("scripts").append(`
+<script>
+    gsap.to("nav", {
+        opacity: 1,
+        y: 0,
+        duration: 0.5,
+        ease: "easeInOut"
+    });
+</script>
+`) -%>
