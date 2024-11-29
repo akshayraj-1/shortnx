@@ -22,7 +22,7 @@ class ShareModal {
                         <img src="/images/whatsapp.svg" alt="Share on WhatsApp">
                     </button>
                     <button id="modal-share-btn-twitter" class="p-5 rounded-full ring-1 ring-slate-300 cursor-pointer size-[4.5rem]" title="Share on X">
-                        <img src="/images/twitter-alt.svg" alt="Share on Twitter">
+                        <img src="/images/twitter_alt.svg" alt="Share on Twitter">
                     </button>
                     <button id="modal-share-btn-email" class="p-5 rounded-full ring-1 ring-inset ring-slate-300 cursor-pointer size-[4.5rem]" title="Share via Email">
                         <img src="/images/envelope.svg" alt="Share via Email">
