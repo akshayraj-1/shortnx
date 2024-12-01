@@ -9,7 +9,7 @@ module.exports = {
         colorAccent: "#8f7cf5",
         colorBackground: "#ffffff",
         colorSurface: "#ffffff", // Card, Modals background
-        colorSurfaceSecondary: "#f9fafb", // Textbox background
+        colorSurfaceSecondary: "#f5f8fa",
         textPrimary: "#2f2e41",
         textSecondary: "rgba(46,45,64,0.7)",
       },
