@@ -48,6 +48,16 @@ html, body {
     lg:px-36;
 }
 
+.page-grid-2_1 {
+    @apply
+    grid grid-cols-1
+    md:grid-cols-2
+    gap-12
+    place-items-center
+    px-6 sm:px-10 md:px-20 lg:px-36
+    size-full;
+}
+
 .bg-gradient-blur {
     @apply
     before:absolute
@@ -55,7 +65,17 @@ html, body {
     before:size-full
     before:bg-[url('/images/blur.jpg')]
     before:bg-no-repeat before:bg-right-bottom before:bg-contain
-    before:opacity-[0.08] before:blur-2xl;
+    before:opacity-[0.06] before:blur-2xl;
+}
+
+.bg-gradient-blur-reverse {
+    @apply
+    before:absolute
+    before:left-0 before:top-6 before:-z-[1]
+    before:size-full
+    before:bg-[url('/images/blur_reverse.jpg')]
+    before:bg-no-repeat before:bg-left-top before:bg-contain
+    before:opacity-[0.06] before:blur-2xl;
 }
 
 .modal-backdrop {
