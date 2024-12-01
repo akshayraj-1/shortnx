@@ -590,6 +590,10 @@ video {
   }
 }
 
+.visible{
+  visibility: visible;
+}
+
 .static{
   position: static;
 }
@@ -652,6 +656,14 @@ video {
 
 .z-\[51\]{
   z-index: 51;
+}
+
+.order-2{
+  order: 2;
+}
+
+.order-1{
+  order: 1;
 }
 
 .mx-auto{
@@ -831,6 +843,10 @@ video {
   max-width: 490px;
 }
 
+.max-w-\[510px\]{
+  max-width: 510px;
+}
+
 .max-w-\[700px\]{
   max-width: 700px;
 }
@@ -993,10 +1009,6 @@ video {
   gap: 0.25rem;
 }
 
-.gap-12{
-  gap: 3rem;
-}
-
 .gap-2{
   gap: 0.5rem;
 }
@@ -1153,7 +1165,7 @@ video {
 
 .bg-colorSurfaceSecondary{
   --tw-bg-opacity: 1;
-  background-color: rgb(249 250 251 / var(--tw-bg-opacity));
+  background-color: rgb(245 248 250 / var(--tw-bg-opacity));
 }
 
 .bg-cover{
@@ -1313,16 +1325,20 @@ video {
   padding-top: 8rem;
 }
 
+.pt-36{
+  padding-top: 9rem;
+}
+
 .pt-4{
   padding-top: 1rem;
 }
 
-.pt-8{
-  padding-top: 2rem;
+.pt-5{
+  padding-top: 1.25rem;
 }
 
-.pt-36{
-  padding-top: 9rem;
+.pt-8{
+  padding-top: 2rem;
 }
 
 .text-center{
@@ -1331,10 +1347,6 @@ video {
 
 .font-gelica-black{
   font-family: Gelica Black, sans-serif;
-}
-
-.font-sans{
-  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 .text-2xl{
@@ -1411,48 +1423,12 @@ video {
   text-transform: lowercase;
 }
 
-.leading-\[110\%\]{
-  line-height: 110%;
+.leading-\[1\.2\]{
+  line-height: 1.2;
 }
 
 .leading-none{
   line-height: 1;
-}
-
-.leading-\[111\%\]{
-  line-height: 111%;
-}
-
-.leading-\[112\%\]{
-  line-height: 112%;
-}
-
-.leading-\[120\%\]{
-  line-height: 120%;
-}
-
-.leading-9{
-  line-height: 2.25rem;
-}
-
-.leading-10{
-  line-height: 2.5rem;
-}
-
-.leading-\[3\]{
-  line-height: 3;
-}
-
-.leading-\[2\]{
-  line-height: 2;
-}
-
-.leading-\[1\.5\]{
-  line-height: 1.5;
-}
-
-.leading-\[1\.4\]{
-  line-height: 1.4;
 }
 
 .tracking-wider{
@@ -1656,6 +1632,39 @@ html, body{
   }
 }
 
+.page-grid-2_1{
+  display: grid;
+  width: 100%;
+  height: 100%;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  place-items: center;
+  gap: 3rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+@media (min-width: 640px){
+  .page-grid-2_1{
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+@media (min-width: 768px){
+  .page-grid-2_1{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+}
+
+@media (min-width: 1024px){
+  .page-grid-2_1{
+    padding-left: 9rem;
+    padding-right: 9rem;
+  }
+}
+
 .bg-gradient-blur::before{
   position: absolute;
   right: 0px;
@@ -1667,7 +1676,24 @@ html, body{
   background-size: contain;
   background-position: right bottom;
   background-repeat: no-repeat;
-  opacity: 0.08;
+  opacity: 0.06;
+  content: var(--tw-content);
+  --tw-blur: blur(40px);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+.bg-gradient-blur-reverse::before{
+  position: absolute;
+  left: 0px;
+  top: 1.5rem;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  background-image: url('/images/blur_reverse.jpg');
+  background-size: contain;
+  background-position: left top;
+  background-repeat: no-repeat;
+  opacity: 0.06;
   content: var(--tw-content);
   --tw-blur: blur(40px);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
@@ -1772,6 +1798,17 @@ html, body{
   --tw-translate-y: -1.25rem;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
   opacity: 0;
+}
+
+.placeholder\:select-none::-moz-placeholder{
+  -moz-user-select: none;
+       user-select: none;
+}
+
+.placeholder\:select-none::placeholder{
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
 }
 
 .placeholder\:text-\[0\.9rem\]::-moz-placeholder{
@@ -1892,6 +1929,14 @@ html, body{
     right: 0px;
   }
 
+  .sm\:order-1{
+    order: 1;
+  }
+
+  .sm\:order-2{
+    order: 2;
+  }
+
   .sm\:flex{
     display: flex;
   }
@@ -1989,6 +2034,14 @@ html, body{
     bottom: 2.25rem;
   }
 
+  .md\:order-1{
+    order: 1;
+  }
+
+  .md\:order-2{
+    order: 2;
+  }
+
   .md\:flex{
     display: flex;
   }
@@ -2006,8 +2059,8 @@ html, body{
     width: fit-content;
   }
 
-  .md\:grid-cols-2{
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .md\:place-self-start{
+    place-self: start;
   }
 
   .md\:place-self-end{
@@ -2042,8 +2095,8 @@ html, body{
     padding-top: 6.3rem;
   }
 
-  .md\:text-\[3\.4rem\]{
-    font-size: 3.4rem;
+  .md\:text-\[3rem\]{
+    font-size: 3rem;
   }
 
   .md\:text-\[4\.5rem\]{
@@ -2055,8 +2108,10 @@ html, body{
   .lg\:grid-cols-3{
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+}
 
-  .lg\:text-\[5\.1rem\]{
+@media (min-width: 1280px){
+  .xl\:text-\[5\.1rem\]{
     font-size: 5.1rem;
   }
 }
