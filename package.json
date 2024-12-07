@@ -1,7 +1,7 @@
 {
   "name": "shortnx",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "dev": "set NODE_ENV=development && nodemon src/index.js",
     "dev2": "concurrently \"set NODE_ENV=development && node src/index.js\" \"npx tailwindcss -i src/views/input.css -o public/css/output.css --watch\"",
