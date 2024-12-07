@@ -19,8 +19,8 @@ Follow these steps to run the project locally.
 **1. Clone the repository**
 
 ```bash
-git clone https://github.com/akshayraj-1/url-shortener.git
-cd url-shortener
+git clone https://github.com/akshayraj-1/shortnx.git
+cd shortnx
 ```
 
 **2. Install dependencies**
