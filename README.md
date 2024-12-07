@@ -1,4 +1,4 @@
-# [WIP] URL Shortener
+# [WIP] Shortnx - URL Shortener
 
 > [!WARNING] 
 > This is a work in progress project. Some features may not be implemented yet.
