@@ -57,7 +57,7 @@ const getOriginalUrl = [disableCache, async (req, res) => {
         if (!originalUrl)  throw new Error("Url not found");
         const metadata = await getMetaData(originalUrl);
         await updateUrlAnalytics(req, shortUrlId, originalUrl);
-        res.render("pages/redirect", { meta: metadata, title: "Shortn - URL Shortener", url: originalUrl });
+        res.render("pages/redirect", { meta: metadata, title: "Shortnx - URL Shortener", url: originalUrl });
     } catch (error) {
         res.render("pages/404", { title: "Page Not Found", error: error.message });
     }

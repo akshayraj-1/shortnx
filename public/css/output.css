@@ -590,10 +590,6 @@ video {
   }
 }
 
-.visible{
-  visibility: visible;
-}
-
 .static{
   position: static;
 }
@@ -658,12 +654,12 @@ video {
   z-index: 51;
 }
 
-.order-2{
-  order: 2;
-}
-
 .order-1{
   order: 1;
+}
+
+.order-2{
+  order: 2;
 }
 
 .mx-auto{
@@ -1927,14 +1923,6 @@ html, body{
 @media (min-width: 640px){
   .sm\:right-0{
     right: 0px;
-  }
-
-  .sm\:order-1{
-    order: 1;
-  }
-
-  .sm\:order-2{
-    order: 2;
   }
 
   .sm\:flex{
