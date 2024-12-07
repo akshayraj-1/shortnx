@@ -15,7 +15,7 @@ const userController = require("./controllers/user.controller");
 const urlController = require("./controllers/url.controller");
 
 // Environment Variables
-dotenv.config({ path: path.join(__dirname, `.env.${process.env.NODE_ENV?.trim()}`) });
+dotenv.config({ path: path.join(__dirname, `../.env.${process.env.NODE_ENV?.trim()}`) });
 
 // Express Setup
 const app = express();
