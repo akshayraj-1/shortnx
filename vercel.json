@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "url-shortener",
+  "name": "shortnx",
   "builds": [
     {
       "src": "src/index.js",
