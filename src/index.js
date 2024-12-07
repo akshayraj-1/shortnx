@@ -32,7 +32,7 @@ app.use(session({
     secret: process.env.SESSION_SECRET,
     store: MongoStore.create({
         mongoUrl: process.env.MONGO_URI,
-        dbName: "url-shortener",
+        dbName: "shortnx",
         crypto: { secret: process.env.SESSION_SECRET }
     }),
     cookie: { secure: process.env.NODE_ENV === 'production' }
@@ -82,7 +82,7 @@ app.use((req, res) => {
 
 // Connect to database
 console.warn("Connecting to database...");
-mongoose.connect(process.env.MONGO_URI, { dbName: "url-shortener", serverSelectionTimeoutMS: 5000 }).then(_ => {
+mongoose.connect(process.env.MONGO_URI, { dbName: "shortnx", serverSelectionTimeoutMS: 5000 }).then(_ => {
     console.info("Connected to database!");
     app.listen(process.env.PORT, () => {
         console.info(`Server running on port: ${process.env.PORT}`);
