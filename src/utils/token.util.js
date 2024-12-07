@@ -2,7 +2,7 @@ const jsonwebtoken = require("jsonwebtoken");
 
 function generateToken(data, expiresIn) {
     const secret = process.env.JWT_SECRET;
-    return jsonwebtoken.sign({ iss: "url-shortener", ...data }, secret, expiresIn && { expiresIn });
+    return jsonwebtoken.sign({ iss: "shortnx", ...data }, secret, expiresIn && { expiresIn });
 }
 
 function decodeToken(token) {
@@ -44,7 +44,7 @@ function getAccessToken(refreshToken) {
 function validateAccessToken(accessToken) {
     try {
         const { userId, iss } = jsonwebtoken.verify(accessToken, process.env.JWT_SECRET);
-        if (!userId || iss !== "url-shortener") throw { code: "INVALID_ACCESS_TOKEN", message: "Invalid access token" };
+        if (!userId || iss !== "shortnx") throw { code: "INVALID_ACCESS_TOKEN", message: "Invalid access token" };
         return Promise.resolve({ userId });
     } catch (error) {
         return Promise.reject({
