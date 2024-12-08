@@ -63,7 +63,7 @@ html, body {
     before:absolute
     before:right-0 before:bottom-6 before:-z-[1]
     before:size-full
-    before:bg-[url('/images/blur.jpg')]
+    before:bg-[url('/images/blur.webp')]
     before:bg-no-repeat before:bg-right-bottom before:bg-contain
     before:opacity-[0.06] before:blur-2xl;
 }
@@ -73,7 +73,7 @@ html, body {
     before:absolute
     before:left-0 before:top-6 before:-z-[1]
     before:size-full
-    before:bg-[url('/images/blur_reverse.jpg')]
+    before:bg-[url('/images/blur_reverse.webp')]
     before:bg-no-repeat before:bg-left-top before:bg-contain
     before:opacity-[0.06] before:blur-2xl;
 }
