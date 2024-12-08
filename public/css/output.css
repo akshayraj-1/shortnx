@@ -1063,6 +1063,10 @@ video {
   overflow: hidden;
 }
 
+.overflow-y-auto{
+  overflow-y: auto;
+}
+
 .overflow-y-scroll{
   overflow-y: scroll;
 }
@@ -1179,6 +1183,11 @@ video {
 .object-contain{
   -o-object-fit: contain;
      object-fit: contain;
+}
+
+.object-cover{
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 .p-0\.5{
@@ -1315,6 +1324,14 @@ video {
 
 .pt-16{
   padding-top: 4rem;
+}
+
+.pt-20{
+  padding-top: 5rem;
+}
+
+.pt-28{
+  padding-top: 7rem;
 }
 
 .pt-32{
@@ -1484,7 +1501,7 @@ video {
 }
 
 .shadow-card{
-  --tw-shadow: rgba(149, 157, 165, 0.07) 0px 8px 24px;;
+  --tw-shadow: rgba(149, 157, 165, 0.1) 0px 8px 24px;;
   --tw-shadow-colored: 0px 8px 24px; var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
@@ -1668,7 +1685,7 @@ html, body{
   z-index: -1;
   width: 100%;
   height: 100%;
-  background-image: url('/images/blur.jpg');
+  background-image: url('/images/blur.webp');
   background-size: contain;
   background-position: right bottom;
   background-repeat: no-repeat;
@@ -1685,7 +1702,7 @@ html, body{
   z-index: -1;
   width: 100%;
   height: 100%;
-  background-image: url('/images/blur_reverse.jpg');
+  background-image: url('/images/blur_reverse.webp');
   background-size: contain;
   background-position: left top;
   background-repeat: no-repeat;
@@ -1973,6 +1990,11 @@ html, body{
     padding-right: 4rem;
   }
 
+  .sm\:px-9{
+    padding-left: 2.25rem;
+    padding-right: 2.25rem;
+  }
+
   .sm\:py-16{
     padding-top: 4rem;
     padding-bottom: 4rem;
@@ -2087,36 +2109,8 @@ html, body{
     font-size: 3rem;
   }
 
-  .md\:text-\[4\.5rem\]{
-    font-size: 4.5rem;
-  }
-
-  .md\:\[font-size\:_clamp\(24px\2c 12vw\2c 4\.5rem\)\]{
-    font-size: clamp(24px,12vw,4.5rem);
-  }
-
-  .md\:\[font-size\:_clamp\(24px\2c 1rem\2c 4\.5rem\)\]{
-    font-size: clamp(24px,1rem,4.5rem);
-  }
-
-  .md\:\[font-size\:_clamp\(24px\2c 3\.5rem\2c 4\.5rem\)\]{
-    font-size: clamp(24px,3.5rem,4.5rem);
-  }
-
-  .md\:\[font-size\:_clamp\(24px\2c 4\.5rem\2c 4\.5rem\)\]{
-    font-size: clamp(24px,4.5rem,4.5rem);
-  }
-
-  .md\:\[font-size\:_clamp\(24px\2c 4rem\2c 4\.5rem\)\]{
-    font-size: clamp(24px,4rem,4.5rem);
-  }
-
   .md\:\[font-size\:_clamp\(50px\2c 3\.5rem\2c 4\.5rem\)\]{
     font-size: clamp(50px,3.5rem,4.5rem);
-  }
-
-  .md\:\[font-size\:_clamp\(50px\2c 4\.5rem\2c 4\.5rem\)\]{
-    font-size: clamp(50px,4.5rem,4.5rem);
   }
 }
 
@@ -2129,18 +2123,6 @@ html, body{
 @media (min-width: 1280px){
   .xl\:text-\[5\.1rem\]{
     font-size: 5.1rem;
-  }
-
-  .xl\:\[font-size\:5\.5rem\]{
-    font-size: 5.5rem;
-  }
-
-  .xl\:\[font-size\:_clamp\(24px\2c 12vw\2c 30rem\)\]{
-    font-size: clamp(24px,12vw,30rem);
-  }
-
-  .xl\:\[font-size\:_clamp\(24px\2c 12vw\2c 5\.1rem\)\]{
-    font-size: clamp(24px,12vw,5.1rem);
   }
 }
 
