@@ -14,7 +14,7 @@ module.exports = {
         textSecondary: "rgba(46,45,64,0.7)",
       },
       boxShadow: {
-        card: "rgba(149, 157, 165, 0.07) 0px 8px 24px;",
+        card: "rgba(149, 157, 165, 0.1) 0px 8px 24px;",
         "card-soft": "rgba(149, 157, 165, 0.03) 0px 5px 25px;",
       },
       fontFamily: {
