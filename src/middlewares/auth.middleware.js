@@ -8,7 +8,7 @@ async function isAuthenticated(req, res) {
         const payload = await validateAccessToken(accessToken);
         // Assign the user details to the session
         if (!req.session || !req.session.user || !res.locals.user) {
-            const user = await UserModel.findOne({ userId: payload.userId }, { _id: 0, userId: 1, name: 1, email: 1 });
+            const user = await UserModel.findOne({ userId: payload.userId }, { _id: 0, userId: 1, name: 1, email: 1, photoUrl: 1 });
             if (!user) return false;
             res.locals.user = user;
             req.session.user = user;
@@ -18,7 +18,7 @@ async function isAuthenticated(req, res) {
     } catch (error) {
         if (error.code === "ACCESS_TOKEN_EXPIRED") {
             const payload = decodeToken(accessToken);
-            const user = await UserModel.findOne({ userId: payload.userId }, { _id: 0, userId: 1, name: 1, email: 1, refreshToken: 1 });
+            const user = await UserModel.findOne({ userId: payload.userId }, { _id: 0, userId: 1, name: 1, email: 1, photoUrl: 1, refreshToken: 1 });
             if (!user) return false;
             const newAccessToken = await getAccessToken(user.refreshToken);
             // Assign the new access token and the user details to the session
