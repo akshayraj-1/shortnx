@@ -17,7 +17,7 @@
 
     <div class="flex items-center gap-2 cursor-pointer">
         <img class="size-7 object-cover rounded-full" src="<%= user.photoUrl || "/images/user_avatar.png"%>" alt="Profile"/>
-        <span class="text-sm text-textPrimary/80 font-medium"><%= user.name ||"My account" %></span>
+        <span class="text-sm text-textPrimary/80 font-medium"><%= user.name %></span>
     </div>
 </nav>
 <div class="flex h-screen">
@@ -32,7 +32,6 @@
     </div>
 </div>
 
-<script src="/ShareModal.js"></script>
 <script src='/Toast.js'></script>
 <%- block("scripts").toString() %>
 </body>
