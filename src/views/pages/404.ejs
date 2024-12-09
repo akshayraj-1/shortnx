@@ -1,5 +1,11 @@
 <%- layout("layouts/default-layout") -%>
 
+<%# For SEO %>
+<% block("head").append(`
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="/">
+`)%>
+
 <%# 404 %>
 <section class="relative flex flex-col items-center justify-center gap-2 px-6 py-40 max-h-screen size-full text-center ">
     <img class="py-6 h-full object-contain select-none" src="/images/404.svg" alt="404" draggable="false">
