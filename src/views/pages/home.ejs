@@ -1,5 +1,14 @@
 <%- layout("layouts/default-layout") -%>
 
+<%# For SEO %>
+<% block("head").append(`
+<meta name="title" content="Shortnx - URL Shortener">
+<meta name="description" content="Shorten your urls with Shortnx. A fast, reliable and easy to use url shortener for sharing and tracking your urls.">
+<meta name="keywords" content="url shortener, link shortener, custom url, free url, link page">
+<meta name="author" content="Shortnx">
+<meta name="robots" content="index, follow">
+`)%>
+
 <%# Hero %>
 <section class="relative z-[1] page-grid-2_1 pt-36 md:pt-[6.3rem] pb-32 min-h-screen bg-gradient-blur">
 
@@ -107,6 +116,8 @@
     </div>
 </section>
 <%- include("../partials/CookieConsent.ejs") %>
+
+
 <% block("scripts").append(`
 <script>
     const inputUrl = document.querySelector("#input-url");
