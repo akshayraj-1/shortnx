@@ -793,8 +793,8 @@ video {
   max-height: 100vh;
 }
 
-.min-h-\[80vh\]{
-  min-height: 80vh;
+.min-h-screen{
+  min-height: 100vh;
 }
 
 .w-full{
@@ -1917,6 +1917,12 @@ html, body{
 .disabled\:bg-colorPrimaryDark:disabled{
   --tw-bg-opacity: 1;
   background-color: rgb(81 48 217 / var(--tw-bg-opacity, 1));
+}
+
+@media not all and (min-width: 1536px){
+  .max-2xl\:min-h-\[80vh\]{
+    min-height: 80vh;
+  }
 }
 
 @media (min-width: 640px){
