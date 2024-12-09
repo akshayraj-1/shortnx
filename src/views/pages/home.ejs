@@ -10,12 +10,11 @@
 `)%>
 
 <%# Hero %>
-<section class="relative z-[1] page-grid-2_1 pt-36 md:pt-[6.3rem] pb-32 min-h-screen bg-gradient-blur">
-
+<section class="container relative z-[1] page-grid-2_1 pt-36 md:pt-[6.3rem] pb-32 w-full min-h-[80vh] bg-gradient-blur">
     <div class="flex flex-col items-start justify-center gap-5 h-full w-full">
-        <span class="left-side gsap-fade-in-up px-5 py-2.5 text-sm sm:text-[0.9rem] text-colorPrimary bg-colorPrimary/5 rounded-full">
-            Let's make with simply one click 👈
-        </span>
+            <span class="left-side gsap-fade-in-up px-5 py-2.5 text-sm sm:text-[0.9rem] text-colorPrimary bg-colorPrimary/5 rounded-full">
+                Let's make with simply one click 👈
+            </span>
         <h1 class="left-side gsap-fade-in-up relative text-[50px] md:[font-size:_clamp(50px,3.5rem,4.5rem)] xl:text-[5.1rem] font-gelica-black font-bold leading-none">
             Shorten urls made easy
         </h1>
@@ -38,12 +37,11 @@
     </div>
 
     <img class="right-side gsap-fade-in-up md:place-self-end max-w-[510px] w-full h-full object-contain select-none" src="/images/hero2.svg" alt="hero" draggable="false" oncontextmenu="return false">
-
 </section>
 
 <%# Feature %>
 <section class="relative flex flex-col px-6 sm:px-16 md:px-24 size-full" >
-    <div class="relative flex flex-col items-center pt-16 pb-20 px-6 sm:px-14 md:px-20 bg-colorSurfaceSecondary rounded-2xl sm:rounded-3xl">
+    <div class="container relative flex flex-col items-center pt-16 pb-20 px-6 sm:px-14 md:px-20 bg-colorSurfaceSecondary rounded-2xl sm:rounded-3xl">
         <span class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-5 py-1.5 text-[14px] text-colorPrimary uppercase font-medium tracking-wider bg-colorBackground border border-colorBackground rounded-full">
             Features
         </span>
@@ -53,7 +51,7 @@
         <p class="mt-3 w-full max-w-[700px] text-base text-center text-textPrimary/80">
             Effortlessly Create, Track and Analyze Every Link in One Place.
         </p>
-        <div class="grid grid-col-1 lg:grid-cols-3 gap-x-10 gap-y-8 place-items-center mt-20 w-full">
+        <div class="container grid grid-col-1 lg:grid-cols-3 gap-x-10 gap-y-8 place-items-center mt-20 w-full">
             <%- include("../partials/FeatureCard.ejs", {
                 cardIcon: "/images/feature_1.svg",
                 cardTitle: "Create",
@@ -74,34 +72,36 @@
 </section>
 
 <%# Feature 1 %>
-<section class="relative z-[1] page-grid-2_1 py-20 bg-gradient-blur-reverse">
-
-    <img class="right-side gsap-fade-in-up md:place-self-start max-w-[490px] w-full h-full object-contain select-none" src="/images/f_section_1.svg" alt="feature_1" draggable="false" oncontextmenu="return false">
-
+<section class="container relative z-[1] page-grid-2_1 py-20 bg-gradient-blur-reverse">
+    <img class="right-side gsap-fade-in-up md:place-self-start max-w-[490px] w-full h-full object-contain select-none"
+         src="/images/f_section_1.svg" alt="feature_1"
+         draggable="false"
+         oncontextmenu="return false"
+    >
     <div class="left-side gsap-fade-in-up flex flex-col items-start justify-center gap-5 h-full w-full">
         <span class="text-[14px] text-colorPrimary uppercase font-medium tracking-wider">Boost your links</span>
         <h2 class="text-[35px] md:text-[3rem] leading-[1.2] font-semibold">One page for every link you need</h2>
         <p class="text-base text-textPrimary/80">Bring all your links together in one customizable, branded space highlighting everything you have to offer. Perfect for creators, entrepreneurs, and businesses looking to grow.</p>
     </div>
-
 </section>
 
 <%# Feature 2 %>
-<section class="relative z-[1] page-grid-2_1 pt-5 pb-20 bg-gradient-blur">
-
+<section class="container relative z-[1] page-grid-2_1 pt-5 pb-20 bg-gradient-blur">
     <div class="left-side gsap-fade-in-up order-2 md:order-1 flex flex-col items-start justify-center gap-5 h-full w-full">
         <span class="text-[14px] text-colorPrimary uppercase font-medium tracking-wider">Insights from Audience</span>
         <h2 class="text-[35px] md:text-[3rem] leading-[1.2] font-semibold">Detailed analytics of your links</h2>
         <p class="text-base text-textPrimary/80">Monitor every click and interaction on your links in real-time. Gain the insights you need to optimize your strategy and grow your reach.</p>
     </div>
-
-    <img class="right-side gsap-fade-in-up order-1 md:order-2 md:place-self-end max-w-[490px] w-full h-full object-contain select-none" src="/images/f_section_2.svg" alt="feature_2" draggable="false" oncontextmenu="return false">
-
+    <img class="right-side gsap-fade-in-up order-1 md:order-2 md:place-self-end max-w-[490px] w-full h-full object-contain select-none"
+         src="/images/f_section_2.svg" alt="feature_2"
+         draggable="false"
+         oncontextmenu="return false"
+    >
 </section>
 
 <%# CTA %>
 <section class="flex justify-center py-24 page-padding w-full bg-colorSurfaceSecondary">
-    <div class="flex flex-col sm:flex-row justify-center items-center gap-x-10 gap-y-6 px-8 sm:px-12 py-14 sm:py-16 text-white w-full bg-[#0a1129] rounded-3xl shadow-black/10 shadow-sm">
+    <div class="flex flex-col sm:flex-row justify-center items-center gap-x-10 gap-y-6 px-8 sm:px-12 py-14 sm:py-16 text-white max-w-screen-lg w-full bg-[#0a1129] rounded-3xl shadow-black/10 shadow-sm">
        <div class="flex-1 flex-col items-center justify-center sm:justify-start">
            <h2 class="text-2xl sm:text-3xl text-center sm:text-start font-semibold">Get started with Shortnx.</h2>
            <p class="mt-2.5 text-[0.9rem] text-center sm:text-start text-white/80">Boost your online presence and grow your business with our easy-to-use link shortener.</p>

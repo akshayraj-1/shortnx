@@ -2,6 +2,12 @@
 module.exports = {
   content: ["./src/**/*.{html,js,ejs}", "./public/**/*.{html,js,ejs}"],
   theme: {
+    container: {
+      center: true,
+      screens: {
+        '2xl': '1536px',
+      },
+    },
     extend: {
       colors: {
         colorPrimary: "#6139ff",
