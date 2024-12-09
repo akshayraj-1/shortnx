@@ -1,5 +1,11 @@
 <%- layout("layouts/default-layout") -%>
 
+<%# For SEO %>
+<% block("head").append(`
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="/">
+`)%>
+
 <%# Terms of Services %>
 <section class="gsap-fade-in-up flex flex-col size-full text-base">
     <div class="pt-32 pb-12 page-padding w-full bg-colorSurfaceSecondary">

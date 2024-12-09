@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
     <meta property="og:title" content="<%= meta.title || 'Redirecting...' %>">
     <meta property="og:description" content="<%= meta.description || 'You are being redirected.' %>">
     <meta property="og:image" content="<%= meta.image || '/default-thumbnail.jpg' %>">
@@ -11,7 +12,6 @@
     <title><%= meta.title || 'Redirecting...' %></title>
 </head>
 <body>
-<p>Redirecting...</p>
 <script>
     window.onload = () => {
         window.location.replace("<%= url %>");
