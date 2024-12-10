@@ -41,7 +41,7 @@
 
 <%# Feature %>
 <section class="relative flex flex-col px-6 sm:px-16 md:px-24 size-full" >
-    <div class="container relative flex flex-col items-center pt-16 pb-20 px-6 sm:px-14 md:px-20 bg-colorSurfaceSecondary rounded-2xl sm:rounded-3xl">
+    <div class="feature-section gsap-fade-in-up container relative flex flex-col items-center pt-16 pb-20 px-6 sm:px-14 md:px-20 bg-colorSurfaceSecondary rounded-2xl sm:rounded-3xl">
         <span class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-5 py-1.5 text-[14px] text-colorPrimary uppercase font-medium tracking-wider bg-colorBackground border border-colorBackground rounded-full">
             Features
         </span>
@@ -167,7 +167,7 @@
 
 
     // animation
-    function animateOnVisible(target, animation) {
+    function animateOnVisible(target, animation, threshold = 0.3) {
         const observer = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -175,7 +175,7 @@
                     observer.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.4 });
+        }, { threshold });
         target.forEach(el => observer.observe(el));
     }
 
@@ -193,6 +193,13 @@
         duration: 0.5,
         ease: "easeInOut"
     });
+
+    animateOnVisible(document.querySelectorAll(".feature-section"), {
+        y: 0,
+        opacity: 1,
+        duration: 0.5,
+        ease: "easeInOut"
+    }, 0.2);
 
 </script>
 `) %>
