@@ -33,6 +33,8 @@ app.use(session({
     store: MongoStore.create({
         mongoUrl: process.env.MONGO_URI,
         dbName: "shortnx",
+        autoRemove: "interval",
+        autoRemoveInterval: 60 * 24, // 1 hr
         crypto: { secret: process.env.SESSION_SECRET }
     }),
     cookie: { secure: process.env.NODE_ENV === 'production' }
