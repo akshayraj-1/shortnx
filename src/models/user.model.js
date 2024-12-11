@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
         trim: true,
         required: this.provider === "email"
     },
-    photoUrl: {
+    picture: {
         type: String,
         default: "/images/user_avatar.png"
     },
