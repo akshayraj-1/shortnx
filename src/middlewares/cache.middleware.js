@@ -6,7 +6,7 @@ function enableCache(req, res, next) {
 
 function disableCache(req, res, next) {
     res.set("Cache-Control", "no-cache, no-store, must-revalidate");
-    res.set("Pragma", "no-cache");
+    res.set("Pragma", "no-cache"); // For older browsers (HTTP/1.0)
     res.set("Expires", "0");
     next();
 }
