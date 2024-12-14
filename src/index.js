@@ -19,6 +19,8 @@ dotenv.config({ path: path.join(__dirname, `../.env.${process.env.NODE_ENV?.trim
 
 // Express Setup
 const app = express();
+
+// Middlewares
 app.use(express.static(path.join(__dirname, "../public")));
 app.use(express.static(path.join(__dirname, "components")));
 // extended -> true (parse with qs lib: can parse nested objects);
@@ -28,16 +30,16 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(session({
     resave: false,
-    saveUninitialized: true, // true -> session will be created even if there is no data being stored
+    saveUninitialized: false, // true -> session will be created even if there is no data being stored
     secret: process.env.SESSION_SECRET,
     store: MongoStore.create({
         mongoUrl: process.env.MONGO_URI,
         dbName: "shortnx",
         autoRemove: "interval",
-        autoRemoveInterval: 60 * 24, // 1 hr
+        autoRemoveInterval: 60 * 24, // 24 hr
         crypto: { secret: process.env.SESSION_SECRET }
     }),
-    cookie: { secure: process.env.NODE_ENV === 'production' }
+    cookie: { secure: process.env.NODE_ENV === "production" }
 }));
 
 // EJS/View Engine Setup
@@ -49,8 +51,8 @@ app.set("views", path.join(__dirname, "views"));
 app.get("/", homeController.getHome);
 
 // Other Routes
-app.get("/cookies-policy", (req, res) => {
-    res.render("pages/legal/cookies-policy", { title: "Cookie Policy - Shortnx" });
+app.get("/cookie-policy", (req, res) => {
+    res.render("pages/legal/cookie-policy", { title: "Cookie Policy - Shortnx" });
 });
 app.get("/privacy-policy", (req, res) => {
     res.render("pages/legal/privacy-policy", { title: "Privacy Policy - Shortnx" });

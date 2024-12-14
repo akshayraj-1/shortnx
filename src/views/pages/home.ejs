@@ -7,10 +7,11 @@
     <meta name="keywords" content="url shortener, link shortener, custom url, free url, link page">
     <meta name="author" content="Shortnx">
     <meta name="robots" content="index, follow">
+    <link rel="canonical" href="/">
 `)%>
 
 <%# Hero %>
-<section class="container relative z-[1] page-grid-2_1 pt-36 md:pt-[6.3rem] pb-32 w-full min-h-screen max-2xl:min-h-[80vh] bg-gradient-blur">
+<section class="container relative z-[1] page-grid-2_1 pt-36 md:pt-[6.3rem] pb-32 w-full min-h-screen bg-gradient-blur">
     <div class="flex flex-col items-start justify-center gap-5 h-full w-full">
             <span class="left-side gsap-fade-in-up px-5 py-2.5 text-sm sm:text-[0.9rem] text-colorPrimary bg-colorPrimary/5 rounded-full">
                 Let's make with simply one click 👈
@@ -22,7 +23,7 @@
             Shorten, personalize and optimize your links to boost your online presence and grow your business.
         </p>
         <div class="left-side gsap-fade-in-up flex items-center gap-2 p-2 mt-3.5 sm:p-2.5 w-full max-w-[450px] bg-colorSurface shadow-card rounded-full border border-slate-200">
-            <img class="ms-3 me-2 size-[1.1rem] object-contain -rotate-45 select-none" src="/images/link_horizontal.svg" alt="link" draggable="false">
+            <i class="icon-link-horizontal text-[1.1rem] text-textSecondary ms-3 me-2 -rotate-45"></i>
             <input id="input-url" class="w-full text-[0.9rem] sm:text-base outline-none border-none placeholder:text-[0.9rem] placeholder:select-none" type="text" placeholder="Paste a link to shorten it">
             <button id="btn-shorten" class="p-2.5 bg-colorPrimary text-white rounded-full disabled:pointer-events-none">
                 <svg aria-label="spinner" role="status" class="hidden size-6 p-0.5 animate-spin" viewBox="0 0 100 101" width="20px" height="20px" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -101,11 +102,11 @@
 
 <%# CTA %>
 <section class="flex justify-center py-24 page-padding w-full bg-colorSurfaceSecondary">
-    <div class="flex flex-col sm:flex-row justify-center items-center gap-x-10 gap-y-6 px-8 sm:px-12 py-14 sm:py-16 text-white max-w-screen-lg w-full bg-[#0a1129] rounded-3xl shadow-black/10 shadow-sm">
-       <div class="flex-1 flex-col items-center justify-center sm:justify-start">
-           <h2 class="text-2xl sm:text-3xl text-center sm:text-start font-semibold">Get started with Shortnx.</h2>
-           <p class="mt-2.5 text-[0.9rem] text-center sm:text-start text-white/80">Boost your online presence and grow your business with our easy-to-use link shortener.</p>
-       </div>
+    <div class="flex flex-col sm:flex-row justify-center items-center gap-x-10 gap-y-6 px-8 sm:px-16 py-14 sm:py-20 text-white max-w-screen-lg w-full bg-[#0a1129] rounded-3xl shadow-black/10 shadow-sm">
+        <div class="flex-1 flex-col items-center justify-center sm:justify-start">
+            <h2 class="text-2xl sm:text-4xl text-center sm:text-start font-semibold">Get started with Shortnx.</h2>
+            <p class="mt-2.5 text-[0.9rem] text-center sm:text-start text-white/80">Boost your online presence and grow your business with our easy-to-use link shortener.</p>
+        </div>
         <%- include("../partials/Button.ejs", {
             btnType: "link",
             btnVariant: "primary",
@@ -116,7 +117,6 @@
     </div>
 </section>
 <%- include("../partials/CookieConsent.ejs") %>
-
 
 <% block("scripts").append(`
 <script>
@@ -136,7 +136,10 @@
 
     btnShorten.addEventListener("click", async () => {
         const url = inputUrl.value;
-        if (!url) return;
+        if (!url) {
+            toast.showToast("Please enter a valid url", toast.types.error);
+            return;
+        }
 
         spinner.classList.toggle("hidden", false);
         arrowRight.classList.toggle("hidden", true);

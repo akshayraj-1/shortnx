@@ -1,4 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://cdn.shortnx.in/fonts/icons.css");
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 *, ::before, ::after{
   --tw-border-spacing-x: 0;
@@ -758,11 +760,6 @@ video {
   height: 1.75rem;
 }
 
-.size-\[1\.1rem\]{
-  width: 1.1rem;
-  height: 1.1rem;
-}
-
 .size-\[4\.5rem\]{
   width: 4.5rem;
   height: 4.5rem;
@@ -1362,6 +1359,10 @@ video {
   font-size: 0.9rem;
 }
 
+.text-\[1\.1rem\]{
+  font-size: 1.1rem;
+}
+
 .text-\[1\.3rem\]{
   font-size: 1.3rem;
 }
@@ -1556,7 +1557,7 @@ video {
 @font-face {
   font-family: 'Gelica Black';
 
-  src: url('/fonts/gelica-black.woff2') format('woff2');
+  src: url('https://cdn.shortnx.in/fonts/gelica-black.woff2') format('woff2');
 
   font-weight: 900;
 
@@ -1919,12 +1920,6 @@ html, body{
   background-color: rgb(81 48 217 / var(--tw-bg-opacity, 1));
 }
 
-@media not all and (min-width: 1536px){
-  .max-2xl\:min-h-\[80vh\]{
-    min-height: 80vh;
-  }
-}
-
 @media (min-width: 640px){
   .sm\:right-0{
     right: 0px;
@@ -1963,11 +1958,6 @@ html, body{
     padding: 0.625rem;
   }
 
-  .sm\:px-12{
-    padding-left: 3rem;
-    padding-right: 3rem;
-  }
-
   .sm\:px-14{
     padding-left: 3.5rem;
     padding-right: 3.5rem;
@@ -1983,14 +1973,14 @@ html, body{
     padding-right: 2.25rem;
   }
 
-  .sm\:py-16{
-    padding-top: 4rem;
-    padding-bottom: 4rem;
-  }
-
   .sm\:py-2\.5{
     padding-top: 0.625rem;
     padding-bottom: 0.625rem;
+  }
+
+  .sm\:py-20{
+    padding-top: 5rem;
+    padding-bottom: 5rem;
   }
 
   .sm\:text-start{
