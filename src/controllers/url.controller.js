@@ -26,6 +26,13 @@ async function createShortenUrl(req, res) {
     if (!url || !/^https?:\/\/.*$/.test(url)) {
         return res.status(400).json({ success: false, message: "Please enter a valid url" });
     }
+
+    const userUrl = URL.parse(url);
+    const serverUrl = URL.parse(process.env.SERVER_BASE_URL);
+    if (userUrl.hostname === serverUrl.hostname || userUrl.hostname === req.hostname) {
+        return res.status(400).json({ success: false, message: "Url is already a shorten url" });
+    }
+
     const userId = await isAuthenticated(req, res) ? req.session.user.userId : null;
 
     try {
