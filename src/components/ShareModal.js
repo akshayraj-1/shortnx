@@ -15,7 +15,7 @@ class ShareModal {
             <div id="modal-container" class="flex flex-col w-full max-w-[400px] p-6 md:p-8 bg-colorSurface rounded-xl">
                 <div class="flex items-center justify-between">
                     <h3 class="text-lg sm:text-xl font-bold">Your Shortened Link</h3>
-                    <i id="modal-share-btn-close" class="text-xl text-textSecondary cursor-pointer ri-close-line"></i>
+                    <i id="modal-share-btn-close" class="text-[1.5rem] text-textSecondary cursor-pointer icon-cross-small"></i>
                 </div>
                 <div class="flex items-center justify-evenly mt-8 gap-3">
                     <button id="modal-share-btn-whatsapp" class="p-5 rounded-full ring-1 ring-inset ring-slate-300 cursor-pointer size-[4.5rem]" title="Share on WhatsApp">
@@ -30,7 +30,7 @@ class ShareModal {
                 </div>
                 <div class="relative mt-8 mb-4 px-4 py-2.5 font-medium bg-colorSurfaceSecondary rounded-md ring-1 ring-inset ring-slate-300 overflow-hidden">
                     <span id="short-url" class="w-full text-sm sm:text-base text-textPrimary overflow-ellipsis overflow-hidden"></span>
-                    <i id="modal-share-btn-copy" class="absolute top-0 right-0 flex items-center justify-center h-full px-3 bg-colorPrimary text-white cursor-pointer ri-file-copy-line" title="Copy URL" aria-label="Copy URL"></i>
+                    <i id="modal-share-btn-copy" class="absolute top-0 right-0 flex items-center justify-center h-full px-3 bg-colorPrimary text-white cursor-pointer icon-copy-alt" title="Copy URL" aria-label="Copy URL"></i>
                 </div>
             </div>
         `;
