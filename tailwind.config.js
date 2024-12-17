@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{html,js,ejs}", "./public/**/*.{html,js,ejs}"],
+  plugins: [],
   theme: {
     container: {
       center: true,
@@ -52,7 +53,6 @@ module.exports = {
         "slide-out-down": "slideOutDown 0.2s ease-in forwards",
       },
     },
-  },
-  plugins: [],
+  }
 }
 

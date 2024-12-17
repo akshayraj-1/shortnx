@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "main": "src/index.js",
   "scripts": {
-    "dev": "set NODE_ENV=development && nodemon src/index.js",
-    "dev2": "concurrently \"set NODE_ENV=development && node src/index.js\" \"npx tailwindcss -i src/views/input.css -o public/css/output.css --watch\"",
+    "dev": "concurrently \"set NODE_ENV=development && node src/index.js\" \"npm run watch\"",
     "start": "set NODE_ENV=production && node src/index.js",
-    "start2": "concurrently \"set NODE_ENV=production && node src/index.js\" \"npx tailwindcss -i src/views/input.css -o public/css/output.css --watch\""
+    "start2": "concurrently \"set NODE_ENV=production && node src/index.js\" \"npm run watch\"",
+    "build": "postcss src/views/input.css -o public/css/output.css",
+    "watch": "postcss src/views/input.css -o public/css/output.css --watch"
   },
   "author": "",
   "license": "ISC",
@@ -26,8 +27,13 @@
     "mongoose": "^8.7.2"
   },
   "devDependencies": {
+    "autoprefixer": "^10.4.20",
     "concurrently": "^9.0.1",
+    "cssnano": "^7.0.6",
     "nodemon": "^3.1.7",
-    "tailwindcss": "^3.4.14"
+    "postcss": "^8.4.49",
+    "postcss-cli": "^11.0.0",
+    "postcss-nested": "^7.0.2",
+    "tailwindcss": "^3.4.16"
   }
 }
