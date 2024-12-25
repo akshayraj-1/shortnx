@@ -14,8 +14,8 @@ class ShareModal {
         this.#backdrop.innerHTML = `
             <div id="modal-container" class="flex flex-col w-full max-w-[400px] p-6 md:p-8 bg-colorSurface rounded-xl">
                 <div class="flex items-center justify-between">
-                    <h3 class="text-lg sm:text-xl font-bold">Your Shortened Link</h3>
-                    <i id="modal-share-btn-close" class="text-[1.5rem] text-textSecondary cursor-pointer icon-cross-small"></i>
+                    <h3 class="text-lg sm:text-xl font-semibold">Your Shortened Link</h3>
+                    <i id="modal-share-btn-close" class="text-[1.5rem] text-textSecondary cursor-pointer icon-close-md"></i>
                 </div>
                 <div class="flex items-center justify-evenly mt-8 gap-3">
                     <button id="modal-share-btn-whatsapp" class="p-5 rounded-full ring-1 ring-inset ring-slate-300 cursor-pointer size-[4.5rem]" title="Share on WhatsApp">

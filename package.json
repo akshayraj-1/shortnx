@@ -5,9 +5,10 @@
   "scripts": {
     "dev": "concurrently \"set NODE_ENV=development && node src/index.js\" \"npm run watch\"",
     "start": "set NODE_ENV=production && node src/index.js",
-    "start2": "concurrently \"set NODE_ENV=production && node src/index.js\" \"npm run watch\"",
+    "start2": "concurrently \"set NODE_ENV=production && node src/index.js\" \"npm run tailwind\"",
     "build": "postcss src/views/input.css -o public/css/output.css",
-    "watch": "postcss src/views/input.css -o public/css/output.css --watch"
+    "watch": "postcss src/views/input.css -o public/css/output.css --watch",
+    "tailwind": "npx tailwindcss -i src/views/input.css -o public/css/output.css --watch"
   },
   "author": "",
   "license": "ISC",
