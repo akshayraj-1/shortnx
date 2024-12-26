@@ -27,7 +27,7 @@ dist-ssr
 *.woff~
 .vercel
 vercel.json
-my-notes.md
+NOTES.md
 
 configs
 .env.production
