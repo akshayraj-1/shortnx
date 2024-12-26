@@ -9,21 +9,21 @@ const UserModel = require("../models/user.model");
 // Render the login page
 async function getLogin (req, res) {
     await isAuthenticated(req, res)
-        ? res.redirect("/dashboard")
+        ? res.redirect("/u/dashboard")
         : res.render("pages/login", { title: "Login - Shortnx" });
 }
 
 // Render the signup page
 async function getSignup (req, res) {
     await isAuthenticated(req, res)
-        ? res.redirect("/dashboard")
+        ? res.redirect("/u/dashboard")
         : res.render("pages/signup", { title: "Sign Up - Shortnx" });
 }
 
 // Get the Google auth URL
 async function getGoogleAuth (req, res) {
     await isAuthenticated(req, res)
-        ? res.redirect("/dashboard")
+        ? res.redirect("/u/dashboard")
         : res.redirect(getGoogleOAuthURL());
 }
 
@@ -113,7 +113,7 @@ async function googleAuth(req, res) {
         const accessToken = await getAccessToken(refreshToken);
         req.session.access_token = accessToken;
         res.cookie("access_token", accessToken, { httpOnly: true });
-        res.status(302).redirect("/dashboard");
+        res.status(302).redirect("/u/dashboard");
     } catch (error) {
         res.status(302).redirect("/auth/login");
         logManager.logError(error);

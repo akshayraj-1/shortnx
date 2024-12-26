@@ -3,11 +3,11 @@
 <nav class="gsap-fade-in-down max-w-sc fixed top-0 z-10 w-full bg-colorBackground/80 backdrop-blur-xl select-none">
     <div class="container flex justify-between items-center py-5 page-padding">
         <a href="/"><img class="h-6 md:h-7 object-contain" src="/images/logo.svg" alt="logo"/></a>
-        <div class="hidden sm:flex items-center gap-9">
+        <div class="flex items-center gap-9">
             <%- include("./Button.ejs", {
                 btnType: "link",
                 btnVariant: "tertiary",
-                btnClassnames: "font-medium",
+                btnClassnames: "hidden sm:block font-medium",
                 btnChildren: "Login",
                 btnHref: "/auth/login"
             }) -%>
@@ -17,7 +17,6 @@
                 btnHref: "/auth/signup"
             }) -%>
         </div>
-        <button class="sm:hidden ri-menu-line text-[1.3rem] cursor-pointer" id="btn-menu"></button>
     </div>
 </nav>
 

@@ -109,6 +109,28 @@ html, body {
     after:bg-colorSurface;
 }
 
+.tab-default {
+    @apply
+    relative
+    flex items-center
+    gap-2.5
+    py-3.5 px-3.5;
+}
+
+.tab-inactive {
+    @apply
+    text-textSecondary
+    hover:bg-colorSurfaceSecondary
+    hover:rounded-lg;
+}
+
+.tab-active {
+    @apply
+    text-colorPrimary
+    bg-colorSurfaceSecondary
+    rounded-lg;
+}
+
 .no-scrollbar::-webkit-scrollbar {
     display: none;
 }

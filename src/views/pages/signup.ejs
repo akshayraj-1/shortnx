@@ -101,7 +101,7 @@
 
             const result = await response.json();
             if (result.success) {
-                window.location.replace("/dashboard");
+                window.location.replace("/u/dashboard");
             } else {
                 const message = result.message || "Something went wrong";
                 if (message.toLowerCase().includes("email")) {

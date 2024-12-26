@@ -71,7 +71,8 @@ app.post("/api/auth/signup", authController.signUp);
 app.get("/api/auth/google/callback/", authController.googleAuth);
 
 // User routes
-app.get("/dashboard", userController.getDashboard);
+app.get("/u/dashboard", userController.getDashboard);
+app.get("/u/tabs/:tab", userController.getTabContent);
 
 // Shorten URL routes
 app.post("/api/short-url/create", urlController.createShortenURL);

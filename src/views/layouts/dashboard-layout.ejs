@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <%- block("head").toString() %>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="/css/output.css">
+    <title><%= title || "Shortnx - URL Shortener" %></title>
+</head>
+<body>
+<%# Navbar %>
+<nav class="flex justify-between items-center px-6 py-5">
+    <a href="/">
+        <img class="sm:hidden size-9 sm:size-10" src="/images/icon.svg" alt="logo">
+        <img class="hidden sm:flex h-6 md:h-7 object-contain" src="/images/logo.svg" alt="logo">
+    </a>
+    <div class="flex items-center gap-5">
+        <button class="relative flex justify-center items-center size-8 text-textSecondary border border-slate-300 rounded-full">
+            <i class="icon-bell text-xl text-slate-400"></i>
+        </button>
+        <button class="flex items-center gap-2 cursor-pointer">
+            <img class="size-7 sm:size-8 object-cover rounded-full" alt="<%= user.name %>" src="<%= user.picture %>">
+            <p class="text-sm text-textPrimary"><%= user.name %></p>
+            <i class="icon-caret-down-md text-textSecondary"></i>
+        </button>
+    </div>
+</nav>
+
+<div class="flex h-screen w-screen overflow-hidden">
+
+    <%# Sidebar %>
+    <div class="flex flex-col gap-2 pt-6 pb-5 px-3 sm:min-w-[14rem]">
+        <% var tabs = [
+            {
+                active: true,
+                icon: "icon-apps",
+                label: "Overview"
+            },
+            {
+                active: false,
+                icon: "icon-chart-line",
+                label: "Analytics"
+            },
+            {
+                active: false,
+                icon: "icon-link-horizontal1",
+                label: "Links"
+            },
+            {
+                active: false,
+                icon: "icon-file",
+                label: "Pages"
+            },
+            {
+                active: false,
+                icon: "icon-settings",
+                label: "Settings"
+            }
+        ] %>
+        <% tabs.forEach(tab => { %>
+            <button class="tab-default <% if (tab.active) { %> tab-active <% } else { %> tab-inactive <% } %>">
+                <i class="<%= tab.icon %>"></i>
+                <span class="hidden sm:block text-[0.9rem] font-medium"><%= tab.label %></span>
+            </button>
+        <% }); %>
+    </div>
+
+    <%# Content %>
+    <div id="content" class="relative flex-1 h-screen overflow-auto sm:border-t sm:border-l sm:border-slate-200 sm:rounded-2xl bg-colorBackground">
+    </div>
+
+</div>
+<script src='/Toast.js'></script>
+<script>
+    const tabs = document.querySelectorAll(".tab-default");
+    tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+            if (!tab.classList.contains("tab-active") && window.history.replaceState) {
+                tabs.forEach(t => {
+                    t.classList.remove("tab-active");
+                    t.classList.add("tab-inactive");
+                });
+                tab.classList.remove("tab-inactive");
+                tab.classList.add("tab-active");
+                loadContent(tab.textContent.trim());
+            }
+        });
+    });
+
+    window.onload = () => {
+        loadContent(tabs[0].textContent.trim());
+    };
+
+    async function loadContent(tab) {
+        const response = await fetch(`/u/tabs/${tab.toLowerCase()}`);
+        const content = await response.text();
+        document.getElementById("content").innerHTML = content;
+        console.log(content);
+    }
+
+</script>
+<%- block("scripts").toString() %>
+</body>
+</html>
