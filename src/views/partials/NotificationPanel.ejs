@@ -1,0 +1,26 @@
+<div id="notification-panel" class="hidden fixed z-50 size-full items-center justify-end bg-black/50">
+    <div class="relative flex flex-col py-5 px-6 sm:px-9 h-screen w-full max-w-md bg-colorSurface">
+        <div class="flex justify-between items-center">
+            <h2 class="text-lg font-semibold">Notifications</h2>
+            <button id="close-notification-panel" class="text-colorSecondary hover:text-colorPrimary">
+                <i class="icon-close-md"></i>
+            </button>
+        </div>
+        <div class="flex flex-col gap-2.5 mt-5">
+
+        </div>
+    </div>
+</div>
+
+
+<%- block("scripts").append(`
+<script>
+    const btnClose = document.getElementById("close-notification-panel");
+    btnClose.addEventListener("click", () => {
+        document.getElementById("notification-panel").classList.add("hidden");
+    });
+
+
+
+</script>
+`) %>

@@ -1,6 +1,6 @@
 ### Todos
 
-- Add CDN Support for the assets in the project 
-  - Figure out how to use both CDN and local files
+- Add CDN Support for the assets in the project
 - Add support for dark mode
-- Obfuscate and minify the JS codes in the project
+- Add rate limiter to the link creation from the home page
+- Obfuscate and minify the Client Side JS codes in the project

@@ -28,10 +28,12 @@ dist-ssr
 .vercel
 vercel.json
 NOTES.md
+TODOS.md
 
 configs
 .env.production
 *.ps1
+
 
 # Editor directories and files
 .vscode/*
