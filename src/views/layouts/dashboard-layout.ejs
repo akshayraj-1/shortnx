@@ -92,29 +92,32 @@
                 });
                 tab.classList.remove("tab-inactive");
                 tab.classList.add("tab-active");
-                loadContent(tab.getAttribute("data-tab-id"));
+                const tabId = tab.getAttribute("data-tab-id");
+                if (window.history.replaceState) {
+                    window.history.replaceState(null, null, `/u/dashboard?tab=${tabId}`);
+                } else {
+                    window.location.hash = `tab=${tabId}`;
+                }
+                loadContent(tabId);
             }
         });
     });
 
     async function loadContent(tab) {
         const content = document.getElementById("content");
-        // Backward compatibility
-        // TODO: IDK much about this right now, need to do some research
-        if (window.history.replaceState) {
-            window.history.replaceState(null, null, `/u/dashboard?tab=${tab}`);
-        } else {
-            window.location.hash = `tab=${tab}`;
-        }
         content.innerHTML = await fetch(`/u/tabs/${tab}`).then(res => res.text());
     }
 
     // Load the selected tab
     (function () {
-        // TODO: Also check for hash (Backward compatibility)
-        const urlParams = new URLSearchParams(window.location.search);
-        const tab = urlParams.get("tab");
+        let urlParams;
+        if (!window.history.replaceState) {
+            urlParams = new URLSearchParams(window.location.hash.replace("#", ""));
+        } else {
+            urlParams = new URLSearchParams(window.location.search);
+        }
         // Highlight the respective tab
+        const tab = urlParams.get("tab");
         loadContent(tab || "overview");
         tabs.forEach(t => {
             if (t.getAttribute("data-tab-id") === tab) {
