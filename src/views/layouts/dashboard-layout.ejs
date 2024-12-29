@@ -99,7 +99,8 @@
 
     async function loadContent(tab) {
         const content = document.getElementById("content");
-        // Backward compatibility (TODO: IDK much about this right now, need to do some research)
+        // Backward compatibility
+        // TODO: IDK much about this right now, need to do some research
         if (window.history.replaceState) {
             window.history.replaceState(null, null, `/u/dashboard?tab=${tab}`);
         } else {
@@ -110,6 +111,7 @@
 
     // Load the selected tab
     (function () {
+        // TODO: Also check for hash (Backward compatibility)
         const urlParams = new URLSearchParams(window.location.search);
         const tab = urlParams.get("tab");
         // Highlight the respective tab
