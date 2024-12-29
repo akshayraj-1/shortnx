@@ -1,7 +1,13 @@
-<section class="container relative flex flex-col gap-5 px-6 sm:px-9 py-8 size-full">
+<section class="container relative flex flex-col gap-1 px-6 sm:px-9 py-8 size-full">
     <h1 class="text-3xl sm:text-3xltext-textPrimary font-semibold">
         Overview
     </h1>
+
+    <div class="flex w-full p-8 mt-4 bg-colorSurface border border-slate-200 rounded-xl shadow-card-soft">
+        <h2>Shorten your link</h2>
+
+    </div>
+
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 grid-flow-row gap-5 mt-5 w-full">
        <% ["total_links", "total_clicks", "total_page_views"].forEach(option => { %>
            <div class="flex p-6 bg-colorSurface border border-slate-200 rounded-xl shadow-card-soft">
@@ -15,10 +21,6 @@
                </div>
            </div>
       <% }) %>
-    </div>
-    <div class="flex w-full p-8 mt-4 bg-colorSurface border border-slate-200 rounded-xl shadow-card-soft">
-        <h2>Shorten your link</h2>
-
     </div>
     <div class="flex flex-col p-8 mt-4 w-full bg-colorSurface border border-slate-200 rounded-xl shadow-card-soft">
         <h2 class="text-xl sm:text-2xl text-textPrimary font-semibold">Your recent links <i class="icon-info ms-1 text-base text-slate-400 cursor-pointer"></i></h2>
@@ -34,7 +36,13 @@
             <div class="flex flex-col items-center justify-center gap-2 mt-3 py-16">
                 <img class="h-44 w-full object-contain select-none" draggable="false" src="/images/links_cards.svg" alt="No results">
                 <p class="text-base sm:text-[1.1rem] text-textPrimary font-semibold">Nothing to show</p>
-                <p class="text-sm text-center text-slate-400 max-w-sm">There are no links to show at the moment. You can create a new link to see the results.</p>
+                <p class="text-sm text-center text-slate-400 max-w-[320px]">There are no links to show at the moment. Just create a new link to get started.</p>
+                <%- include("../../partials/Button.ejs", {
+                    btnType: "link",
+                    btnHref: "/u/dashboard/?tab=links&action=new",
+                    btnChildren: "Create a link",
+                    btnClassnames: "mt-3.5 min-w-40"
+                }) %>
             </div>
         <% } %>
     </div>

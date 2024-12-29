@@ -101,21 +101,21 @@
 </section>
 
 <%# CTA %>
-<section class="flex justify-center py-24 page-padding w-full bg-colorSurfaceSecondary">
-    <div class="flex flex-col sm:flex-row justify-center items-center gap-x-10 gap-y-6 px-8 sm:px-16 py-14 sm:py-20 text-white max-w-screen-lg w-full bg-[#0a1129] rounded-3xl shadow-black/10 shadow-sm">
-        <div class="flex-1 flex-col items-center justify-center sm:justify-start">
-            <h2 class="text-2xl sm:text-4xl text-center sm:text-start font-semibold">Get started with Shortnx.</h2>
-            <p class="mt-2.5 text-[0.9rem] text-center sm:text-start text-white/80">Boost your online presence and grow your business with our easy-to-use link shortener.</p>
-        </div>
+<section class="container flex justify-center py-14 md:px-24 lg:px-28 w-full">
+    <div class="flex flex-col justify-center items-center gap-7 px-8 sm:px-20 md:px-24 py-14 sm:py-20 text-white max-w-screen-lg w-full bg-[#0a1129] md:rounded-3xl shadow-black/10 shadow-sm">
+        <h2 class="text-xl sm:text-3xl md:text-4xl text-center text-white font-medium w-full max-w-[48rem]">
+            Ready to boost your online presence and grow your business with our link shortener?
+        </h2>
         <%- include("../partials/Button.ejs", {
             btnType: "link",
             btnVariant: "primary",
-            btnClassnames: "min-w-36 w-full sm:w-auto",
+            btnClassnames: "min-w-40",
             btnChildren: "Sign Up",
             btnHref: "/auth/signup"
         }) -%>
     </div>
 </section>
+
 <%- include("../partials/CookieConsent.ejs") %>
 
 <% block("scripts").append(`
