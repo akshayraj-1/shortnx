@@ -23,9 +23,10 @@ const app = express();
 // Middlewares
 app.use(express.static(path.join(__dirname, "../public")));
 app.use(express.static(path.join(__dirname, "components")));
-// extended -> true (parse with qs lib: can parse nested objects);
-// extended -> false (parse with querystring lib: cannot parse nested objects)
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({
+    extended: true // parse with qs lib: can parse nested objects
+    // extended: false // parse with qs lib: can't parse nested objects
+}));
 app.use(express.json());
 app.use(cookieParser());
 app.use(session({
@@ -33,6 +34,8 @@ app.use(session({
     saveUninitialized: false, // true -> session will be created even if there is no data being stored
     secret: process.env.SESSION_SECRET,
     store: MongoStore.create({
+        // FIXME: Share the same client instance with the express-session middleware
+        // Right now we are creating a separate client instance
         mongoUrl: process.env.MONGO_URI,
         dbName: "shortnx",
         autoRemove: "interval",

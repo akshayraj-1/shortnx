@@ -35,6 +35,15 @@ html, body {
     hover:bg-textSecondary/40;
 }
 
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
 .page-padding {
     @apply
     px-6
@@ -74,26 +83,20 @@ html, body {
 
 .modal-backdrop {
     @apply
-    fixed z-50 top-0 left-0
-    justify-center items-center
+    fixed z-50 inset-0
+    flex justify-center items-center
     px-6 w-screen h-screen
-    bg-black/60;
+    backdrop-blur-md
+    bg-black bg-opacity-50;
 }
 
-.toast-info {
+.sidebar-container-backdrop {
     @apply
-    text-textPrimary
-    bg-colorBackground ;
-}
-.toast-error {
-    @apply
-    text-white
-    bg-red-500;
-}
-.toast-success {
-    @apply
-    text-white
-    bg-green-600;
+    fixed z-50 inset-0
+    flex justify-start items-start
+    w-screen h-screen
+    backdrop-blur-md
+    bg-black bg-opacity-50;
 }
 
 .label-or {
@@ -114,30 +117,20 @@ html, body {
     relative
     flex items-center
     gap-2.5
-    py-3.5 px-3.5;
+    py-3 px-3.5
+    rounded-lg;
 }
 
 .tab-inactive {
     @apply
     text-textSecondary
-    hover:bg-colorSurfaceSecondary
-    hover:rounded-lg;
+    hover:bg-[#ededed];
 }
 
 .tab-active {
     @apply
     text-colorPrimary
-    bg-colorSurfaceSecondary
-    rounded-lg;
-}
-
-.no-scrollbar::-webkit-scrollbar {
-    display: none;
-}
-
-.no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+    bg-colorPrimary/5;
 }
 
 .gsap-fade-in-up {

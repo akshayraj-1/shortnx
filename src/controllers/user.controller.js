@@ -1,10 +1,10 @@
 const { validateAuthUser } = require("../middlewares/auth.middleware");
 
 
-const getDashboard = [validateAuthUser, (req, res, next) => {
+const getDashboard = [validateAuthUser, (req, res) => {
     const query = req.query;
     if (!query.tab) {
-        return res.redirect("/u/dashboard/?tab=overview");
+        return res.redirect("/u/dashboard/?tab=links");
     }
     res.render("layouts/dashboard-layout.ejs", { title: "Shortnx - Dashboard" });
 }];
@@ -12,9 +12,6 @@ const getDashboard = [validateAuthUser, (req, res, next) => {
 const getTabContent = [validateAuthUser, async (req, res) => {
     const { tab } = req.params;
     switch (tab.toLowerCase()) {
-        case "overview":
-            res.render("pages/dashboard/overview.ejs");
-            break;
         case "analytics":
             res.render("pages/dashboard/analytics.ejs");
             break;

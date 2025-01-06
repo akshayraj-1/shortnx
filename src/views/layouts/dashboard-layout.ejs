@@ -12,76 +12,72 @@
     <title><%= title || "Shortnx - URL Shortener" %></title>
 </head>
 <body>
-<%# Navbar %>
-<nav class="flex justify-between items-center px-6 py-5">
-    <a href="/">
-        <img class="sm:hidden size-9 sm:size-10" src="/images/icon.svg" alt="logo">
-        <img class="hidden sm:flex h-6 md:h-7 object-contain" src="/images/logo.svg" alt="logo">
-    </a>
-    <div class="flex items-center gap-5">
-        <button class="relative flex justify-center items-center size-8 text-textSecondary border border-slate-200 rounded-full">
-            <i class="icon-bell text-[1.3rem] text-slate-400"></i>
-        </button>
-        <button class="flex items-center gap-2 cursor-pointer">
-            <img class="size-8 object-cover rounded-full" alt="<%= user.name %>" src="<%= user.picture %>">
-            <span class="hidden sm:block text-sm text-textPrimary"><%= user.name %></span>
-            <i class="icon-caret-down-md text-textSecondary"></i>
-        </button>
-    </div>
+
+<nav class="sticky sm:hidden top-0 left-0 flex items-center justify-between px-6 py-3 w-full bg-[#f5f5f5]">
+    <i id="btnToggleMenu" class="icon-menu-alt-04 text-2xl text-textPrimary cursor-pointer"></i>
+    <img class="size-7 object-cover rounded-full cursor-pointer" alt="<%= user.name %>" src="<%= user.picture %>">
 </nav>
 
-<div class="flex h-screen w-screen overflow-hidden">
+<div class="relative flex h-screen w-screen bg-[#f5f5f5] overflow-hidden">
 
     <%# Sidebar %>
-    <div class="flex flex-col gap-2 pt-6 pb-5 px-3 sm:min-w-[14rem]">
-        <% var tabs = [
-            {
-                id: "overview",
-                active: true,
-                icon: "icon-apps",
-                label: "Overview"
-            },
-            {
-                id: "analytics",
-                active: false,
-                icon: "icon-chart-line",
-                label: "Analytics"
-            },
-            {
-                id: "links",
-                active: false,
-                icon: "icon-link-horizontal1",
-                label: "Links"
-            },
-            {
-                id: "pages",
-                active: false,
-                icon: "icon-file",
-                label: "Pages"
-            },
-            {
-                id: "settings",
-                active: false,
-                icon: "icon-settings",
-                label: "Settings"
-            }
-        ] %>
-        <% tabs.forEach(tab => { %>
-            <button data-tab-id="<%= tab.id %>" class="tab-default <% if (tab.active) { %> tab-active <% } else { %> tab-inactive <% } %>">
-                <i class="<%= tab.icon %>"></i>
-                <span class="hidden sm:block text-[0.9rem] font-medium"><%= tab.label %></span>
-            </button>
-        <% }); %>
-    </div>
+    <div id="sidebar-container" class="hidden sm:block">
+        <div id="sidebar" class="flex flex-col px-3 sm:px-4 h-full min-w-[15rem] bg-[#f5f5f5]">
 
-    <%# Content %>
-    <div id="content" class="relative flex-1 h-full bg-[#fff] overflow-auto sm:border-t sm:border-l sm:border-slate-300 sm:rounded-2xl">
+            <div class="flex justify-between items-center py-4">
+                <a href="/">
+                    <img class="flex h-5 object-contain" src="/images/logo.svg" alt="logo">
+                </a>
+                <img class="size-7 object-cover rounded-full cursor-pointer" alt="<%= user.name %>" src="<%= user.picture %>">
+            </div>
+
+            <div class="flex flex-col gap-1.5 mt-8 overflow-auto">
+                <% var tabs = [
+                    {
+                        id: "links",
+                        active: true,
+                        icon: "icon-link-horizontal1",
+                        label: "Links"
+                    },
+                    {
+                        id: "pages",
+                        active: false,
+                        icon: "icon-file",
+                        label: "Pages"
+                    },
+                    {
+                        id: "analytics",
+                        active: false,
+                        icon: "icon-chart-line",
+                        label: "Analytics"
+                    },
+                    {
+                        id: "settings",
+                        active: false,
+                        icon: "icon-settings",
+                        label: "Settings"
+                    }
+                ] %>
+                <% tabs.forEach(tab => { %>
+                    <button data-tab-id="<%= tab.id %>" class="tab-default <% if (tab.active) { %> tab-active <% } else { %> tab-inactive <% } %>">
+                        <i class="<%= tab.icon %>"></i>
+                        <span class="text-[0.9rem] font-medium"><%= tab.label %></span>
+                    </button>
+                <% }); %>
+            </div>
+
+        </div>
+    </div>
+    <%# Tab Content %>
+    <div id="content" class="relative flex-1 h-full mt-2 bg-colorBackground overflow-auto sm:border-t sm:border-l sm:border-slate-200 sm:rounded-2xl">
     </div>
 
 </div>
 <script src='/Toast.js'></script>
 <script>
     const tabs = document.querySelectorAll(".tab-default");
+    const sidebarContainer = document.getElementById("sidebar-container");
+    const btnToggleMenu = document.getElementById("btnToggleMenu");
 
     tabs.forEach(tab => {
         tab.addEventListener("click", () => {
@@ -103,6 +99,24 @@
         });
     });
 
+    btnToggleMenu.addEventListener("click", () => {
+        sidebarContainer.classList.remove("hidden");
+        sidebarContainer.classList.add("sidebar-container-backdrop");
+
+        sidebarContainer.addEventListener("click", () => {
+            sidebarContainer.classList.remove("sidebar-container-backdrop");
+            sidebarContainer.classList.add("hidden");
+        });
+
+    });
+
+    window.onresize = () => {
+        if (window.innerWidth > 640) {
+            sidebarContainer.classList.remove("sidebar-container-backdrop");
+            sidebarContainer.classList.add("hidden");
+        }
+    }
+
     async function loadContent(tab) {
         const content = document.getElementById("content");
         content.innerHTML = await fetch(`/u/tabs/${tab}`).then(res => res.text());
@@ -118,7 +132,7 @@
         }
         // Highlight the respective tab
         const tab = urlParams.get("tab");
-        loadContent(tab || "overview");
+        loadContent(tab || "links");
         tabs.forEach(t => {
             if (t.getAttribute("data-tab-id") === tab) {
                 t.classList.remove("tab-inactive");
