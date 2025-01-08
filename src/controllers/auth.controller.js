@@ -10,14 +10,14 @@ const UserModel = require("../models/user.model");
 async function getLogin (req, res) {
     await isAuthenticated(req, res)
         ? res.redirect("/u/dashboard")
-        : res.render("pages/login", { title: "Login - Shortnx" });
+        : res.render("pages/auth/login", { title: "Login - Shortnx" });
 }
 
 // Render the signup page
 async function getSignup (req, res) {
     await isAuthenticated(req, res)
         ? res.redirect("/u/dashboard")
-        : res.render("pages/signup", { title: "Sign Up - Shortnx" });
+        : res.render("pages/auth/signup", { title: "Sign Up - Shortnx" });
 }
 
 // Get the Google auth URL
