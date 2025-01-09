@@ -61,11 +61,13 @@ class ShareModal {
             window.open(`mailto:?subject=Shorten URL&body=${this.#shortUrl.textContent}`);
         });
     }
+
+    // TODO: Convert the dialog the bottom sheet style for mobile devices
     showModal(url) {
         this.#shortUrl.textContent = url;
         this.#backdrop.classList.remove("animate-fade-out");
         this.#backdrop.classList.remove("hidden");
-        this.#backdrop.classList.add("flex");
+        this.#backdrop.classList.add("flex", "justify-center", "items-center");
         this.#container.classList.remove("animate-fade-out");
         this.#container.classList.add("animate-fade-in");
         document.body.style.overflow = "hidden";
@@ -75,7 +77,7 @@ class ShareModal {
         this.#container.classList.add("animate-fade-out");
         this.#container.classList.add("animate-fade-out");
         setTimeout(() => {
-            this.#backdrop.classList.remove("flex");
+            this.#backdrop.classList.remove("flex", "justify-center", "items-center");
             this.#backdrop.classList.add("hidden");
             document.body.style.overflow = "auto";
         }, 300);
