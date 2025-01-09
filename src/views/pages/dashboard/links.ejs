@@ -2,9 +2,9 @@
 
 <section class="overflow-auto px-6 md:px-9 py-5 sm:py-10 h-full">
     <h1 class="text-xl sm:text-2xl font-medium">Links</h1>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-8 pb-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-8 pb-5">
 
-        <div class="flex items-center gap-2.5 px-3.5 py-3 w-full md:max-w-sm bg-[#fafafa] border border-slate-300 focus-within:ring-1 focus-within:ring-slate-300 rounded-xl">
+        <div class="flex items-center gap-2.5 px-3.5 py-3 w-full md:max-w-sm border border-slate-300 focus-within:ring-1 focus-within:ring-slate-300 rounded-xl">
             <i class="icon-search-magnifying-glass"></i>
             <input id="input-search-links" class="text-[0.9rem] text-textPrimary bg-transparent w-full outline-none" type="text" placeholder="Search for links">
         </div>
@@ -13,9 +13,14 @@
             <%- include("../../partials/Button.ejs", {
                 btnId: "btnCreateLink1",
                 btnClassnames: "flex-1 md:flex-none flex justify-center items-center gap-1",
-                btnChildren: "<i class='icon-add-plus text-base'></i>Create New"
+                btnChildren: "<i class='icon-add-plus text-base'></i>Create link"
             }) %>
-            <i class="icon-filter p-3 border border-slate-300 rounded-md cursor-pointer hover:bg-[#fafafa]"></i>
+            <%- include("../../partials/Button.ejs", {
+                btnId: "btnSortLinks",
+                btnVariant: "secondary",
+                btnClassnames: "flex-1 md:flex-none flex justify-center items-center gap-1 border-slate-300 text-textSecondary hover:text-textPrimary hover:border-slate-400",
+                btnChildren: "<i class='icon-filter text-base'></i>"
+            }) %>
         </div>
     </div>
     <% if(user?.links?.length > 0) { %>
@@ -27,9 +32,9 @@
             <% } %>
         </div>
     <% } else { %>
-        <div class="flex flex-col items-center justify-center gap-2 mt-3 py-10 size-full border border-slate-200 rounded-2xl">
+        <div class="flex flex-col items-center justify-center gap-1.5 mt-3 px-6 py-20 sm:py-24 size-full max-h-max border border-slate-200 rounded-2xl">
             <img class="h-44 w-full object-contain select-none" draggable="false" src="/images/links_cards.svg" alt="No results">
-            <p class="text-base sm:text-[1.1rem] text-textPrimary font-semibold">No links found</p>
+            <p class="text-base  text-textPrimary font-semibold">No links found</p>
             <p class="text-sm text-center text-slate-400 max-w-[320px]">There are no links to show at the moment. Just create a new link to get started.</p>
         </div>
     <% } %>
