@@ -35,15 +35,6 @@ html, body {
     hover:bg-textSecondary/40;
 }
 
-.no-scrollbar::-webkit-scrollbar {
-    display: none;
-}
-
-.no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
-
 .page-padding {
     @apply
     px-6
@@ -71,29 +62,9 @@ html, body {
     before:opacity-[0.06] before:blur-2xl;
 }
 
-.bg-gradient-blur-reverse {
-    @apply
-    before:absolute
-    before:left-0 before:top-6 before:-z-[1]
-    before:size-full
-    before:bg-[url('/images/blur_reverse.webp')]
-    before:bg-no-repeat before:bg-left-top before:bg-contain
-    before:opacity-[0.06] before:blur-2xl;
-}
-
 .modal-backdrop {
     @apply
     fixed z-50 inset-0
-    justify-center items-center
-    px-6 w-screen h-screen
-    backdrop-blur-md
-    bg-black bg-opacity-50;
-}
-
-.sidebar-container-backdrop {
-    @apply
-    fixed z-50 inset-0
-    flex justify-start items-start
     w-screen h-screen
     backdrop-blur-md
     bg-black bg-opacity-50;
