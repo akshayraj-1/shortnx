@@ -3,12 +3,14 @@
   "version": "1.0.0",
   "main": "src/index.js",
   "scripts": {
-    "dev": "concurrently \"set NODE_ENV=development && node src/index.js\" \"npm run watch\"",
-    "start": "set NODE_ENV=production && node src/index.js",
-    "start2": "concurrently \"set NODE_ENV=production && node src/index.js\" \"npm run tailwind\"",
-    "build": "postcss src/views/input.css -o public/css/output.css",
-    "watch": "postcss src/views/input.css -o public/css/output.css --watch",
-    "tailwind": "npx tailwindcss -i src/views/input.css -o public/css/output.css --watch"
+    "dev": "concurrently \"set NODE_ENV=development && node src/index.js\" \"npm run watch:css\" \"npm run watch:js\"",
+    "dev2": "concurrently \"set NODE_ENV=production && node src/index.js\" \"npm run watch:css\" \"webpack --mode production --watch",
+    "start": "npm run vercel-build && set NODE_ENV=production && node src/index.js",
+    "build:js": "webpack --mode production",
+    "watch:js": "webpack --mode development --watch",
+    "build:css": "postcss src/views/input.css -o public/css/output.css",
+    "watch:css": "postcss src/views/input.css -o public/css/output.css --watch",
+    "vercel-build": "npm run build:js && npm run build:css"
   },
   "author": "",
   "license": "ISC",
@@ -29,12 +31,18 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",
+    "chokidar": "^4.0.3",
     "concurrently": "^9.0.1",
     "cssnano": "^7.0.6",
+    "glob": "^11.0.0",
     "nodemon": "^3.1.7",
+    "path": "^0.12.7",
     "postcss": "^8.4.49",
     "postcss-cli": "^11.0.0",
     "postcss-nested": "^7.0.2",
-    "tailwindcss": "^3.4.16"
+    "tailwindcss": "^3.4.16",
+    "terser-webpack-plugin": "^5.3.11",
+    "webpack": "^5.97.1",
+    "webpack-cli": "^6.0.1"
   }
 }
