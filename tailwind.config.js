@@ -1,7 +1,24 @@
 /** @type {import('tailwindcss').Config} */
+const plugin = require("tailwindcss/plugin");
+
 module.exports = {
   content: ["./src/**/*.{html,js,ejs}", "./public/**/*.{html,js,ejs}"],
-  plugins: [],
+  plugins: [
+      plugin(function ({ addUtilities }) {
+          addUtilities({
+            ".no-scrollbar": {
+                "-ms-overflow-style": "none",
+                "scrollbar-width": "none",
+            },
+            ".no-scrollbar::-webkit-scrollbar": {
+                display: "none",
+            },
+            ".rotate-y-180": {
+              transform: "rotateY(180deg)",
+            }
+          });
+      })
+  ],
   theme: {
     container: {
       center: true,
