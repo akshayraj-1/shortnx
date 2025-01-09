@@ -22,13 +22,13 @@
 
     <%# Sidebar %>
     <div id="sidebar-container" class="hidden sm:block">
-        <div id="sidebar" class="flex flex-col px-3 sm:px-4 h-full min-w-[15rem] bg-[#f5f5f5]">
+        <div id="sidebar" class="flex flex-col px-3 sm:px-4 h-full min-w-[15rem] bg-[#f5f5f5] transition-transform duration-200 ease-in-out">
 
             <div class="flex justify-between items-center py-4">
                 <a href="/">
                     <img class="flex h-5 object-contain" src="/images/logo.svg" alt="logo">
                 </a>
-                <img class="size-7 object-cover rounded-full cursor-pointer" alt="<%= user.name %>" src="<%= user.picture %>">
+                <img class="hidden sm:block size-7 object-cover rounded-full cursor-pointer" alt="<%= user.name %>" src="<%= user.picture %>">
             </div>
 
             <div class="flex flex-col gap-1.5 mt-8 overflow-auto">
@@ -76,6 +76,7 @@
 <script src='/Toast.js'></script>
 <script>
     const tabs = document.querySelectorAll(".tab-default");
+    const sidebar = document.getElementById("sidebar");
     const sidebarContainer = document.getElementById("sidebar-container");
     const btnToggleMenu = document.getElementById("btnToggleMenu");
 
@@ -99,21 +100,29 @@
         });
     });
 
-    btnToggleMenu.addEventListener("click", () => {
-        sidebarContainer.classList.remove("hidden");
-        sidebarContainer.classList.add("sidebar-container-backdrop");
-
-        sidebarContainer.addEventListener("click", () => {
-            sidebarContainer.classList.remove("sidebar-container-backdrop");
-            sidebarContainer.classList.add("hidden");
-        });
-
-    });
+    btnToggleMenu.addEventListener("click", () => toggleSidebar());
+    sidebarContainer.addEventListener("click", () => toggleSidebar());
 
     window.onresize = () => {
         if (window.innerWidth > 640) {
-            sidebarContainer.classList.remove("sidebar-container-backdrop");
+            sidebarContainer.classList.remove("modal-backdrop", "flex", "justify-start");
             sidebarContainer.classList.add("hidden");
+        }
+    }
+
+    function toggleSidebar() {
+        if (sidebarContainer.classList.contains("hidden")) {
+            sidebar.style.transform = "translateX(-100%)";
+            sidebarContainer.classList.remove("hidden");
+            sidebarContainer.classList.add("modal-backdrop", "flex", "justify-start");
+            setTimeout(() => sidebar.style.transform = "translateX(0)", 200);
+        } else {
+            sidebar.style.transform = "translateX(-100%)";
+            setTimeout(() => {
+                sidebarContainer.classList.remove("modal-backdrop", "flex", "justify-start");
+                sidebarContainer.classList.add("hidden");
+                sidebar.style.transform = "translateX(0)";
+            }, 200);
         }
     }
 
