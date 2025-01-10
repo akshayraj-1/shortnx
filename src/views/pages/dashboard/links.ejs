@@ -4,7 +4,7 @@
     <h1 class="text-xl sm:text-2xl font-medium">Links</h1>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-8 pb-5">
 
-        <div class="flex items-center gap-2.5 px-3.5 py-3 w-full md:max-w-sm border border-slate-300 focus-within:ring-1 focus-within:ring-slate-300 rounded-xl">
+        <div class="flex items-center gap-2.5 px-3.5 py-3 w-full md:max-w-sm border border-slate-300 focus-within:ring-1 focus-within:ring-slate-300 rounded-lg">
             <i class="icon-search-magnifying-glass"></i>
             <input id="input-search-links" class="text-[0.9rem] text-textPrimary bg-transparent w-full outline-none" type="text" placeholder="Search for links">
         </div>
@@ -32,10 +32,11 @@
             <% } %>
         </div>
     <% } else { %>
-        <div class="flex flex-col items-center justify-center gap-1.5 mt-3 px-6 py-20 sm:py-24 size-full max-h-max border border-slate-200 rounded-2xl">
+        <div class="flex flex-col items-center justify-center gap-1.5 mt-3 px-6 size-full min-h-[65vh] max-h-max border border-slate-200 rounded-2xl">
             <img class="h-44 w-full object-contain select-none" draggable="false" src="/images/links_cards.svg" alt="No results">
             <p class="text-base  text-textPrimary font-semibold">No links found</p>
             <p class="text-sm text-center text-slate-400 max-w-[320px]">There are no links to show at the moment. Just create a new link to get started.</p>
         </div>
     <% } %>
 </section>
+<script src="/js/dashboard/links.min.js"></script>

@@ -3,6 +3,8 @@ const sidebar = document.getElementById("sidebar");
 const sidebarContainer = document.getElementById("sidebar-container");
 const btnToggleMenu = document.getElementById("btnToggleMenu");
 
+let abortController = null;
+
 tabs.forEach(tab => {
     tab.addEventListener("click", () => {
         if (!tab.classList.contains("tab-active") && window.history.replaceState) {
@@ -51,8 +53,25 @@ function toggleSidebar() {
 }
 
 async function loadContent(tab) {
+
+    // Cancel the previous request
+    // TODO: Learn more about AbortController API
+    if (abortController) abortController.abort();
+    abortController = new AbortController();
+    const signal = abortController.signal;
+
     const content = document.getElementById("content");
-    content.innerHTML = await fetch(`/u/tabs/${tab}`).then(res => res.text());
+    content.innerHTML = "";
+    try {
+        const response = await fetch(`/u/tabs/${tab}`, { signal });
+        const data = await response.text();
+        // This is one of the way to load the html context into the DOM by invoking the parser to parse the created range
+        // so that the js can also be executed for the dynamic content
+        content.innerHTML = "";
+        content.append(document.createRange().createContextualFragment(data));
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 // Load the selected tab
