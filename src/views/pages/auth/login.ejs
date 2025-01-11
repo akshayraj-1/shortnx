@@ -35,7 +35,7 @@
         }) -%>
     </div>
     <%- include('../../partials/Button.ejs', {
-        btnId: "btnLogin",
+        btnId: "btn-login",
         btnClassnames: "text-base mt-7 w-full",
         btnChildren: "Login"
     }) -%>
@@ -63,7 +63,7 @@
 <script>
     const email = document.getElementById("email");
     const password = document.getElementById("password");
-    const btnLogin = document.getElementById("btnLogin");
+    const btnLogin = document.getElementById("btn-login");
     const toast = new Toast();
     const loadingModal = new LoadingModal();
 
