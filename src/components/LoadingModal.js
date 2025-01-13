@@ -6,10 +6,17 @@
 class LoadingModal {
     #backdrop;
     #loader;
+    #styles = {
+        backdrop: {
+            default: ["modal-backdrop", "hidden"],
+            show: ["animate-fade-in", "flex", "justify-center", "items-center"],
+            hide: ["animate-fade-out", "hidden"],
+        },
+    };
 
     constructor() {
         this.#backdrop = document.createElement("div");
-        this.#backdrop.className = `modal-backdrop hidden`;
+        this.#backdrop.className = this.#styles.backdrop.default.join(" ");
         this.#loader = document.createElement("div");
         this.#loader.innerHTML = '<div class="loader"></div>';
         this.#backdrop.appendChild(this.#loader);
@@ -17,17 +24,15 @@ class LoadingModal {
     }
 
     show() {
-        this.#backdrop.classList.remove("hidden", "animate-fade-out");
-        this.#backdrop.classList.add("animate-fade-in", "flex", "justify-center", "items-center");
+        this.#backdrop.classList.remove(...this.#styles.backdrop.hide);
+        this.#backdrop.classList.add(...this.#styles.backdrop.show);
         document.body.style.overflow = "hidden";
     }
 
     hide() {
-        this.#backdrop.classList.remove("animate-fade-in");
-        this.#backdrop.classList.add("animate-fade-out");
         setTimeout(() => {
-            this.#backdrop.classList.remove("flex", "justify-center", "items-center");
-            this.#backdrop.classList.add("hidden");
+            this.#backdrop.classList.remove(...this.#styles.backdrop.show);
+            this.#backdrop.classList.add(...this.#styles.backdrop.hide);
             document.body.style.overflow = "auto";
         }, 300);
     }
