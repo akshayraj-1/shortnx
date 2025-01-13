@@ -11,7 +11,7 @@ class ShareModal {
             hide: ["animate-fade-out", "hidden"],
         },
         container: {
-            default: ["flex", "flex-col", "w-full", "max-w-[400px]", "p-6", "md:p-8", "bg-colorSurface", "rounded-xl"],
+            default: ["flex", "flex-col", "w-full", "max-w-[400px]", "p-6", "md:p-8", "bg-colorSurface", "rounded-xl", "outline-none"],
             show: ["animate-pop-up"],
             hide: ["animate-pop-down"],
         },
@@ -36,10 +36,10 @@ class ShareModal {
         this.#backdrop = document.createElement("div");
         this.#backdrop.className = this.#styles.backdrop.default.join(" ");
         this.#backdrop.innerHTML = `
-            <div id="modal-container" class="${this.#styles.container.default.join(" ")}">
+            <div id="modal-container" aria-hidden="true" class="${this.#styles.container.default.join(" ")}">
                 <div class="flex items-center justify-between">
                     <h3 class="${this.#styles.title.default.join(" ")}">Your link is ready! 🎉</h3>
-                    <i id="modal-share-btn-close" class="${this.#styles.btnClose.default.join(" ")}"></i>
+                    <button id="modal-share-btn-close" class="${this.#styles.btnClose.default.join(" ")}"></button>
                 </div>
                 <div class="flex items-center justify-evenly mt-8 gap-3">
                     <button class="${this.#styles.btnSocial.default.join(" ")}" data-action="whatsapp" title="Share on WhatsApp">
@@ -54,7 +54,7 @@ class ShareModal {
                 </div>
                 <div class="relative mt-8 mb-4 px-4 py-2.5 font-medium bg-colorSurfaceSecondary rounded-md ring-1 ring-inset ring-slate-300 overflow-hidden">
                     <span id="short-url" class="${this.#styles.shortUrl.default.join(" ")}"></span>
-                    <i id="modal-share-btn-copy" class="${this.#styles.btnCopy.default.join(" ")}" title="Copy URL" aria-label="Copy URL"></i>
+                    <button id="modal-share-btn-copy" class="${this.#styles.btnCopy.default.join(" ")}" title="Copy URL" aria-label="Copy URL"></button>
                 </div>      
             </div>
         `;
@@ -105,14 +105,23 @@ class ShareModal {
     // TODO: Convert the dialog the bottom sheet style for mobile devices
     showModal(url) {
         this.#shortUrl.textContent = url;
+        this.#backdrop.setAttribute("aria-hidden", "false");
+        this.#container.setAttribute("aria-modal", "true");
+        this.#container.setAttribute("role", "dialog");
+        this.#container.setAttribute("tabindex", "0");
         this.#backdrop.classList.remove(...this.#styles.backdrop.hide);
         this.#backdrop.classList.add(...this.#styles.backdrop.show);
         this.#container.classList.remove(...this.#styles.container.hide);
         this.#container.classList.add(...this.#styles.container.show);
+        this.#container.focus();
         document.body.style.overflow = "hidden";
         document.addEventListener("keydown", this.#closeOnEscape);
     }
     hideModal() {
+        this.#backdrop.setAttribute("aria-hidden", "true");
+        this.#container.setAttribute("aria-modal", "false");
+        this.#container.setAttribute("role", "dialog");
+        this.#container.setAttribute("tabindex", "-1");
         this.#container.classList.remove(...this.#styles.container.show);
         this.#container.classList.add(...this.#styles.container.hide);
         setTimeout(() => {
