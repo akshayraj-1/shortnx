@@ -157,6 +157,7 @@
                 return;
             }
             inputUrl.value = "";
+            inputUrl.blur();
             modal.showModal(data.data.shortenUrl);
 
         } catch (error) {

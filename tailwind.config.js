@@ -63,10 +63,20 @@ module.exports = {
           "0%": { transform: "translateY(0)" },
           "100%": { transform: "translateY(100%)" },
         },
+        popUp: {
+          "0%": { opacity: "0", transform: "scale(0.95)" },
+          "100%": { opacity: "1", transform: "scale(1)" },
+        },
+        popDown: {
+          "0%": { opacity: "1", transform: "scale(1)" },
+          "100%": { opacity: "0", transform: "scale(0.95)" },
+        },
       },
       animation: {
         "fade-in": "fadeIn 0.2s ease-out forwards",
         "fade-out": "fadeOut 0.2s ease-in forwards",
+        "pop-up": "popUp 0.2s ease-out forwards",
+        "pop-down": "popDown 0.2s ease-in forwards",
         "slide-in-up": "slideInUp 0.2s ease-out forwards",
         "slide-out-down": "slideOutDown 0.2s ease-in forwards",
       },
