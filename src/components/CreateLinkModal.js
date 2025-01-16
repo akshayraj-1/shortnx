@@ -1,6 +1,16 @@
 class CreateLinkModal {
     #backdrop;
     #modal;
+    #styles = {
+        backdrop: {
+            default: ["modal-backdrop", "hidden"],
+            show: ["animate-fade-in", "flex", "justify-center", "items-center"],
+            hide: ["animate-fade-out", "hidden"],
+        },
+        modal: {
+
+        }
+    }
 
     constructor() {
         this.#backdrop = document.createElement("div");

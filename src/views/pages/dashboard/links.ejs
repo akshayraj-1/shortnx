@@ -11,12 +11,12 @@
 
         <div class="flex items-center justify-end gap-2.5 ms-auto w-full">
             <%- include("../../partials/Button.ejs", {
-                btnId: "btnCreateLink1",
+                btnId: "btn-create-link",
                 btnClassnames: "flex-1 md:flex-none flex justify-center items-center gap-1",
                 btnChildren: "<i class='icon-add-plus text-base'></i>Create link"
             }) %>
             <%- include("../../partials/Button.ejs", {
-                btnId: "btnSortLinks",
+                btnId: "btn-sort-links",
                 btnVariant: "secondary",
                 btnClassnames: "flex-1 md:flex-none flex justify-center items-center gap-1 border-slate-300 text-textSecondary hover:text-textPrimary hover:border-slate-400",
                 btnChildren: "<i class='icon-filter text-base'></i>"
@@ -39,4 +39,5 @@
         </div>
     <% } %>
 </section>
+<script src="/CreateLinkModal.js"></script>
 <script src="/js/dashboard/links.min.js"></script>
