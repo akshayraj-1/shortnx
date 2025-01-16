@@ -6,7 +6,7 @@ class ShareModal {
 
     #styles = {
         backdrop: {
-            default: ["modal-backdrop", "hidden"],
+            default: ["modal-backdrop", "hidden", "px-6"],
             show: ["animate-fade-in", "flex", "justify-center", "items-center"],
             hide: ["animate-fade-out", "hidden"],
         },
