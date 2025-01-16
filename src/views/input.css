@@ -122,8 +122,18 @@ html, body {
     bg-colorPrimary/5;
 }
 
+.input-default {
+    @apply
+    px-3 py-2.5
+    text-textPrimary bg-colorSurface
+    border border-slate-300 outline-none
+    rounded-lg
+    placeholder:text-[0.9rem]
+    focus:ring-1 focus:ring-slate-300;
+}
+
 .loader {
-    width: 38px;
+    width: 35px;
     aspect-ratio: 1;
     color: #fff;
     border-radius: 50%;

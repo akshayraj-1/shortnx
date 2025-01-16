@@ -15,6 +15,9 @@ module.exports = {
             },
             ".rotate-y-180": {
               transform: "rotateY(180deg)",
+            },
+            ".field-sizing-content": {
+              "field-sizing": "content",
             }
           });
       })
