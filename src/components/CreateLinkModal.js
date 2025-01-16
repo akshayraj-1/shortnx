@@ -31,7 +31,7 @@ class CreateLinkModal {
                             <i class="icon-link inline-block text-[15px] p-2.5 me-2 bg-gray-100 rounded-full"></i>
                             Create link
                         </h3>
-                        <button id="modal-link-btn-close" class="icon-close-md text-textPrimary"></button>
+                        <button id="modal-link-btn-close" class="icon-close-md text-[1.2rem] text-textPrimary"></button>
                     </div>
                     <div class="flex flex-col gap-4 mt-10">
                         <div class="flex flex-col gap-1.5">
