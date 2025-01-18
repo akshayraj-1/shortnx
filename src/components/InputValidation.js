@@ -56,7 +56,7 @@ class InputValidation {
         }
         // Add error
         input.classList.remove("focus:ring-1", "focus:ring-slate-300");
-        input.classList.add("ring-1", "ring-red-500");
+        input.classList.add("ring-1", "ring-red-500", "focus:ring-1", "focus:ring-red-500");
         input.focus();
         if (error) {
             error.textContent = message;

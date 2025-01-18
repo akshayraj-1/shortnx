@@ -8,16 +8,16 @@
         Please click on the link in the mail to verify your account.
         </p>
         <%- include("../partials/Button.ejs", {
-            btnId: "btn-resend",
-            btnClassnames: "w-full",
-            btnChildren: "Resend"
+            id: "btn-resend",
+            classNames: "w-full",
+            children: "Resend"
         }) -%>
         <%- include("../partials/Button.ejs", {
-            btnType: "link",
-            btnHref: "/u/dashboard",
-            btnVariant: "tertiary",
-            btnClassnames: "hover:before:w-0",
-            btnChildren: "I've verified my account"
+            type: "link",
+            href: "/user/dashboard",
+            variant: "tertiary",
+            classNames: "hover:before:w-0",
+            children: "I've verified my account"
         }) -%>
     </div>
 </section>

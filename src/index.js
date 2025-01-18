@@ -1,18 +1,19 @@
-// Importing modules
+// Importing Modules
 const express = require("express");
 const mongoose = require("mongoose");
 const MongoStore = require("connect-mongo");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
-const path = require("path");
+const path = require("node:path");
 const dotenv = require("dotenv");
 const ejsmate = require("ejs-mate");
 
-// Controllers
-const homeController = require("./controllers/home.controller");
-const authController = require("./controllers/auth.controller");
-const userController = require("./controllers/user.controller");
-const urlController = require("./controllers/url.controller");
+// Importing Routers
+const apiRouter = require("./routes/api.route");
+const defaultRouter = require("./routes/default.route");
+const authRouter = require("./routes/auth.route");
+const userRouter = require("./routes/user.route");
+const urlRouter = require("./routes/url.route");
 
 // Environment Variables
 dotenv.config({ path: path.join(__dirname, `../.env.${process.env.NODE_ENV?.trim()}`) });
@@ -50,39 +51,25 @@ app.engine("ejs", ejsmate);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-// Home routes
-app.get("/", homeController.getHome);
+// Routes Setup
 
-// Other Routes
-app.get("/cookie-policy", (req, res) => {
-    res.render("pages/legal/cookie-policy", { title: "Cookie Policy - Shortnx" });
-});
-app.get("/privacy-policy", (req, res) => {
-    res.render("pages/legal/privacy-policy", { title: "Privacy Policy - Shortnx" });
-});
-app.get("/terms-of-services", (req, res) => {
-    res.render("pages/legal/terms-of-services",  { title: "Terms of Services - Shortnx" });
-});
+// Subdomain Routing
+// I am using subdomain routing for the api routes
+app.use((req, res, next) => {
+    const hostname = req.hostname;
+    if (hostname.match(/^api/)) {
+        apiRouter(req, res, next);
+    } else {
+        next();
+    }
+})
+// Main Domain Routing
+app.use("/", defaultRouter);
+app.use("/auth/", authRouter);
+app.use("/user/", userRouter);
+app.use("/url/", urlRouter);
 
-// Auth routes
-// Could have used router for these kind of routes but why bother
-app.get("/auth/login", authController.getLogin);
-app.get("/auth/signup", authController.getSignup);
-app.get("/auth/google", authController.getGoogleAuth);
-app.post("/api/auth/login", authController.login);
-app.post("/api/auth/signup", authController.signUp);
-app.get("/api/auth/google/callback/", authController.googleAuth);
-
-// User routes
-app.get("/u/dashboard", userController.getDashboard);
-app.get("/u/tabs/:tab", userController.getTabContent);
-
-// Shorten URL routes
-app.post("/api/short-url/create", urlController.createShortenURL);
-app.get("/api/short-url/get/:userId", urlController.getShortenUrls);
-app.get("/:shortUrlId", urlController.getOriginalUrl);
-
-// 404
+// 404 Page
 app.use((req, res) => {
     res.status(404).render("pages/404", { title: "Page Not Found" });
 });

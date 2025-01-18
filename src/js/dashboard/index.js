@@ -1,7 +1,7 @@
 const tabs = document.querySelectorAll(".tab-default");
 const sidebar = document.getElementById("sidebar");
 const sidebarContainer = document.getElementById("sidebar-container");
-const btnToggleMenu = document.getElementById("btnToggleMenu");
+const btnToggleMenu = document.getElementById("btn-toggle-menu");
 
 let abortController = null;
 
@@ -16,7 +16,7 @@ tabs.forEach(tab => {
             tab.classList.add("tab-active");
             const tabId = tab.getAttribute("data-tab-id");
             if (window.history.replaceState) {
-                window.history.replaceState(null, null, `/u/dashboard?tab=${tabId}`);
+                window.history.replaceState(null, null, `/user/dashboard?tab=${tabId}`);
             } else {
                 window.location.hash = `tab=${tabId}`;
             }
@@ -63,7 +63,7 @@ async function loadContent(tab) {
     const content = document.getElementById("content");
     content.innerHTML = "";
     try {
-        const response = await fetch(`/u/tabs/${tab}`, { signal });
+        const response = await fetch(`/user/tabs/${tab}`, { signal });
         const data = await response.text();
         // This is one of the way to load the html context into the DOM by invoking the parser to parse the created range
         // so that the js can also be executed for the dynamic content

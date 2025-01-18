@@ -5,16 +5,16 @@
         <a href="/"><img class="h-6 md:h-7 object-contain select-none" draggable="false" src="/images/logo.svg" alt="logo"/></a>
         <div class="flex items-center gap-9">
             <%- include("./Button.ejs", {
-                btnType: "link",
-                btnVariant: "tertiary",
-                btnClassnames: "hidden sm:block font-medium",
-                btnChildren: "Login",
-                btnHref: "/auth/login"
+                type: "link",
+                variant: "tertiary",
+                classNames: "hidden sm:block font-medium",
+                children: "Login",
+                href: "/auth/login"
             }) -%>
             <%- include("./Button.ejs", {
-                btnType: "link",
-                btnChildren: '<span>Get Started <i class="icon-arrow-up-right-md opacity-90"></i></span>',
-                btnHref: "/auth/signup"
+                type: "link",
+                children: '<span>Get Started <i class="icon-arrow-up-right-md opacity-90"></i></span>',
+                href: "/auth/signup"
             }) -%>
         </div>
     </div>

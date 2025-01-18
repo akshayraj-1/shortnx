@@ -54,19 +54,19 @@
         </p>
         <div class="container grid grid-col-1 lg:grid-cols-3 gap-x-10 gap-y-8 place-items-center mt-20 w-full">
             <%- include("../partials/FeatureCard.ejs", {
-                cardIcon: "/images/feature_1.svg",
-                cardTitle: "Create",
-                cardDescription: "Create and manage your links with ease. Make it simple and effective for your audience."
+                icon: "/images/feature_1.svg",
+                title: "Create",
+                description: "Create and manage your links with ease. Make it simple and effective for your audience."
             }) -%>
             <%- include("../partials/FeatureCard.ejs", {
-                cardIcon: "/images/feature_2.svg",
-                cardTitle: "Track",
-                cardDescription: "Track and analyze your links in real-time. Get insights and make informed decisions."
+                icon: "/images/feature_2.svg",
+                title: "Track",
+                description: "Track and analyze your links in real-time. Get insights and make informed decisions."
             }) -%>
             <%- include("../partials/FeatureCard.ejs", {
-                cardIcon: "/images/feature_3.svg",
-                cardTitle: "Share",
-                cardDescription: "Share your links on popular platforms. Connect with your audience."
+                icon: "/images/feature_3.svg",
+                title: "Share",
+                description: "Share your links on popular platforms. Connect with your audience."
             }) -%>
         </div>
     </div>
@@ -107,11 +107,11 @@
             Ready to boost your online presence and grow your business with our link shortener?
         </h2>
         <%- include("../partials/Button.ejs", {
-            btnType: "link",
-            btnVariant: "primary",
-            btnClassnames: "relative z-[2] min-w-40",
-            btnChildren: "Sign Up",
-            btnHref: "/auth/signup"
+            type: "link",
+            variant: "primary",
+            classNames: "relative z-[2] min-w-40",
+            children: "Sign Up",
+            href: "/auth/signup"
         }) -%>
     </div>
 </section>
@@ -146,7 +146,7 @@
         btnShorten.disabled = true;
 
         try {
-            const response = await fetch("/api/short-url/create", {
+            const response = await fetch("/url/create", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ url })

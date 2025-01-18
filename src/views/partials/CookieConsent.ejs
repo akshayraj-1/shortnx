@@ -10,16 +10,16 @@
         </p>
         <div class="flex items-center gap-2.5 mt-2">
             <%- include("./Button.ejs", {
-                btnClassnames: "flex-1",
-                btnChildren: "I Understand",
-                btnOnClick: "consentCookie()"
+                classNames: "flex-1",
+                children: "I Understand",
+                onClick: "consentCookie()"
             }) -%>
             <%- include("./Button.ejs", {
-                btnType: "link",
-                btnHref: "/cookie-policy",
-                btnVariant: "secondary",
-                btnClassnames: "flex-1",
-                btnChildren: "Learn More"
+                type: "link",
+                href: "/cookie-policy",
+                variant: "secondary",
+                classNames: "flex-1",
+                children: "Learn More"
             }) -%>
         </div>
     </div>

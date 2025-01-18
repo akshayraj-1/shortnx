@@ -8,20 +8,20 @@
             <i class="icon-search-magnifying-glass"></i>
             <input id="input-search-links" class="text-[0.9rem] text-textPrimary bg-transparent w-full outline-none" type="text" placeholder="Search for links">
         </div>
-
         <div class="flex items-center justify-end gap-2.5 ms-auto w-full">
             <%- include("../../partials/Button.ejs", {
-                btnId: "btn-create-link",
-                btnClassnames: "flex-1 md:flex-none flex justify-center items-center gap-1",
-                btnChildren: "<i class='icon-add-plus text-base'></i>Create link"
+                id: "btn-create-link",
+                classNames: "flex-1 md:flex-none flex justify-center items-center gap-1",
+                children: "<i class='icon-add-plus text-base'></i>Create link"
             }) %>
             <%- include("../../partials/Button.ejs", {
-                btnId: "btn-sort-links",
-                btnVariant: "secondary",
-                btnClassnames: "flex-1 md:flex-none flex justify-center items-center gap-1 border-slate-300 text-textSecondary hover:text-textPrimary hover:border-slate-400",
-                btnChildren: "<i class='icon-filter text-base'></i>"
+                id: "btn-sort-links",
+                variant: "secondary",
+                classNames: "flex-1 md:flex-none flex justify-center items-center gap-1 border-slate-300 text-textSecondary hover:text-textPrimary hover:border-slate-400",
+                children: "<i class='icon-filter text-base'></i>"
             }) %>
         </div>
+
     </div>
     <% if(user?.links?.length > 0) { %>
         <div class="flex flex-col gap-3">

@@ -9,21 +9,21 @@ const UserModel = require("../models/user.model");
 // Render the login page
 async function getLogin (req, res) {
     await isAuthenticated(req, res)
-        ? res.redirect("/u/dashboard")
+        ? res.redirect("/user/dashboard")
         : res.render("pages/auth/login", { title: "Login - Shortnx" });
 }
 
 // Render the signup page
 async function getSignup (req, res) {
     await isAuthenticated(req, res)
-        ? res.redirect("/u/dashboard")
+        ? res.redirect("/user/dashboard")
         : res.render("pages/auth/signup", { title: "Sign Up - Shortnx" });
 }
 
 // Get the Google auth URL
 async function getGoogleAuth (req, res) {
     await isAuthenticated(req, res)
-        ? res.redirect("/u/dashboard")
+        ? res.redirect("/user/dashboard")
         : res.redirect(getGoogleOAuthURL());
 }
 
@@ -113,11 +113,17 @@ async function googleAuth(req, res) {
         const accessToken = await getAccessToken(refreshToken);
         req.session.access_token = accessToken;
         res.cookie("access_token", accessToken, { httpOnly: true });
-        res.status(302).redirect("/u/dashboard");
+        res.status(302).redirect("/user/dashboard");
     } catch (error) {
         res.status(302).redirect("/auth/login");
         logManager.logError(error);
     }
 }
 
-module.exports = { getLogin, getSignup, getGoogleAuth, login, signUp, googleAuth };
+async function logout(req, res) {
+    req.session?.destroy();
+    res.clearCookie("access_token");
+    res.redirect("/auth/login");
+}
+
+module.exports = { getLogin, getSignup, getGoogleAuth, login, signUp, googleAuth, logout };

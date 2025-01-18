@@ -4,7 +4,7 @@ function getOAuthClientInstance() {
     return new OAuth2Client({
         clientId: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        redirectUri: `${process.env.SERVER_BASE_URL}/api/auth/google/callback`
+        redirectUri: `${process.env.SERVER_BASE_URL}/auth/google/callback`
     });
 }
 
