@@ -4,7 +4,7 @@ const { validateAuthUser } = require("../middlewares/auth.middleware");
 const getDashboard = [validateAuthUser, (req, res) => {
     const query = req.query;
     if (!query.tab) {
-        return res.redirect("/u/dashboard/?tab=links");
+        return res.redirect("/user/dashboard/?tab=links");
     }
     res.render("layouts/dashboard-layout.ejs", { title: "Shortnx - Dashboard" });
 }];

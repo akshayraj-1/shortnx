@@ -88,7 +88,7 @@
 
         try {
             loadingModal.show();
-            const response = await fetch("/api/auth/login", {
+            const response = await fetch("/auth/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(userData)
@@ -96,7 +96,7 @@
 
             const result = await response.json();
             if (result.success) {
-                window.location.replace("/u/dashboard");
+                window.location.replace("/user/dashboard");
             } else {
                 const message = result.message || "Something went wrong";
                 if (message.toLowerCase().includes("email")) {

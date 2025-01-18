@@ -2,7 +2,7 @@ const UrlModel = require("../models/url.model");
 const UrlAnalyticsModel = require("../models/urlanalytics.model");
 const { isAuthenticated, validateAuthUser } = require('../middlewares/auth.middleware');
 const { disableCache } = require("../middlewares/cache.middleware");
-const clientRequestInfo = require("../utils/clientRequestInfo.util");
+const clientRequestInfo = require("../utils/clientInfo.util");
 const getMetaData = require("metadata-scraper");
 
 /**
@@ -21,7 +21,7 @@ async function updateUrlAnalytics(req, shortUrlId, originalUrl) {
 }
 
 // Create shorten url
-async function createShortenUrl(req, res) {
+async function createShortenURL(req, res) {
     const { url } = req.body;
     if (!url || !/^https?:\/\/.*$/.test(url)) {
         return res.status(400).json({ success: false, message: "Please enter a valid url" });
@@ -53,27 +53,23 @@ async function createShortenUrl(req, res) {
 }
 
 // Get the original url
-const getOriginalUrl = [disableCache, async (req, res) => {
+const getOriginalURL = [disableCache, async (req, res) => {
     const { shortUrlId } = req.params;
+    let originalUrl = "";
     try {
         const urlDoc = await UrlModel.findOneAndUpdate(
             { shortenUrl: shortUrlId, status: "active" },
             { $inc: { clicks: 1 } }
         );
-        const { originalUrl } = urlDoc || {};
+        originalUrl = urlDoc?.originalUrl || null;
         if (!originalUrl)  throw new Error("Url not found");
-        const metadata = await getMetaData(originalUrl);
         await updateUrlAnalytics(req, shortUrlId, originalUrl);
+        const metadata = await getMetaData(originalUrl);
         res.render("pages/redirect", { meta: metadata, title: "Shortnx - URL Shortener", url: originalUrl });
     } catch (error) {
-        res.render("pages/404", { title: "Page Not Found", error: error.message });
+        if (!originalUrl) res.render("pages/404", { title: "Page Not Found", error: error.message });
+        else res.render("pages/redirect", { meta: {}, title: "Shortnx - URL Shortener", url: originalUrl });
     }
 }];
 
-// Get all shorten urls of user
-const getShortenUrls = [validateAuthUser, (req, res, next) => {
-    // TODO: Implement get shorten urls of user
-}];
-
-
-module.exports = { createShortenURL: createShortenUrl, getShortenUrls, getOriginalUrl };
+module.exports = { createShortenURL, getOriginalURL };
