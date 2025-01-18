@@ -1,7 +1,7 @@
 const tabs = document.querySelectorAll(".tab-default");
 const sidebar = document.getElementById("sidebar");
 const sidebarContainer = document.getElementById("sidebar-container");
-const btnToggleMenu = document.getElementById("btnToggleMenu");
+const btnToggleMenu = document.getElementById("btn-toggle-menu");
 
 let abortController = null;
 
