@@ -3,16 +3,18 @@
  *
  */
 
-// TODO: Implement caching for better performance
-//  Since vercel only provides cloud version of redis and other caching services,
-//  I need to build my own caching service using my cdn hosting,
-//  but you are free to use redis or any other caching service
-
 const getMeta = require("metadata-scraper");
+const customRedis = require("../services/custom-redis");
 
 async function getMetaData(url) {
     try {
-        return await getMeta(url);
+        // Check for the cached result and return if found
+        const cachedResult = await customRedis.get(url);
+        if (cachedResult) return JSON.parse(cachedResult);
+
+        const meta = await getMeta(url);
+        await customRedis.set(url, JSON.stringify(meta));
+        return meta;
     } catch (error) {
         console.log(error.message);
         return {};
@@ -20,4 +22,4 @@ async function getMetaData(url) {
 }
 
 
-module.exports = { getMetaData };
+module.exports = getMetaData;
