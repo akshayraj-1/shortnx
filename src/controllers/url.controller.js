@@ -3,7 +3,8 @@ const UrlAnalyticsModel = require("../models/urlanalytics.model");
 const { isAuthenticated, validateAuthUser } = require('../middlewares/auth.middleware');
 const { disableCache } = require("../middlewares/cache.middleware");
 const clientRequestInfo = require("../utils/clientInfo.util");
-const getMetaData = require("metadata-scraper");
+const getMetaData = require("../utils/metadata.util");
+const customRedis = require("../services/custom-redis");
 
 /**
  * @throws { Error } - Can throw error
@@ -57,6 +58,18 @@ const getOriginalURL = [disableCache, async (req, res) => {
     const { shortUrlId } = req.params;
     let originalUrl = "";
     try {
+
+        // Check if the request has been cached previously by the same ip address
+        // If yes, return the cached response
+        // If no, fetch the original url from the database and update the analytics
+
+        const cachedResponse = await customRedis.get(shortUrlId + "_" + req.ip);
+        if (cachedResponse) {
+            console.log("Cache hit: ", cachedResponse);
+            const { originalUrl, meta } = JSON.parse(cachedResponse);
+            return res.render("pages/redirect", { meta, title: "Shortnx - URL Shortener", url: originalUrl });
+        }
+
         const urlDoc = await UrlModel.findOneAndUpdate(
             { shortenUrl: shortUrlId, status: "active" },
             { $inc: { clicks: 1 } }
