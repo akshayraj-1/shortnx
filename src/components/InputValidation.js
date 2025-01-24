@@ -8,6 +8,13 @@
 
 class InputValidation {
 
+    /**
+     * Generic input validation
+     * @param input
+     * @param regexp
+     * @param errorMessage
+     * @returns {boolean}
+     */
     static validateInput(input, regexp = null, errorMessage = null) {
         const value = input.value;
         const valid = regexp ? regexp.test(value) : value.length > 0;
@@ -15,18 +22,36 @@ class InputValidation {
         return valid;
     }
 
+    /**
+     * Validate email
+     * @param input
+     * @param showError
+     * @returns {boolean}
+     */
     static validateEmail(input, showError = true) {
         return this.validateInput(input,
             /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
             showError ? "Please enter a valid email address" : null);
     }
 
+    /**
+     * Validate name
+     * @param input
+     * @param showError
+     * @returns {boolean}
+     */
     static validateName(input, showError = true) {
         return this.validateInput(input,
             /^[a-zA-Z\s]{6,50}$/,
             showError ? "Name must be between 6-50 chars" : null);
     }
 
+    /**
+     * Validate password
+     * @param input
+     * @param showError
+     * @returns {boolean}
+     */
     static validatePassword(input, showError = true) {
         let error = null;
         const value = input.value;
@@ -42,6 +67,11 @@ class InputValidation {
             showError ? error : null);
     }
 
+    /**
+     * Toggle error state
+     * @param input
+     * @param message
+     */
     static toggleErrorState(input, message = null) {
         const container = input.parentElement;
         let error = container.querySelector(".error-label");
