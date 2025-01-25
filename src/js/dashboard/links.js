@@ -6,6 +6,5 @@ btnCreateLink.addEventListener("click", () => showCreateLinkModal());
 
 
 function showCreateLinkModal() {
-    const modal = new CreateLinkModal();
-    modal.show();
+    createLinkModal.show();
 }

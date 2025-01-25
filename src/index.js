@@ -23,7 +23,6 @@ const app = express();
 
 // Middlewares
 app.use(express.static(path.join(__dirname, "../public")));
-app.use(express.static(path.join(__dirname, "components")));
 app.use(express.urlencoded({
     extended: true // parse with qs lib: can parse nested objects
     // extended: false // parse with qs lib: can't parse nested objects
