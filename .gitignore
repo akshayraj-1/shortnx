@@ -47,4 +47,6 @@ configs
 *.sw?
 
 /public/js/*.min.js
+/public/css/output.css
+/public/css/*.min.css
 
