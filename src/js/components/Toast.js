@@ -1,3 +1,12 @@
+/**
+ * @description
+ * This class is used to display toast messages
+ *
+ */
+
+// This could have been done with functions,
+// but using a class makes the code more organized and easier to manage.
+
 class Toast {
     #container;
     #toast;
@@ -52,3 +61,7 @@ class Toast {
         }, 2500);
     }
 }
+
+// Required because of the webpack, it strips off the unused classes in the build
+// Could have used modular imports/exports but since I am using script tag to load the files, this is the best option
+window.toast = new Toast();

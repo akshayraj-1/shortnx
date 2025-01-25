@@ -37,3 +37,5 @@ class LoadingModal {
         }, 300);
     }
 }
+
+window.loadingModal = new LoadingModal();

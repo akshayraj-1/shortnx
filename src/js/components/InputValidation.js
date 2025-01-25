@@ -98,3 +98,5 @@ class InputValidation {
         }
     }
 }
+
+window.InputValidation = InputValidation;

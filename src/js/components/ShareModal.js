@@ -76,7 +76,7 @@ class ShareModal {
             .addEventListener("click", () => {
                 navigator.clipboard.writeText(this.#shortUrl.textContent).then(r => {
                     // Assuming the toast is already initialized
-                    toast.showToast("Copied to clipboard", toast.types.success);
+                    window.toast.showToast("Copied to clipboard", toast.types.success);
                 });
         });
 
@@ -133,3 +133,5 @@ class ShareModal {
         document.removeEventListener("keydown", this.#closeOnEscape);
     }
 }
+
+window.shareModal = new ShareModal();

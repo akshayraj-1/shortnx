@@ -208,3 +208,5 @@ class CreateLinkModal {
     }
 
 }
+
+window.createLinkModal = new CreateLinkModal();
