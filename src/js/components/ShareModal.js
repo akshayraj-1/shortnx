@@ -29,6 +29,7 @@ class ShareModal {
     };
 
     constructor() {
+        this.#elements = {};
         this.#elements.backdrop = document.createElement("div");
         this.#elements.modal = document.createElement("div");
 
@@ -68,7 +69,7 @@ class ShareModal {
         this.#elements.btnCopy = this.#elements.modal.querySelector("[data-ms-btn-copy]");
         this.#elements.btnsSocial = this.#elements.modal.querySelectorAll("[data-action]");
 
-        this.#elements.btnClose.addEventListener("click", this.hideModal);
+        this.#elements.btnClose.addEventListener("click", () => this.hideModal());
 
         this.#elements.btnCopy.addEventListener("click", () => {
             navigator.clipboard.writeText(this.#elements.shortUrl.textContent).then(r => {
@@ -98,7 +99,7 @@ class ShareModal {
     // TODO: Convert the dialog the bottom sheet style for mobile devices
     showModal(url) {
         this.#elements.shortUrl.textContent = url;
-        this.#elements.backdrop.setAttribute("aria-hidden", "false");
+        this.#elements.backdrop.removeAttribute("aria-hidden");
         this.#elements.modal.setAttribute("aria-modal", "true");
         this.#elements.modal.setAttribute("role", "dialog");
         this.#elements.modal.setAttribute("tabindex", "0");
@@ -111,9 +112,9 @@ class ShareModal {
     }
     hideModal() {
         this.#elements.backdrop.setAttribute("aria-hidden", "true");
-        this.#elements.modal.setAttribute("aria-modal", "false");
         this.#elements.modal.setAttribute("role", "dialog");
         this.#elements.modal.setAttribute("tabindex", "-1");
+        this.#elements.modal.removeAttribute("aria-modal");
         this.#elements.modal.classList.remove(...this.#styles.modal.show);
         this.#elements.modal.classList.add(...this.#styles.modal.hide);
         setTimeout(() => {
