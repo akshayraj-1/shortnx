@@ -8,8 +8,7 @@
 // but using a class makes the code more organized and easier to manage.
 
 class Toast {
-    #container;
-    #toast;
+    #elements;
     #queue = [];
     #styles = {
         container: {
@@ -29,12 +28,15 @@ class Toast {
     };
 
     constructor() {
-        this.#container = document.createElement("div");
-        this.#container.className = this.#styles.container.default.join(" ");
-        this.#toast = document.createElement("div");
-        this.#toast.className = this.#styles.toast.default.join(" ");
-        this.#container.prepend(this.#toast);
-        document.body.prepend(this.#container);
+        this.#elements = {};
+        this.#elements.container = document.createElement("div");
+        this.#elements.toast = document.createElement("div");
+
+        this.#elements.container.className = this.#styles.container.default.join(" ");
+        this.#elements.toast.className = this.#styles.toast.default.join(" ");
+
+        this.#elements.container.appendChild(this.#elements.toast);
+        document.body.prepend(this.#elements.container);
     }
 
     showToast(message, type = this.types.info) {
@@ -45,15 +47,15 @@ class Toast {
 
     #processQueue() {
         if (!this.#queue.length) return;
-        this.#toast.innerHTML = this.#queue[0].message;
-        this.#toast.classList.add(this.#queue[0].type);
-        this.#container.classList.remove(...this.#styles.container.hide);
-        this.#container.classList.add(...this.#styles.container.show);
+        this.#elements.toast.innerHTML = this.#queue[0].message;
+        this.#elements.toast.classList.add(this.#queue[0].type);
+        this.#elements.container.classList.remove(...this.#styles.container.hide);
+        this.#elements.container.classList.add(...this.#styles.container.show);
         setTimeout(async () => {
-            this.#container.classList.add("animate-slide-out-down");
+            this.#elements.container.classList.add("animate-slide-out-down");
             await new Promise(resolve => setTimeout(() => {
-                this.#container.classList.add("hidden");
-                this.#toast.classList.remove(this.#queue[0].type);
+                this.#elements.container.classList.add("hidden");
+                this.#elements.toast.classList.remove(this.#queue[0].type);
                 this.#queue.shift();
                 resolve();
             }, 200));
