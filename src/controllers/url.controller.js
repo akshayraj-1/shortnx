@@ -1,88 +1,92 @@
-const UrlModel = require("../models/url.model");
-const UrlAnalyticsModel = require("../models/urlanalytics.model");
+const getMetaData = require("metadata-scraper");
 const { isAuthenticated, validateAuthUser } = require('../middlewares/auth.middleware');
 const { disableCache } = require("../middlewares/cache.middleware");
-const clientRequestInfo = require("../utils/clientInfo.util");
-const getMetaData = require("../utils/metadata.util");
-const customRedis = require("../services/custom-redis");
+const { getClientBrowser } = require("../utils/clientInfo.util");
+const urlService = require("../services/url.service");
+const customRedis = require("../services/customRedis.service");
 
-/**
- * @throws { Error } - Can throw error
- */
-async function updateUrlAnalytics(req, shortUrlId, originalUrl) {
-    const { ip, city, region, country, timezone, deviceType, platform, browser } = await clientRequestInfo(req);
-    const urlAnalytics = new UrlAnalyticsModel({
-        shortenUrl: shortUrlId,
-        originalUrl: originalUrl,
-        localIp: ip,
-        geoLocation: { city, country, region },
-        timezone, deviceType, platform, browser
-    });
-    return await urlAnalytics.save();
-}
 
-// Create shorten url
-async function createShortenURL(req, res) {
-    const { url } = req.body;
-    if (!url || !/^https?:\/\/.*$/.test(url)) {
-        return res.status(400).json({ success: false, message: "Please enter a valid url" });
-    }
-
-    const userUrl = URL.parse(url);
-    const serverUrl = URL.parse(process.env.SERVER_BASE_URL);
-    if (userUrl.hostname === serverUrl.hostname || userUrl.hostname === req.hostname) {
-        return res.status(400).json({ success: false, message: "Url is already a shorten url" });
-    }
-
-    const userId = await isAuthenticated(req, res) ? req.session.user.userId : null;
+// Create short url
+async function createShortURL(req, res) {
+    const { title, targetUrl, shortUrlId, comments } = req.body;
 
     try {
-        const urlDoc = new UrlModel({
-            originalUrl: url,
-            shortenUrl: Math.random().toString(36).slice(2, 8),
-            creator: userId
+        const userId = await isAuthenticated(req, res) ? req.session.user.userId : null;
+
+        const response = await urlService.createShortURL({
+            title, targetUrl, shortUrlId,
+            creator: userId, comments
         });
-        await urlDoc.save();
-        res.status(201).json({
-            success: true,
-            message: "Url created successfully",
-            data: { originalUrl: url, shortenUrl: process.env.SERVER_BASE_URL + "/" + urlDoc.shortenUrl }
-        });
+
+        if (response.success) {
+            return res.status(201).json({
+                success: true,
+                message: "Url created successfully",
+                data: { originalUrl: targetUrl, shortenUrl: process.env.SERVER_BASE_URL + "/" + response.data.shortUrlId }
+            });
+        } else {
+            return res.status(500).json(response);
+        }
+
     } catch (error) {
-        res.status(500).json({success: false, message: error.message});
+        res.status(500).json({ success: false, message: error.message });
     }
 }
 
 // Get the original url
-const getOriginalURL = [disableCache, async (req, res) => {
+const getTargetURL = [disableCache, async (req, res) => {
     const { shortUrlId } = req.params;
-    let originalUrl = "";
+    const cacheKey = shortUrlId + "_" + req.ip;
+
     try {
-
-        // Check if the request has been cached previously by the same ip address
-        // If yes, return the cached response
-        // If no, fetch the original url from the database and update the analytics
-
-        const cachedResponse = await customRedis.get(shortUrlId + "_" + req.ip);
+        // Case 1: Process the cached request
+        // If the request has been cached previously with the same IP address
+        const cachedResponse = await customRedis.get(cacheKey);
         if (cachedResponse) {
             console.log("Cache hit: ", cachedResponse);
-            const { originalUrl, meta } = JSON.parse(cachedResponse);
-            return res.render("pages/redirect", { meta, title: "Shortnx - URL Shortener", url: originalUrl });
+            const { originalUrl, meta } = cachedResponse;
+            return res.render("pages/redirect", {
+                meta, title: "Shortnx - URL Shortener",
+                url: originalUrl
+            });
         }
 
-        const urlDoc = await UrlModel.findOneAndUpdate(
-            { shortenUrl: shortUrlId, status: "active" },
-            { $inc: { clicks: 1 } }
-        );
-        originalUrl = urlDoc?.originalUrl || null;
-        if (!originalUrl)  throw new Error("Url not found");
-        await updateUrlAnalytics(req, shortUrlId, originalUrl);
-        const metadata = await getMetaData(originalUrl);
-        res.render("pages/redirect", { meta: metadata, title: "Shortnx - URL Shortener", url: originalUrl });
+        // Case 2: Process the new request
+        const response = await urlService.getTargetURL(shortUrlId);
+
+        if (response.success) {
+            const { originalUrl } = response.data;
+            const isBrowser = getClientBrowser(req) !== "Unknown";
+
+            // Update the analytics only if the request has been made through browser
+            if (isBrowser) {
+                await urlService.updateURLAnalytics(req, shortUrlId, originalUrl);
+                return res.redirect(originalUrl);
+            }
+
+            const metadata = await getMetaData(originalUrl);
+            await customRedis.set(cacheKey, JSON.stringify({ originalUrl, meta: metadata }));
+
+            return res.render("pages/redirect", {
+                meta: metadata, title: "Shortnx - URL Shortener",
+                url: originalUrl
+            });
+
+        } else {
+            return res.render("pages/404", {
+                title: "Page Not Found",
+                error: response.message
+            });
+        }
+
     } catch (error) {
-        if (!originalUrl) res.render("pages/404", { title: "Page Not Found", error: error.message });
-        else res.render("pages/redirect", { meta: {}, title: "Shortnx - URL Shortener", url: originalUrl });
+        res.render("pages/404", {
+            title: "Page Not Found",
+            error: error.message
+        });
     }
 }];
 
-module.exports = { createShortenURL, getOriginalURL };
+// TODO: Implement other methods: Update, Delete, Get Users All Urls etc...
+
+module.exports = { createShortURL, getTargetURL };

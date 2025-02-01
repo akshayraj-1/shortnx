@@ -11,6 +11,7 @@ node_modules
 package-lock.json
 dist
 dist-ssr
+tests
 *.local
 *.html~
 *.css~
@@ -47,4 +48,6 @@ configs
 *.sw?
 
 /public/js/*.min.js
+/public/css/output.css
+/public/css/*.min.css
 

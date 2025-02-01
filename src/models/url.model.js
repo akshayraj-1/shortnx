@@ -2,17 +2,27 @@ const mongoose = require("mongoose");
 const url = require("node:url");
 
 const urlSchema = new mongoose.Schema({
-    shortenUrl: {
+    title: {
+        type: String,
+        default: null
+    },
+    shortUrlId: {
         type: String,
         required: true,
+        index: true,
         unique: [true, "Shorten url already exists"]
     },
     originalUrl: {
         type: String,
+        index: true,
         required: [true, "Please provide a valid url"]
     },
     creator: {
-        type: mongoose.Types.ObjectId,
+        type: String,
+        default: null
+    },
+    comments: {
+        type: String,
         default: null
     },
     status: {

@@ -1,5 +1,5 @@
 const { isAuthenticated } = require('../middlewares/auth.middleware');
-const { getGoogleOAuthURL, getUserFromAuthCode } = require("../services/google-oauth");
+const { getGoogleOAuthURL, getUserFromAuthCode } = require("../services/googleOAuth.service");
 const { generateRandomString } = require("../utils/random.util");
 const { hashPassword, comparePassword } = require("../utils/hash.util");
 const { getRefreshToken, getAccessToken } = require("../utils/token.util");
