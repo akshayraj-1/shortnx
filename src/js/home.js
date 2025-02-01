@@ -25,7 +25,7 @@ btnShorten.addEventListener("click", async () => {
         const response = await fetch("/url/create", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ url })
+            body: JSON.stringify({ targetUrl: url })
         });
         const data = await response.json();
         if (!data.success) {

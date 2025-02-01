@@ -3,7 +3,7 @@ const urlController = require("../controllers/url.controller");
 
 const router = Router();
 
-router.post("/create", urlController.createShortenURL);
+router.post("/create", urlController.createShortURL);
 
 
 module.exports = router;

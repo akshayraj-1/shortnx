@@ -79,5 +79,5 @@ async function clientRequestInfo(req) {
     };
 }
 
-module.exports = clientRequestInfo;
+module.exports = { getClientBrowser, getClientDevice, getClientPlatform ,clientRequestInfo };
 
