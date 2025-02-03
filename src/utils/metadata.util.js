@@ -3,8 +3,8 @@
  *
  */
 
-const getMeta = require("metadata-scraper");
-const customRedis = require("../services/customRedis.service");
+const metaScrapper = require("metadata-scraper");
+const customRedis = require("../services/credis.service");
 
 async function getMetaData(url) {
     try {
@@ -12,7 +12,7 @@ async function getMetaData(url) {
         const cachedResult = await customRedis.get(url);
         if (cachedResult) return cachedResult;
 
-        const meta = await getMeta(url);
+        const meta = await metaScrapper(url);
         await customRedis.set(url, JSON.stringify(meta));
         return meta;
 
@@ -22,5 +22,25 @@ async function getMetaData(url) {
     }
 }
 
+async function getMetaTitle(url) {
+    try {
+        const meta = await getMetaData(url);
+        return meta.title;
+    } catch (error) {
+        console.log(error.message);
+        return "";
+    }
+}
 
-module.exports = getMetaData;
+async function getMetaDescription(url) {
+    try {
+        const meta = await getMetaData(url);
+        return meta.description;
+    } catch (error) {
+        console.log(error.message);
+        return "";
+    }
+}
+
+
+module.exports = { getMetaTitle, getMetaDescription, getMetaData };

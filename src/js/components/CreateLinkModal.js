@@ -265,11 +265,10 @@ class CreateLinkModal {
         try {
             const payload = JSON.stringify({
                 title: this.#elements.inputTitle.value,
-                url: this.#elements.inputTargetLink.value,
-                shortId: this.#elements.inputShortLink.value,
+                targetUrl: this.#elements.inputTargetLink.value,
+                shortUrlId: this.#elements.inputShortLink.value,
                 comments: this.#elements.inputComments.value
             });
-            window.alert(payload);
             const response = await fetch("/url/create", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -277,7 +276,7 @@ class CreateLinkModal {
             });
             if (response.ok) {
                 const data = await response.json();
-                window.alert(data);
+                window.alert(JSON.stringify(data));
                 window.open(data.shortenUrl);
                 // TODO: Show success modal
             } else {

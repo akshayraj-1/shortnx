@@ -5,6 +5,7 @@
  */
 
 // TODO: Implement the server side logic
+const SERVICE_ENABLED = false;
 
 function getConfig() {
     return {
@@ -19,6 +20,7 @@ function getConfig() {
  * @returns {Promise<object | null>}
  */
 async function get(key) {
+    if (!SERVICE_ENABLED) return null;
     const { CUSTOM_REDIS_API_KEY, CUSTOM_REDIS_SERVER_URL } = getConfig();
     if (!key || typeof key !== "string") throw new Error("Invalid key format");
     try {
@@ -41,6 +43,7 @@ async function get(key) {
  * @returns {Promise<object |null>}
  */
 async function set(key, value, ttl = 3600) {
+    if (!SERVICE_ENABLED) return null;
     const { CUSTOM_REDIS_API_KEY, CUSTOM_REDIS_SERVER_URL } = getConfig();
     if (!key || typeof key !== "string") throw new Error("Invalid key format");
     if (!value || typeof value !== "string") throw new Error("Invalid value format");
@@ -69,6 +72,7 @@ async function set(key, value, ttl = 3600) {
  * @returns {Promise<any|null>}
  */
 async function del(key) {
+    if (!SERVICE_ENABLED) return null;
     const { CUSTOM_REDIS_API_KEY, CUSTOM_REDIS_SERVER_URL } = getConfig();
     if (!key || typeof key !== "string") throw new Error("Invalid key format");
     try {

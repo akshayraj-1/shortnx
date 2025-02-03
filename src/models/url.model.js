@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const url = require("node:url");
 
 const urlSchema = new mongoose.Schema({
     title: {
@@ -9,12 +8,10 @@ const urlSchema = new mongoose.Schema({
     shortUrlId: {
         type: String,
         required: true,
-        index: true,
         unique: [true, "Shorten url already exists"]
     },
     originalUrl: {
         type: String,
-        index: true,
         required: [true, "Please provide a valid url"]
     },
     creator: {
