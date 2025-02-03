@@ -1,17 +1,25 @@
-const getMetaData = require("metadata-scraper");
-const { isAuthenticated, validateAuthUser } = require('../middlewares/auth.middleware');
+const { isAuthenticated, validateAuthUser} = require('../middlewares/auth.middleware');
 const { disableCache } = require("../middlewares/cache.middleware");
+const { getMetaData } = require("../utils/metadata.util");
 const { getClientBrowser } = require("../utils/clientInfo.util");
 const urlService = require("../services/url.service");
-const customRedis = require("../services/customRedis.service");
+const customRedis = require("../services/credis.service");
 
 
 // Create short url
-async function createShortURL(req, res) {
+async function createShortURL (req, res) {
+    
     const { title, targetUrl, shortUrlId, comments } = req.body;
 
     try {
         const userId = await isAuthenticated(req, res) ? req.session.user.userId : null;
+
+        // FIXME: Add this check. Currently, it's allowed because I haven't implemented a proper API system for
+        //  creating short URLs from the home page or the developer.
+        // Check if the user is authenticated
+        // if (!userId) {
+        //     return res.status(401).json({ success: false, message: "Unauthorized Access" });
+        // }
 
         const response = await urlService.createShortURL({
             title, targetUrl, shortUrlId,
@@ -22,7 +30,10 @@ async function createShortURL(req, res) {
             return res.status(201).json({
                 success: true,
                 message: "Url created successfully",
-                data: { originalUrl: targetUrl, shortenUrl: process.env.SERVER_BASE_URL + "/" + response.data.shortUrlId }
+                data: {
+                    originalUrl: targetUrl,
+                    shortenUrl: process.env.SERVER_BASE_URL + "/" + response.data.shortUrlId
+                }
             });
         } else {
             return res.status(500).json(response);
@@ -34,7 +45,7 @@ async function createShortURL(req, res) {
 }
 
 // Get the original url
-const getTargetURL = [disableCache, async (req, res) => {
+const getTargetURL = [disableCache, async function (req, res) {
     const { shortUrlId } = req.params;
     const cacheKey = shortUrlId + "_" + req.ip;
 
