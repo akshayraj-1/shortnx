@@ -22,8 +22,13 @@ function returnResponse(success, message = null, data = null) {
  */
 async function createShortURL(payload) {
     try {
-        const { title, targetUrl, shortUrlId, creator, comments } = payload;
         // Sanitize Input
+        const title = payload?.title?.trim() || null;
+        const targetUrl = payload?.targetUrl?.trim() || null;
+        const shortUrlId = payload?.shortUrlId?.trim().replaceAll(" ", "") || null;
+        const creator = payload?.creator ?? null;
+        const comments = payload?.comments?.trim() || null;
+
         if (!targetUrl || !/^https?:\/\/.*$/.test(targetUrl)) {
             console.log(`URL SERVICE ERROR: Invalid Target URL: ${targetUrl}`);
             return returnResponse(false, "Invalid Target URL", null);
