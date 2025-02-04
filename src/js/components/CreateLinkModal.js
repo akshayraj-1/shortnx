@@ -1,28 +1,19 @@
-class CreateLinkModal {
+import ModalWrapper from "./ModalWrapper";
+
+class CreateLinkModal extends ModalWrapper {
     #createMode = true;
     #elements;
     #styles = {
-        backdrop: {
-            default: ["modal-backdrop", "hidden", "py-10", "sm:px-6"],
-            show: ["animate-fade-in", "flex", "justify-center", "items-center", "outline-none"],
-            hide: ["animate-fade-out", "hidden"],
-        },
         modal: {
             default: ["flex-1", "w-full", "max-w-3xl", "py-9", "bg-colorSurface", "rounded-xl"],
-            show: ["animate-pop-up"],
-            hide: ["animate-pop-down"]
         }
-    }
+    };
 
     constructor() {
-        this.#elements = {};
-        this.#elements.backdrop = document.createElement("div");
-        this.#elements.modal = document.createElement("div");
-
-
-        this.#elements.backdrop.className = this.#styles.backdrop.default.join(" ");
+        const modal = document.createElement("div");
+        super(modal);
+        this.#elements = { modal };
         this.#elements.modal.className = this.#styles.modal.default.join(" ");
-        this.#elements.modal.setAttribute("aria-hidden", "true");
         this.#elements.modal.innerHTML = `
               <div class="flex flex-col px-6 sm:px-8 md:px-10 size-full">
                     <div class="flex justify-between items-center w-full">
@@ -146,11 +137,8 @@ class CreateLinkModal {
                      cursor-pointer transition-shadow hover:shadow-lg hover:shadow-colorAccent/25 disabled:bg-colorPrimaryDark disabled:pointer-events-none disabled:hover:shadow-none">
                             Create Link
                      </button>            
-                </div>
+               </div>
             `;
-
-        this.#elements.backdrop.appendChild(this.#elements.modal);
-        document.body.prepend(this.#elements.backdrop);
         this.#init();
     }
 
@@ -168,7 +156,7 @@ class CreateLinkModal {
         this.#elements.qrlogo = this.#elements.modal.querySelector(`svg[slot="icon"] rect`);
 
 
-        this.#elements.btnClose.addEventListener("click", () => this.hide());
+        this.#elements.btnClose.addEventListener("click", () => this.hideModal());
 
         this.#elements.qrcode.addEventListener("codeRendered", () => this.#elements.qrcode.animateQRCode("MaterializeIn"));
         this.#elements.colors.forEach(color => {
@@ -291,32 +279,13 @@ class CreateLinkModal {
 
 
 
-    show(mode = "create", data = {}) {
+    showModal(mode = "create", data = {}) {
         this._toggleMode(mode, data);
-        this.#elements.backdrop.removeAttribute("aria-hidden");
-        this.#elements.modal.setAttribute("aria-modal", "true");
-        this.#elements.modal.setAttribute("role", "dialog");
-        this.#elements.modal.setAttribute("tabindex", "0");
-        this.#elements.backdrop.classList.remove(...this.#styles.backdrop.hide);
-        this.#elements.backdrop.classList.add(...this.#styles.backdrop.show);
-        this.#elements.modal.classList.remove(...this.#styles.modal.hide);
-        this.#elements.modal.classList.add(...this.#styles.modal.show);
-        this.#elements.modal.focus();
-        document.body.style.overflow = "hidden";
+        super.show();
     }
 
-    hide() {
-        this.#elements.backdrop.setAttribute("aria-hidden", "true");
-        this.#elements.modal.setAttribute("role", "dialog");
-        this.#elements.modal.setAttribute("tabindex", "-1");
-        this.#elements.modal.removeAttribute("aria-modal");
-        this.#elements.modal.classList.remove(...this.#styles.modal.show);
-        this.#elements.modal.classList.add(...this.#styles.modal.hide);
-        setTimeout(() => {
-            this.#elements.backdrop.classList.remove(...this.#styles.backdrop.show);
-            this.#elements.backdrop.classList.add(...this.#styles.backdrop.hide);
-            document.body.style.overflow = "auto";
-        }, 300);
+    hideModal() {
+        super.hide();
     }
 
 }
