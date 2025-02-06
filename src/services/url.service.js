@@ -1,23 +1,11 @@
-const mongoose = require("mongoose");
 const UrlModel = require("../models/url.model");
 const UrlAnalyticsModel = require("../models/urlanalytics.model");
+const { createJSONSuccessResponse, createJSONFailureResponse } = require("../utils/response.util");
 const { clientRequestInfo } = require("../utils/clientInfo.util");
 
 /**
- *
- * @param {Boolean} success
- * @param {Error|String|null} message
- * @param {any|null} data
- * @returns {{success: Boolean, message: String|null, data: any|null}}
- */
-function returnResponse(success, message = null, data = null) {
-    message = typeof message === "object" && message instanceof mongoose.Error ? message.message : "Something went wrong";
-    return { success, message, data };
-}
-
-/**
  * Create Shorten URL
- * @param {{title: String|null, targetUrl: String, shortUrlId: (String|null), creator: (String|null), comments: (String|null)}} payload
+ * @param {{title: (String|null), targetUrl: String, shortUrlId: (String|null), creator: (String|null), comments: (String|null)}} payload
  * @returns {Promise<{success: Boolean, message: (String|null), data: (*|null)}>}
  */
 async function createShortURL(payload) {
@@ -30,15 +18,15 @@ async function createShortURL(payload) {
         const comments = payload?.comments?.trim() || null;
 
         if (!targetUrl || !/^https?:\/\/.*$/.test(targetUrl)) {
-            console.log(`URL SERVICE ERROR: Invalid Target URL: ${targetUrl}`);
-            return returnResponse(false, "Invalid Target URL", null);
+            console.error(`URL SERVICE ERROR: Invalid target URL: ${targetUrl}`);
+            return createJSONFailureResponse(400, "Invalid Target URL");
         }
 
         const parsedTargetURL = URL.parse(targetUrl);
         const parsedServerURL = URL.parse(process.env.SERVER_BASE_URL);
 
         if (parsedTargetURL.hostname === parsedServerURL.hostname) {
-            return returnResponse(false, "URL is already a Short URL", null);
+            return createJSONFailureResponse(409, "URL is already a short URL");
         }
 
         const urlDoc = new UrlModel({
@@ -50,11 +38,11 @@ async function createShortURL(payload) {
         });
 
         const result = await urlDoc.save();
-        return returnResponse(true, "Url created successfully", result);
+        return createJSONSuccessResponse(201, "Url created successfully", result);
 
     } catch (error) {
         console.log(`URL SERVICE ERROR: ${error.message}`);
-        return returnResponse(false, error, null);
+        return createJSONFailureResponse(500, error);
     }
 }
 
@@ -71,14 +59,14 @@ async function getTargetURL(shortUrlId) {
         }, { originalUrl: 1, _id: 0 }).lean();
 
         if (!originalUrl) {
-            return returnResponse(false, "Url not found", null);
+            return createJSONFailureResponse(404, "Url not found");
         }
 
-        return returnResponse(true, "Url found", { originalUrl });
+        return createJSONSuccessResponse(302, "Url found", { originalUrl });
 
     } catch (error) {
         console.log(`URL SERVICE ERROR: ${error.message}`);
-        return returnResponse(false, error, null);
+        return createJSONFailureResponse(500, error);
     }
 }
 
@@ -107,11 +95,11 @@ async function updateURLAnalytics(req, shortUrlId, originalUrl) {
         }, { $inc: { clicks: 1 } });
 
         const result = await urlAnalyticsDoc.save();
-        return returnResponse(true, "Url analytics updated successfully", result);
+        return createJSONSuccessResponse(204, "Url analytics updated successfully", result);
 
     } catch (error) {
         console.log(`URL SERVICE ERROR: ${error.message}`);
-        return returnResponse(false, error, null);
+        return createJSONFailureResponse(500, error);
     }
 }
 

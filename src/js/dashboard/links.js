@@ -6,5 +6,5 @@ btnCreateLink.addEventListener("click", () => showCreateLinkModal());
 
 
 function showCreateLinkModal() {
-    createLinkModal.show();
+    createLinkModal.showModal();
 }

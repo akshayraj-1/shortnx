@@ -1,15 +1,10 @@
-class ShareModal {
+import ModalWrapper from "./ModalWrapper";
+
+class ShareModal extends ModalWrapper {
     #elements;
     #styles = {
-        backdrop: {
-            default: ["modal-backdrop", "hidden", "px-6"],
-            show: ["animate-fade-in", "flex", "justify-center", "items-center"],
-            hide: ["animate-fade-out", "hidden"],
-        },
         modal: {
-            default: ["flex", "flex-col", "w-full", "max-w-[400px]", "p-6", "md:p-8", "bg-colorSurface", "rounded-xl", "outline-none"],
-            show: ["animate-pop-up"],
-            hide: ["animate-pop-down"],
+            default: ["flex", "flex-col", "w-full", "max-w-[400px]", "p-6", "md:p-8", "bg-colorSurface", "rounded-xl"],
         },
         title: {
             default: ["text-lg", "sm:text-xl", "font-semibold"]
@@ -29,13 +24,10 @@ class ShareModal {
     };
 
     constructor() {
-        this.#elements = {};
-        this.#elements.backdrop = document.createElement("div");
-        this.#elements.modal = document.createElement("div");
-
-        this.#elements.backdrop.className = this.#styles.backdrop.default.join(" ");
+        const modal = document.createElement("div");
+        super(modal);
+        this.#elements = { modal };
         this.#elements.modal.className = this.#styles.modal.default.join(" ");
-        this.#elements.modal.setAttribute("aria-hidden", "true");
         this.#elements.modal.innerHTML = `
              <div class="flex items-center justify-between">
                     <h3 class="${this.#styles.title.default.join(" ")}">Your link is ready! 🎉</h3>
@@ -57,10 +49,6 @@ class ShareModal {
                     <button data-ms-btn-copy class="${this.#styles.btnCopy.default.join(" ")}" title="Copy URL" aria-label="Copy URL"></button>
                 </div>
         `;
-
-
-        this.#elements.backdrop.appendChild(this.#elements.modal);
-        document.body.prepend(this.#elements.backdrop);
         this.#init();
     }
     #init() {
@@ -96,32 +84,12 @@ class ShareModal {
 
     }
 
-    // TODO: Convert the dialog the bottom sheet style for mobile devices
     showModal(url) {
         this.#elements.shortUrl.textContent = url;
-        this.#elements.backdrop.removeAttribute("aria-hidden");
-        this.#elements.modal.setAttribute("aria-modal", "true");
-        this.#elements.modal.setAttribute("role", "dialog");
-        this.#elements.modal.setAttribute("tabindex", "0");
-        this.#elements.backdrop.classList.remove(...this.#styles.backdrop.hide);
-        this.#elements.backdrop.classList.add(...this.#styles.backdrop.show);
-        this.#elements.modal.classList.remove(...this.#styles.modal.hide);
-        this.#elements.modal.classList.add(...this.#styles.modal.show);
-        this.#elements.modal.focus();
-        document.body.style.overflow = "hidden";
+        super.show();
     }
     hideModal() {
-        this.#elements.backdrop.setAttribute("aria-hidden", "true");
-        this.#elements.modal.setAttribute("role", "dialog");
-        this.#elements.modal.setAttribute("tabindex", "-1");
-        this.#elements.modal.removeAttribute("aria-modal");
-        this.#elements.modal.classList.remove(...this.#styles.modal.show);
-        this.#elements.modal.classList.add(...this.#styles.modal.hide);
-        setTimeout(() => {
-            this.#elements.backdrop.classList.remove(...this.#styles.backdrop.show);
-            this.#elements.backdrop.classList.add(...this.#styles.backdrop.hide);
-            document.body.style.overflow = "auto";
-        }, 300);
+        super.hide();
     }
 }
 
