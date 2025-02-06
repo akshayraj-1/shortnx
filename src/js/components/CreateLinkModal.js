@@ -133,8 +133,8 @@ class CreateLinkModal extends ModalWrapper {
                             </div>
                         </div>
                     </div>
-                     <button data-ml-btn-submit disabled class="relative text-[0.9rem] text-white text-center mt-8 px-6 py-2.5 w-full bg-colorPrimary rounded-lg 
-                     cursor-pointer transition-shadow hover:shadow-lg hover:shadow-colorAccent/25 disabled:bg-colorPrimaryDark disabled:pointer-events-none disabled:hover:shadow-none">
+                     <button data-ml-btn-submit disabled class="relative flex justify-center items-center gap-2 text-[0.9rem] text-white text-center mt-8 px-6 py-2.5 w-full bg-colorPrimary rounded-lg 
+                     cursor-pointer select-none transition-shadow hover:shadow-lg hover:shadow-colorAccent/25 disabled:bg-colorPrimaryDark disabled:pointer-events-none disabled:hover:shadow-none">
                             Create Link
                      </button>            
                </div>
@@ -232,6 +232,7 @@ class CreateLinkModal extends ModalWrapper {
     //  1. Create
     //  2. Edit
     _toggleMode(mode, data) {
+        this._toggleBtnState(this.#elements.btnSubmit, true);
         this.#createMode = mode || false;
         if (this.#createMode) {
             this.#elements.inputTitle.value = "";
@@ -247,10 +248,29 @@ class CreateLinkModal extends ModalWrapper {
         }
     }
 
+    _toggleBtnState(btn, enabled, loading = false) {
+        btn.disabled = !enabled;
+        if (!enabled && loading) {
+            btn.style.color = "transparent";
+            let loader = btn.querySelector(".dot-loader");
+            if (!loader) {
+                loader = document.createElement("div");
+                loader.classList.add("dot-loader", "absolute", "top-1/2", "left-1/2", "-translate-y-1/2", "-translate-x-1/2");
+                loader.style.width = "32px";
+                btn.prepend(loader);
+            }
+        } else {
+            btn.style.color = "#fff";
+            const loader = btn.querySelector(".dot-loader");
+            if (loader) btn.removeChild(loader);
+        }
+    }
+
 
     async #createNewLink() {
         if (!this.#createMode) return;
         try {
+            this._toggleBtnState(this.#elements.btnSubmit, false, true);
             const payload = JSON.stringify({
                 title: this.#elements.inputTitle.value,
                 targetUrl: this.#elements.inputTargetLink.value,
@@ -262,18 +282,20 @@ class CreateLinkModal extends ModalWrapper {
                 headers: { "Content-Type": "application/json" },
                 body: payload
             });
+
+            const data = await response.json();
             if (response.ok) {
-                const data = await response.json();
                 window.alert(JSON.stringify(data));
                 window.open(data.shortenUrl);
                 // TODO: Show success modal
             } else {
-                // TODO: Handle failure
-                window.alert("fucked");
+                window.toast.showToast(data.message, "error");
             }
 
         } catch (error) {
             console.log(error);
+        } finally {
+            this._toggleBtnState(this.#elements.btnSubmit, true);
         }
     }
 
