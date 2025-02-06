@@ -24,8 +24,9 @@ async function createShortURL(payload) {
 
         const parsedTargetURL = URL.parse(targetUrl);
         const parsedServerURL = URL.parse(process.env.SERVER_BASE_URL);
+        const normalizeHostname = (hostname) => hostname.replace(/^www\./, '');
 
-        if (parsedTargetURL.hostname === parsedServerURL.hostname) {
+        if (normalizeHostname(parsedTargetURL.hostname) === normalizeHostname(parsedServerURL.hostname)) {
             return createJSONFailureResponse(409, "URL is already a short URL");
         }
 
