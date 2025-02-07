@@ -65,8 +65,15 @@ async function loadContent(tab) {
     try {
         const response = await fetch(`/user/tabs/${tab}`, { signal });
         const data = await response.text();
-        // This is one of the way to load the html context into the DOM by invoking the parser to parse the created range
-        // so that the js can also be executed for the dynamic content
+
+        // If the server redirects to another page
+        if (response.redirected) {
+            window.location.href = response.url;
+            return;
+        }
+
+        // This is one of the way to load the html context into the DOM by invoking the parser
+        // to parse the created range, so that the js can also be executed for the dynamic content
         content.innerHTML = "";
         content.append(document.createRange().createContextualFragment(data));
     } catch (error) {
