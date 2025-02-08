@@ -39,3 +39,10 @@ npm install
 npm run dev
 ```
 _This will start the server by default locally at port 3939_
+
+
+## Notes
+
+- You may find the codebase a little bit overkill for a simple URL shortener. It was totally built for learning purposes and for experimentation.
+- Some of the features are still work in progress and may not work as expected.
+- You may find some issues or bugs in the project. Please report them in the [Issues](https://github.com/akshayraj-1/shortnx/issues) section.

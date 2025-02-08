@@ -1,8 +1,14 @@
 import ModalWrapper from "./ModalWrapper";
+import InputValidation from "./InputValidation";
 
+
+/**
+ * @type {CreateLinkModal}
+ * @description  Class to create/edit links
+ *
+ */
 class CreateLinkModal extends ModalWrapper {
     #createMode = true;
-    #elements;
     #styles = {
         modal: {
             default: ["flex-1", "w-full", "max-w-3xl", "py-9", "bg-colorSurface", "rounded-xl"],
@@ -10,11 +16,15 @@ class CreateLinkModal extends ModalWrapper {
     };
 
     constructor() {
-        const modal = document.createElement("div");
-        super(modal);
-        this.#elements = { modal };
-        this.#elements.modal.className = this.#styles.modal.default.join(" ");
-        this.#elements.modal.innerHTML = `
+        // Using window object to keep the instance because the webpack encloses the classes into
+        // a separate closure function, so inorder to maintain the same instance, we need to use window
+        if (typeof window !== "undefined" && window.__toast_instance) return window.__toast_instance;
+        super(document.createElement("div"));
+        if (typeof window !== "undefined") window.__toast_instance = this;
+        
+        // Continue Setup
+        this._elements.modal.className = this.#styles.modal.default.join(" ");
+        this._elements.modal.innerHTML = `
               <div class="flex flex-col px-6 sm:px-8 md:px-10 size-full">
                     <div class="flex justify-between items-center w-full">
                         <h3 class="text-lg sm:text-xl font-semibold">
@@ -25,7 +35,7 @@ class CreateLinkModal extends ModalWrapper {
                         </h3>
                         <button data-ml-btn-close class="icon-close-md text-[1.2rem] text-textPrimary"></button>
                     </div>
-                    <div class="h-full flex flex-wrap gap-5 mt-10 overflow-y-auto overflow-x-hidden no-scrollbar" style="max-height: calc(100vh - 200px);">
+                    <div class="h-full flex flex-wrap gap-5 px-1 mt-10 overflow-y-auto overflow-x-hidden no-scrollbar" style="max-height: calc(100vh - 200px);">
                         <div class="flex-1 flex flex-col gap-4 min-w-3xs">
                             <div class="flex flex-col gap-1.5">
                                 <label for="input-target-link" class="text-sm text-textSecondary font-medium">Target link</label>
@@ -143,86 +153,88 @@ class CreateLinkModal extends ModalWrapper {
     }
 
     #init() {
-        this.#elements.btnClose = this.#elements.modal.querySelector("[data-ml-btn-close]");
-        this.#elements.btnGenerateRandomId = this.#elements.modal.querySelector("[data-ml-btn-generate]");
-        this.#elements.inputTargetLink = this.#elements.modal.querySelector("[data-ml-input-target-link]");
-        this.#elements.inputShortLink = this.#elements.modal.querySelector("[data-ml-input-short-link]");
-        this.#elements.inputTitle = this.#elements.modal.querySelector("[data-ml-input-link-title]");
-        this.#elements.inputComments = this.#elements.modal.querySelector("[data-ml-input-comments]");
-        this.#elements.btnDownload = this.#elements.modal.querySelector("[data-ml-btn-download]");
-        this.#elements.btnSubmit = this.#elements.modal.querySelector("[data-ml-btn-submit]");
-        this.#elements.qrcode = this.#elements.modal.querySelector("#qr1");
-        this.#elements.colors = this.#elements.modal.querySelectorAll('input[name="foreground"]');
-        this.#elements.qrlogo = this.#elements.modal.querySelector(`svg[slot="icon"] rect`);
+        this._elements.btnClose = this._elements.modal.querySelector("[data-ml-btn-close]");
+        this._elements.btnGenerateRandomId = this._elements.modal.querySelector("[data-ml-btn-generate]");
+        this._elements.inputTargetLink = this._elements.modal.querySelector("[data-ml-input-target-link]");
+        this._elements.inputShortLink = this._elements.modal.querySelector("[data-ml-input-short-link]");
+        this._elements.inputTitle = this._elements.modal.querySelector("[data-ml-input-link-title]");
+        this._elements.inputComments = this._elements.modal.querySelector("[data-ml-input-comments]");
+        this._elements.btnDownload = this._elements.modal.querySelector("[data-ml-btn-download]");
+        this._elements.btnSubmit = this._elements.modal.querySelector("[data-ml-btn-submit]");
+        this._elements.qrcode = this._elements.modal.querySelector("#qr1");
+        this._elements.colors = this._elements.modal.querySelectorAll('input[name="foreground"]');
+        this._elements.qrlogo = this._elements.modal.querySelector(`svg[slot="icon"] rect`);
 
+        // Close Modal
+        this._elements.btnClose.addEventListener("click", () => this.hideModal());
 
-        this.#elements.btnClose.addEventListener("click", () => this.hideModal());
-
-        this.#elements.qrcode.addEventListener("codeRendered", () => this.#elements.qrcode.animateQRCode("MaterializeIn"));
-        this.#elements.colors.forEach(color => {
+        // QR Code Generation
+        this._elements.qrcode.addEventListener("codeRendered", () => this._elements.qrcode.animateQRCode("MaterializeIn"));
+        this._elements.colors.forEach(color => {
             color.addEventListener("change", () => {
-                this.#elements.qrcode.setAttribute('module-color', `${color.value}`);
-                this.#elements.qrcode.setAttribute('position-ring-color', `${color.value}`);
-                this.#elements.qrcode.setAttribute('position-center-color', `${color.value}`);
-                this.#elements.qrlogo.setAttribute('fill', `${color.value}`);
+                this._elements.qrcode.setAttribute('module-color', `${color.value}`);
+                this._elements.qrcode.setAttribute('position-ring-color', `${color.value}`);
+                this._elements.qrcode.setAttribute('position-center-color', `${color.value}`);
+                this._elements.qrlogo.setAttribute('fill', `${color.value}`);
             });
         });
-        this.#elements.btnGenerateRandomId.addEventListener("click", () => {
-            this.#elements.inputShortLink.value = Math.random().toString(36).substring(7);
-            this.#elements.qrcode.contents = `https://shortnx.in/${this.#elements.inputShortLink.value}`;
-            this.#elements.qrcode.animateQRCode('MaterializeIn');
+        this._elements.btnGenerateRandomId.addEventListener("click", () => {
+            InputValidation.toggleErrorState(this._elements.inputShortLink.parentNode);
+            this._elements.inputShortLink.value = Math.random().toString(36).substring(7);
+            this._elements.qrcode.contents = `https://shortnx.in/${this._elements.inputShortLink.value}`;
+            this._elements.qrcode.animateQRCode('MaterializeIn');
         });
 
-        this.#elements.btnDownload.addEventListener("click", () => {
+        // QR Code Download
+        this._elements.btnDownload.addEventListener("click", () => {
             // Change btn state to loading
-            let prevText = this.#elements.btnDownload.innerHTML;
-            this.#elements.btnDownload.textContent = "Saving...";
-            this.#elements.btnDownload.disabled = true;
+            let prevText = this._elements.btnDownload.innerHTML;
+            this._elements.btnDownload.textContent = "Saving...";
+            this._elements.btnDownload.disabled = true;
             // Generate QR Code
-            html2canvas(this.#elements.qrcode.parentNode, {
+            html2canvas(this._elements.qrcode.parentNode, {
                 scale: 4,
                 backgroundColor: null,
                 logging: false,
             }).then(canvas => {
                 const link = document.createElement("a");
-                link.download = `shortnx-${this.#elements.inputShortLink.value}.png`;
+                link.download = `shortnx-${this._elements.inputShortLink.value}.png`;
                 link.href = canvas.toDataURL("image/png");
                 link.click();
                 // Reset btn state
-                this.#elements.btnDownload.innerHTML = prevText;
-                this.#elements.btnDownload.disabled = false;
+                this._elements.btnDownload.innerHTML = prevText;
+                this._elements.btnDownload.disabled = false;
             });
-        })
-
-        this.#elements.inputTitle.addEventListener("input", () => {
-            if (this.#elements.inputTitle.value.length > 20) {
-                this.#elements.inputTitle.value = this.#elements.inputTitle.value.substring(0, 20);
-            }
         });
 
-        this.#elements.inputComments.addEventListener("input", () => {
-            if (this.#elements.inputComments.value.length > 100) {
-                this.#elements.inputComments.value = this.#elements.inputComments.value.substring(0, 100);
-            }
-        });
-
-        this.#elements.inputTargetLink.addEventListener("input", (e) => {
-            this.#elements.btnSubmit.disabled = e.target.value.length === 0;
-        });
 
         let debounce = null;
-        this.#elements.inputShortLink.addEventListener("input", (e) => {
-            if (debounce) clearTimeout(debounce);
-            if (e.target.value.length > 12) {
-                e.target.value = e.target.value.substring(0, 12);
-            }
-            debounce = setTimeout(() => {
-                this.#elements.qrcode.contents = `https://shortnx.in/${e.target.value}`;
-                this.#elements.qrcode.animateQRCode('MaterializeIn');
-            }, 500);
+
+        Array.from([
+            this._elements.inputTargetLink,
+            this._elements.inputShortLink,
+            this._elements.inputTitle,
+            this._elements.inputComments
+        ]).forEach(input => {
+            input.addEventListener("input", (e) => {
+                if (input === this._elements.inputShortLink) {
+                    if (input.value.length > 5 && input.value.length <= 12) {
+                        InputValidation.toggleErrorState(input.parentNode);
+                        if (debounce) clearTimeout(debounce);
+                        debounce = setTimeout(() => {
+                            this._elements.qrcode.contents = `https://shortnx.in/${e.target.value}`;
+                            this._elements.qrcode.animateQRCode('MaterializeIn');
+                        }, 500);
+                    } else {
+                        InputValidation.toggleErrorState(input.parentNode, "Length should be between 6-12");
+                    }
+                } else if (input.value.length > 0) {
+                    InputValidation.toggleErrorState(input);
+                }
+            });
         });
 
-        this.#elements.btnSubmit.addEventListener("click", () => {
+        this._elements.btnSubmit.addEventListener("click", () => {
             if (this.#createMode) this.#createNewLink();
         })
 
@@ -232,18 +244,18 @@ class CreateLinkModal extends ModalWrapper {
     //  1. Create
     //  2. Edit
     _toggleMode(mode, data) {
-        this._toggleBtnState(this.#elements.btnSubmit, true);
+        this._toggleBtnState(this._elements.btnSubmit, true);
         this.#createMode = mode || false;
         if (this.#createMode) {
-            this.#elements.inputTitle.value = "";
-            this.#elements.inputComments.value = "";
-            this.#elements.inputTargetLink.value = "";
-            this.#elements.inputShortLink.readOnly = false;
-            this.#elements.btnGenerateRandomId.click();
+            this._elements.inputTitle.value = "";
+            this._elements.inputComments.value = "";
+            this._elements.inputTargetLink.value = "";
+            this._elements.inputShortLink.readOnly = false;
+            this._elements.btnGenerateRandomId.click();
         } else {
-            this.#elements.inputTitle.value = data.title;
-            this.#elements.inputShortLink.readOnly = true;
-            this.#elements.inputShortLink.value = data.shortenUrl;
+            this._elements.inputTitle.value = data.title;
+            this._elements.inputShortLink.readOnly = true;
+            this._elements.inputShortLink.value = data.shortenUrl;
 
         }
     }
@@ -267,15 +279,21 @@ class CreateLinkModal extends ModalWrapper {
     }
 
 
+    // TODO: Implement the proper validation for the inputs before continuing
     async #createNewLink() {
-        if (!this.#createMode) return;
+        // Validate Inputs
+        const inputTargetLink = this._elements.inputTargetLink;
+        const inputShortLink = this._elements.inputShortLink;
+        const inputTitle = this._elements.inputTitle;
+        const inputComments = this._elements.inputComments;
+
         try {
-            this._toggleBtnState(this.#elements.btnSubmit, false, true);
+            this._toggleBtnState(this._elements.btnSubmit, false, true);
             const payload = JSON.stringify({
-                title: this.#elements.inputTitle.value,
-                targetUrl: this.#elements.inputTargetLink.value,
-                shortUrlId: this.#elements.inputShortLink.value,
-                comments: this.#elements.inputComments.value
+                title: this._elements.inputTitle.value,
+                targetUrl: this._elements.inputTargetLink.value,
+                shortUrlId: this._elements.inputShortLink.value,
+                comments: this._elements.inputComments.value
             });
             const response = await fetch("/url/create", {
                 method: "POST",
@@ -289,13 +307,20 @@ class CreateLinkModal extends ModalWrapper {
                 window.open(data.shortenUrl);
                 // TODO: Show success modal
             } else {
+                // Parse the error
+                const error = data.error || {};
+                if (error.name === "ALREADY_EXISTS" || error.message?.includes("already exists")) {
+                    InputValidation.toggleErrorState(this._elements.inputShortLink.parentNode, "Short link already exists");
+                } else if (/(invalid target url)/i.test(error.message)) {
+                    InputValidation.toggleErrorState(this._elements.inputTargetLink, "Please enter a valid url");
+                }
                 window.toast.showToast(data.message, "error");
             }
 
         } catch (error) {
             console.log(error);
         } finally {
-            this._toggleBtnState(this.#elements.btnSubmit, true);
+            this._toggleBtnState(this._elements.btnSubmit, true);
         }
     }
 
@@ -312,4 +337,10 @@ class CreateLinkModal extends ModalWrapper {
 
 }
 
-window.createLinkModal = new CreateLinkModal();
+// For Browser (script tag)
+if (typeof window !== "undefined" && !window.createLinkModal) {
+    window.createLinkModal = new CreateLinkModal();
+}
+
+// For ES6 modules
+export default CreateLinkModal;

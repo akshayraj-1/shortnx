@@ -22,6 +22,7 @@ module.exports = (env, argv) => {
         watch: !isProduction,
         optimization: {
             minimize: isProduction,
+            usedExports: true,
             minimizer: [new TerserPlugin({
                 terserOptions: {
                     mangle: {
@@ -35,7 +36,7 @@ module.exports = (env, argv) => {
                         beautify: false
                     },
                     compress: {
-                        drop_console: true,
+                        drop_console: false,
                         drop_debugger: true,
                         passes: 5,
                         booleans: true,

@@ -1,43 +1,29 @@
-/**
- * @description
- * This class is used to display loading animation over the entire page
- */
+import ModalWrapper from "./ModalWrapper";
 
-class LoadingModal {
-    #elements;
-    #styles = {
-        backdrop: {
-            default: ["modal-backdrop", "hidden"],
-            show: ["animate-fade-in", "flex", "justify-center", "items-center"],
-            hide: ["animate-fade-out", "hidden"],
-        },
-    };
+/**
+ * @type {LoadingModal}
+ * @description This class is used to display loading animation over the entire page
+ *
+ */
+class LoadingModal extends ModalWrapper {
 
     constructor() {
-        this.#elements = {};
-        this.#elements.backdrop = document.createElement("div");
-        this.#elements.loader = document.createElement("div");
 
-        this.#elements.backdrop.className = this.#styles.backdrop.default.join(" ");
-        this.#elements.loader.innerHTML = '<div class="loader"></div>';
+        // Using window object to keep the instance because the webpack encloses the classes into
+        // a separate closure function, so inorder to maintain the same instance, we need to use window
+        if (typeof window !== "undefined" && window.__loading_modal_instance) return window.__loading_modal_instance;
+        super(document.createElement("div"));
+        window.__loading_modal_instance = this;
 
-        this.#elements.backdrop.appendChild(this.#elements.loader);
-        document.body.prepend(this.#elements.backdrop);
-    }
-
-    show() {
-        this.#elements.backdrop.classList.remove(...this.#styles.backdrop.hide);
-        this.#elements.backdrop.classList.add(...this.#styles.backdrop.show);
-        document.body.style.overflow = "hidden";
-    }
-
-    hide() {
-        setTimeout(() => {
-            this.#elements.backdrop.classList.remove(...this.#styles.backdrop.show);
-            this.#elements.backdrop.classList.add(...this.#styles.backdrop.hide);
-            document.body.style.overflow = "auto";
-        }, 300);
+        // Continue Setup
+        this._elements.modal.innerHTML = '<div class="loader"></div>';
     }
 }
 
-window.loadingModal = new LoadingModal();
+// For Browser (script tag)
+if (typeof window !== "undefined" && !window.loadingModal) {
+    window.loadingModal = new LoadingModal();
+}
+
+// For ES6 modules
+export default LoadingModal;

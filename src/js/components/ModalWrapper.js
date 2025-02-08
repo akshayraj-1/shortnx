@@ -1,5 +1,4 @@
-export default class ModalWrapper {
-    #elements;
+class ModalWrapper {
     #styles = {
         backdrop: {
             default: ["modal-backdrop", "hidden", "py-10", "sm:px-6", "outline-none"],
@@ -17,61 +16,65 @@ export default class ModalWrapper {
         if (!children || !children instanceof Node) {
             throw new Error("Invalid children provided");
         }
-        this.#elements = {
+
+        this._elements = {
             backdrop: document.createElement("div"),
-            modalWrapper: document.createElement("div")
+            modalWrapper: document.createElement("div"),
+            modal: children
         };
 
         // Set classes
-        this.#elements.backdrop.className = this.#styles.backdrop.default.join(" ");
-        this.#elements.modalWrapper.className = this.#styles.modalWrapper.default.join(" ");
+        this._elements.backdrop.className = this.#styles.backdrop.default.join(" ");
+        this._elements.modalWrapper.className = this.#styles.modalWrapper.default.join(" ");
 
         // Set attributes
-        this.#elements.backdrop.setAttribute("role", "dialog");
-        this.#elements.backdrop.setAttribute("tabindex", "-1");
-        this.#elements.backdrop.setAttribute("aria-hidden", "true");
+        this._elements.backdrop.setAttribute("role", "dialog");
+        this._elements.backdrop.setAttribute("tabindex", "-1");
+        this._elements.backdrop.setAttribute("aria-hidden", "true");
 
-        this.#elements.modalWrapper.setAttribute("role", "dialog");
-        this.#elements.modalWrapper.setAttribute("tabindex", "-1");
-        this.#elements.modalWrapper.setAttribute("aria-modal", "true");
-        this.#elements.modalWrapper.setAttribute("aria-hidden", "true");
+        this._elements.modalWrapper.setAttribute("role", "dialog");
+        this._elements.modalWrapper.setAttribute("tabindex", "-1");
+        this._elements.modalWrapper.setAttribute("aria-modal", "true");
+        this._elements.modalWrapper.setAttribute("aria-hidden", "true");
 
         // Append to the DOM
-        this.#elements.modalWrapper.appendChild(children);
-        this.#elements.backdrop.appendChild(this.#elements.modalWrapper);
-        document.body.prepend(this.#elements.backdrop);
+        this._elements.modalWrapper.appendChild(this._elements.modal);
+        this._elements.backdrop.appendChild(this._elements.modalWrapper);
+        document.body.prepend(this._elements.backdrop);
     }
 
     show(cancellable = false, callback = () => {}) {
 
-        this.#elements.backdrop.removeAttribute("aria-hidden");
-        this.#elements.modalWrapper.removeAttribute("aria-hidden");
+        this._elements.backdrop.removeAttribute("aria-hidden");
+        this._elements.modalWrapper.removeAttribute("aria-hidden");
 
-        this.#elements.backdrop.classList.remove(...this.#styles.backdrop.hide);
-        this.#elements.backdrop.classList.add(...this.#styles.backdrop.show);
+        this._elements.backdrop.classList.remove(...this.#styles.backdrop.hide);
+        this._elements.backdrop.classList.add(...this.#styles.backdrop.show);
 
-        this.#elements.modalWrapper.classList.remove(...this.#styles.modalWrapper.hide);
-        this.#elements.modalWrapper.classList.add(...this.#styles.modalWrapper.show);
+        this._elements.modalWrapper.classList.remove(...this.#styles.modalWrapper.hide);
+        this._elements.modalWrapper.classList.add(...this.#styles.modalWrapper.show);
 
         setTimeout(() => {
-            this.#elements.modalWrapper.focus();
+            this._elements.modalWrapper.focus();
             document.body.style.overflow = "hidden";
             callback();
         }, 0);
     }
 
     hide(callback = () => {}) {
-        this.#elements.backdrop.setAttribute("aria-hidden", "true");
-        this.#elements.modalWrapper.setAttribute("aria-hidden", "true");
+        this._elements.backdrop.setAttribute("aria-hidden", "true");
+        this._elements.modalWrapper.setAttribute("aria-hidden", "true");
 
-        this.#elements.modalWrapper.classList.remove(...this.#styles.modalWrapper.show);
-        this.#elements.modalWrapper.classList.add(...this.#styles.modalWrapper.hide);
+        this._elements.modalWrapper.classList.remove(...this.#styles.modalWrapper.show);
+        this._elements.modalWrapper.classList.add(...this.#styles.modalWrapper.hide);
 
         setTimeout(() => {
-            this.#elements.backdrop.classList.remove(...this.#styles.backdrop.show);
-            this.#elements.backdrop.classList.add(...this.#styles.backdrop.hide);
+            this._elements.backdrop.classList.remove(...this.#styles.backdrop.show);
+            this._elements.backdrop.classList.add(...this.#styles.backdrop.hide);
             document.body.style.overflow = "auto";
             callback();
         }, 300);
     }
 }
+
+export default ModalWrapper;

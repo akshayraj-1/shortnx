@@ -42,12 +42,12 @@ btnSignUp.addEventListener("click", async () => {
             } else if (message.toLowerCase().includes("password")) {
                 InputValidation.toggleErrorState(password, message);
             } else {
-                toast.showToast(message, toast.types.error);
+                toast.showToast(message);
             }
         }
 
     } catch (error) {
-        toast.showToast("Something went wrong", toast.types.error || error.message);
+        toast.showToast("Something went wrong");
     } finally {
         loadingModal.hide();
     }

@@ -1,3 +1,9 @@
+import Toast from "../components/Toast";
+import ShareModal from "../components/ShareModal";
+import { isURL } from "../../utils/validator.util";
+
+window.toast = new Toast();
+window.shareModal = new ShareModal();
 const inputUrl = document.querySelector("#input-url");
 const spinner = document.querySelector("[aria-label='spinner']");
 const arrowRight = document.querySelector("[aria-label='arrow-right']");
@@ -12,8 +18,9 @@ inputUrl.addEventListener("keypress", (e) => {
 
 btnShorten.addEventListener("click", async () => {
     const url = inputUrl.value;
-    if (!url) {
-        toast.showToast("Please enter a valid url", toast.types.error);
+
+    if (!isURL(url, { restricted_hostnames: ["localhost:\\d*", window.location.hostname] })) {
+        toast.showToast("Please enter a valid url");
         return;
     }
 
@@ -29,7 +36,7 @@ btnShorten.addEventListener("click", async () => {
         });
         const data = await response.json();
         if (!data.success) {
-            toast.showToast(data.message, toast.types.error);
+            toast.showToast(data.message);
             return;
         }
         inputUrl.value = "";
@@ -37,7 +44,7 @@ btnShorten.addEventListener("click", async () => {
         shareModal.showModal(data.data.shortenUrl);
 
     } catch (error) {
-        toast.showToast(error.message, toast.types.error);
+        toast.showToast(error.message);
     } finally {
         spinner.classList.toggle("hidden", true);
         arrowRight.classList.toggle("hidden", false);
