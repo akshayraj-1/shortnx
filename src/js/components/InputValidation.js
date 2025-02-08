@@ -1,71 +1,142 @@
 /**
+ * @type {InputValidation}
  * @description
- * Just a helper class for form validation
- * Right now it has just validations for email, password, name,
- * but you can also validate other types of input values using the generic validateInput method
- * Please remember to wrap your given input element in some sort of container like `<div><input type="email"></div>`
+ * Helper class for form input validation.
+ * It has some predefined methods for several validations like email, name, password, url etc...
+ * but you can also validate other types of input values using the generic `validateInput` method
+ * If you want to show an error message, Please remember to wrap your given input element in some sort of container
+ * like `<div><input type="email"></div>`
  */
+
+import validator from "../../utils/validator.util";
 
 class InputValidation {
 
     /**
      * Generic input validation
-     * @param input
-     * @param regexp
-     * @param errorMessage
+     * @param {HTMLInputElement} input
+     * @param {RegExp} pattern
+     * @param {object|null} options
      * @returns {boolean}
      */
-    static validateInput(input, regexp = null, errorMessage = null) {
+    static validateInput(input, pattern, options = {}) {
+        options = {
+            error: "Please enter a valid value",
+            show_error: true,
+            ...options
+        };
         const value = input.value;
-        const valid = regexp ? regexp.test(value) : value.length > 0;
-        this.toggleErrorState(input, !valid && errorMessage ? errorMessage : null);
+        const valid = validator.validate(value, { pattern })
+        this.toggleErrorState(input, !valid && options.show_error ? options.error : null);
         return valid;
     }
 
     /**
      * Validate email
-     * @param input
-     * @param showError
+     * @param {HTMLInputElement} input
+     * @param {Object|null} options
      * @returns {boolean}
      */
-    static validateEmail(input, showError = true) {
-        return this.validateInput(input,
-            /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-            showError ? "Please enter a valid email address" : null);
+    static validateEmail(input, options = {}) {
+        options = {
+            error: "Please enter a valid email address",
+            show_error: true,
+            ...options
+        };
+        const isValidEmail = validator.isEmail(input.value);
+        this.toggleErrorState(input, !isValidEmail && options.show_error ? options.error : null);
+        return isValidEmail;
     }
 
     /**
      * Validate name
-     * @param input
-     * @param showError
+     * @param {HTMLInputElement} input
+     * @param {Object|null} options
      * @returns {boolean}
      */
-    static validateName(input, showError = true) {
-        return this.validateInput(input,
-            /^[a-zA-Z\s]{6,50}$/,
-            showError ? "Name must be between 6-50 chars" : null);
+    static validateName(input, options = {}) {
+        options = {
+            min_len: 6,
+            max_len: 50,
+            show_error: true,
+            ...options
+        };
+        if (options.min_len || options.max_len) {
+            const min = options.min_len ? options.min_len : 6;
+            const max = options.max_len ? options.max_len : 50;
+            options.error = `Name must be between ${min}-${max} chars`;
+        }
+
+        const isValidName = validator.isAlphaNumeric(input.value, {
+            min_len: options.min_len,
+            max_len: options.max_len,
+            whitespace: true
+        });
+        this.toggleErrorState(input, !isValidName && options.show_error ? options.error : null);
+        return isValidName;
     }
 
     /**
      * Validate password
-     * @param input
-     * @param showError
+     * @param {HTMLInputElement} input
+     * @param {Object|null} options
      * @returns {boolean}
      */
-    static validatePassword(input, showError = true) {
-        let error = null;
-        const value = input.value;
-        if (value.length < 8 || value.length > 30) {
-            error = "Password must be between 8-30 chars";
-        } else if (!value.match(/^(?=.*[A-Za-z])(?=.*\d)/)) {
-            error = "Password must have at least one letter and number";
-        } else if (!value.match(/(?=.*[@$!%*#?&])/)) {
-            error = "Password must have at least one special char";
+    static validatePassword(input, options = {}) {
+        options = {
+            min_len: 8,
+            max_len: 30,
+            number: true,
+            special_char: true,
+            error: "Please enter a valid password",
+            show_error: true,
+            ...options
+        };
+
+        const min = options.min_len;
+        const max = options.max_len;
+        const password = input.value;
+
+        if (options.number && !validator.validate(password, { pattern: /\d/ })) {
+            options.error = "Password must have at least one number.";
+            this.toggleErrorState(input, options.show_error ? options.error : null);
+            return false;
         }
-        return this.validateInput(input,
-            /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,30}$/,
-            showError ? error : null);
+
+        if (options.special_char && !validator.validate(password, { pattern: /[!@#$%^&*()_+]/ })) {
+            options.error = "Password must have at least one special character.";
+            this.toggleErrorState(input, options.show_error ? options.error : null);
+            return false;
+        }
+
+        if (password.length < min || password.length > max) {
+            options.error = `Password must be between ${min}-${max} characters.`;
+            this.toggleErrorState(input, options.show_error ? options.error : null);
+            return false;
+        }
+
+        return true;
     }
+
+
+    /**
+     * Validate URL
+     * @param {HTMLInputElement} input
+     * @param {Object|null} options
+     * @returns {boolean}
+     */
+    static validateURL(input, options = {}) {
+        options = {
+            protocols: ["http", "https"],
+            error: "Please enter a valid url",
+            show_error: true,
+            ...options
+        };
+        const isValidURL = validator.isURL(input.value, options);
+        this.toggleErrorState(input, !isValidURL && options.show_error ? options.error : null);
+        return isValidURL;
+    }
+
 
     /**
      * Toggle error state
@@ -86,7 +157,7 @@ class InputValidation {
         }
         // Add error
         input.classList.remove("focus:ring-1", "focus:ring-slate-300");
-        input.classList.add("ring-1", "ring-red-500", "focus:ring-1", "focus:ring-red-500");
+        input.classList.add("ring-1", "ring-red-500", "focus:ring-1", "focus:ring-red-500", "focus-within:ring-red-300");
         input.focus();
         if (error) {
             error.textContent = message;
@@ -99,4 +170,10 @@ class InputValidation {
     }
 }
 
-window.InputValidation = InputValidation;
+// For Browser (script tag)
+if (typeof window !== "undefined" && !window.InputValidation) {
+    window.InputValidation = InputValidation;
+}
+
+// For ES6 modules
+export default InputValidation;

@@ -13,7 +13,7 @@ password.addEventListener("keypress", (e) => e.key === "Enter" && btnLogin.click
 btnLogin.addEventListener("click", async () => {
 
     if (!InputValidation.validateEmail(email) ||
-        !InputValidation.validateInput(password, null, "Please enter your password")
+        !InputValidation.validateInput(password, /^\S+$/, { error: "Please enter your password" })
     ) return;
 
     const userData = {
@@ -42,12 +42,12 @@ btnLogin.addEventListener("click", async () => {
                 InputValidation.toggleErrorState(email, message);
                 InputValidation.toggleErrorState(password, message);
             } else {
-                toast.showToast(message, toast.types.error);
+                toast.showToast(message);
             }
         }
 
     } catch (error) {
-        toast.showToast(error.message, toast.types.error);
+        toast.showToast(error.message);
     } finally {
         loadingModal.hide();
     }

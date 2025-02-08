@@ -2,45 +2,40 @@
 // Added the signatures and comments for convenience
 
 const { Response } = require("express");
-const {handleMongooseError} = require("./mongoError.util");
-const mongoose = require("mongoose");
-
+const { normalizeError } = require("./error.util");
 
 /**
  * Create JSON response object for sending responses to client
- * @param {Number} status
- * @param {Boolean} success
- * @param {String} message
+ * @param {number} status
+ * @param {boolean} success
+ * @param {string} message
  * @param {Error|null} error
  * @param {Object|null} data
- * @returns {{success: Boolean, statusCode: Number, message: String, error: (Error|null), data: (Object|null)}}
+ * @returns {{success: boolean, statusCode: number, message: string, error: (Error|null), data: (Object|null)}}
  */
 function createJSONResponse(status, success, message, error, data = null) {
-    if (!success && !message) {
-        if (!error) {
-            error = new Error("Unknown error");
-            error.name = "UnknownError";
-        }
-        message = handleMongooseError(error);
+    if (!success && error) {
+        error = normalizeError(error);
+        if (!message) message = error.message;
     }
     return {
         success,
         statusCode: status,
         message,
-        error: error instanceof Error && {
+        error: error instanceof Error ? {
             name: error.name,
             message: error.message
-        },
+        } : null,
         data
     };
 }
 
 /**
  * Create JSON response object for success responses
- * @param {Number} status
- * @param {String} message
+ * @param {number} status
+ * @param {string} message
  * @param {Object|null} data
- * @returns {{success: Boolean, statusCode: Number, message: String, error: null, data: (Object|null)}}
+ * @returns {{success: boolean, statusCode: number, message: string, error: null, data: (Object|null)}}
  */
 function createJSONSuccessResponse(status, message, data) {
     return createJSONResponse(status, true, message, null, data);
@@ -49,13 +44,13 @@ function createJSONSuccessResponse(status, message, data) {
 
 /**
  * Create JSON response Object for failure responses
- * @param {Number} status
- * @param {Error|String} error
- * @param {String|null} message
- * @returns {{success: Boolean, statusCode: Number, message: String, error: Error, data: null}}
+ * @param {number} status
+ * @param {Error} error
+ * @param {string|null} message
+ * @returns {{success: boolean, statusCode: number, message: string, error: Error, data: null}}
  */
 function createJSONFailureResponse(status, error, message = null) {
-    return createJSONResponse(status, false, typeof error === "string" ? error : message, error, null);
+    return createJSONResponse(status, false, message, error, null);
 }
 
 /**
@@ -74,8 +69,8 @@ function sendJSONResponse(res, status, response) {
 /**
  * Sends the success JSON response to client (Express)
  * @param res
- * @param {Number} status
- * @param {String} message
+ * @param {number} status
+ * @param {string} message
  * @param {Object|null} data
  * @returns {*}
  */
@@ -87,9 +82,9 @@ function sendJSONSuccess(res, status, message, data) {
 /**
  * Sends the failure JSON response to the client (Express
  * @param res
- * @param {Number} status
- * @param {Error|String} error
- * @param {String|null} message
+ * @param {number} status
+ * @param {Error|string} error
+ * @param {string|null} message
  * @returns {*}
  */
 function sendJSONFailure(res, status, error, message) {

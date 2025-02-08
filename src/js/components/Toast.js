@@ -4,11 +4,12 @@
  *
  */
 
-// This could have been done with functions,
-// but using a class makes the code more organized and easier to manage.
+// This could have been done with factory functions,
+// but using a class makes the code more organized and easier to manage,
+// also for the UI components class approach is more recommended
 
-class Toast {
-    #elements;
+export default class Toast {
+    _elements;
     #queue = [];
     #styles = {
         container: {
@@ -20,42 +21,34 @@ class Toast {
             default: ["relative", "mx-auto", "w-full", "md:w-fit", "max-w-sm", "px-4", "md:px-6", "py-3", "sm:py-2.5", "text-[0.9rem]", "text-white", "bg-black", "rounded-md", "shadow-card"],
         }
     };
-    types = {
-        info: "toast-info",
-        success: "toast-success",
-        warning: "toast-warning",
-        error: "toast-error"
-    };
 
     constructor() {
-        this.#elements = {};
-        this.#elements.container = document.createElement("div");
-        this.#elements.toast = document.createElement("div");
+        this._elements = {};
+        this._elements.container = document.createElement("div");
+        this._elements.toast = document.createElement("div");
 
-        this.#elements.container.className = this.#styles.container.default.join(" ");
-        this.#elements.toast.className = this.#styles.toast.default.join(" ");
+        this._elements.container.className = this.#styles.container.default.join(" ");
+        this._elements.toast.className = this.#styles.toast.default.join(" ");
 
-        this.#elements.container.appendChild(this.#elements.toast);
-        document.body.prepend(this.#elements.container);
+        this._elements.container.appendChild(this._elements.toast);
+        document.body.prepend(this._elements.container);
     }
 
-    showToast(message, type = this.types.info) {
-        if (this.#queue.length > 0 && this.#queue[this.#queue.length - 1].message === message) return;
-        this.#queue.push({ message, type });
+    showToast(message) {
+        if (this.#queue.length > 0 && this.#queue[this.#queue.length - 1] === message) return;
+        this.#queue.push(message);
         if (this.#queue.length === 1) this.#processQueue();
     }
 
     #processQueue() {
         if (!this.#queue.length) return;
-        this.#elements.toast.innerHTML = this.#queue[0].message;
-        this.#elements.toast.classList.add(this.#queue[0].type);
-        this.#elements.container.classList.remove(...this.#styles.container.hide);
-        this.#elements.container.classList.add(...this.#styles.container.show);
+        this._elements.toast.innerHTML = this.#queue[0];
+        this._elements.container.classList.remove(...this.#styles.container.hide);
+        this._elements.container.classList.add(...this.#styles.container.show);
         setTimeout(async () => {
-            this.#elements.container.classList.add("animate-slide-out-down");
+            this._elements.container.classList.add("animate-slide-out-down");
             await new Promise(resolve => setTimeout(() => {
-                this.#elements.container.classList.add("hidden");
-                this.#elements.toast.classList.remove(this.#queue[0].type);
+                this._elements.container.classList.add("hidden");
                 this.#queue.shift();
                 resolve();
             }, 200));
@@ -65,5 +58,6 @@ class Toast {
 }
 
 // Required because of the webpack, it strips off the unused classes in the build
-// Could have used modular imports/exports but since I am using script tag to load the files, this is the best option
-window.toast = new Toast();
+if (typeof window !== "undefined" && !window.toast) {
+    window.toast = new Toast();
+}

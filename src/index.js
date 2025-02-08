@@ -1,8 +1,9 @@
 // Importing Modules
 const express = require("express");
+const session = require("express-session");
 const mongoose = require("mongoose");
 const MongoStore = require("connect-mongo");
-const session = require("express-session");
+const mongoSanitize = require("express-mongo-sanitize");
 const cookieParser = require("cookie-parser");
 const path = require("node:path");
 const dotenv = require("dotenv");
@@ -12,7 +13,7 @@ const ejsmate = require("ejs-mate");
 const apiRouter = require("./routes/api.route");
 const defaultRouter = require("./routes/default.route");
 const authRouter = require("./routes/auth.route");
-const userRouter = require("./routes/user.route");
+const userRouter = require("./routes/dashboard.route");
 const urlRouter = require("./routes/url.route");
 
 // Environment Variables
@@ -25,7 +26,7 @@ const app = express();
 app.use(express.static(path.join(__dirname, "../public")));
 app.use(express.urlencoded({
     extended: true // parse with qs lib: can parse nested objects
-    // extended: false // parse with qs lib: can't parse nested objects
+    // extended: false // parse with querystring lib: can't parse nested objects
 }));
 app.use(express.json());
 app.use(cookieParser());
@@ -44,6 +45,8 @@ app.use(session({
     }),
     cookie: { secure: process.env.NODE_ENV === "production" }
 }));
+// Just to prevent mongo injection
+app.use(mongoSanitize());
 
 // EJS/View Engine Setup
 app.engine("ejs", ejsmate);

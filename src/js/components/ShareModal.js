@@ -1,7 +1,11 @@
 import ModalWrapper from "./ModalWrapper";
 
+
+/**
+ * @type {ShareModal}
+ *
+ */
 class ShareModal extends ModalWrapper {
-    #elements;
     #styles = {
         modal: {
             default: ["flex", "flex-col", "w-full", "max-w-[400px]", "p-6", "md:p-8", "bg-colorSurface", "rounded-xl"],
@@ -24,11 +28,15 @@ class ShareModal extends ModalWrapper {
     };
 
     constructor() {
-        const modal = document.createElement("div");
-        super(modal);
-        this.#elements = { modal };
-        this.#elements.modal.className = this.#styles.modal.default.join(" ");
-        this.#elements.modal.innerHTML = `
+
+        // Singleton
+        if (typeof window !== "undefined" && window.__share_modal_instance) return window.__share_modal_instance;
+        super(document.createElement("div"));
+        if (typeof window !== "undefined") window.__share_modal_instance = this;
+
+        // Continue Setup
+        this._elements.modal.className = this.#styles.modal.default.join(" ");
+        this._elements.modal.innerHTML = `
              <div class="flex items-center justify-between">
                     <h3 class="${this.#styles.title.default.join(" ")}">Your link is ready! 🎉</h3>
                     <button data-ms-btn-close class="${this.#styles.btnClose.default.join(" ")}"></button>
@@ -52,31 +60,31 @@ class ShareModal extends ModalWrapper {
         this.#init();
     }
     #init() {
-        this.#elements.shortUrl = this.#elements.modal.querySelector("[data-ms-short-url]");
-        this.#elements.btnClose = this.#elements.modal.querySelector("[data-ms-btn-close]");
-        this.#elements.btnCopy = this.#elements.modal.querySelector("[data-ms-btn-copy]");
-        this.#elements.btnsSocial = this.#elements.modal.querySelectorAll("[data-action]");
+        this._elements.shortUrl = this._elements.modal.querySelector("[data-ms-short-url]");
+        this._elements.btnClose = this._elements.modal.querySelector("[data-ms-btn-close]");
+        this._elements.btnCopy = this._elements.modal.querySelector("[data-ms-btn-copy]");
+        this._elements.btnsSocial = this._elements.modal.querySelectorAll("[data-action]");
 
-        this.#elements.btnClose.addEventListener("click", () => this.hideModal());
+        this._elements.btnClose.addEventListener("click", () => this.hideModal());
 
-        this.#elements.btnCopy.addEventListener("click", () => {
-            navigator.clipboard.writeText(this.#elements.shortUrl.textContent).then(r => {
+        this._elements.btnCopy.addEventListener("click", () => {
+            navigator.clipboard.writeText(this._elements.shortUrl.textContent).then(r => {
                 // Assuming the toast is already initialized
-                window.toast.showToast("Copied to clipboard", toast.types.success);
+                window.toast.showToast("Copied to clipboard");
             });
         });
 
-        this.#elements.btnsSocial.forEach(btn => {
+        this._elements.btnsSocial.forEach(btn => {
             btn.addEventListener("click", () => {
                 switch (btn.getAttribute("data-action")) {
                     case "whatsapp":
-                        window.open(`https://api.whatsapp.com/send?text=${this.#elements.shortUrl.textContent}`);
+                        window.open(`https://api.whatsapp.com/send?text=${this._elements.shortUrl.textContent}`);
                         break;
                     case "twitter":
-                        window.open(`https://twitter.com/intent/tweet?text=${this.#elements.shortUrl.textContent}`);
+                        window.open(`https://twitter.com/intent/tweet?text=${this._elements.shortUrl.textContent}`);
                         break;
                     case "email":
-                        window.open(`mailto:?subject=Shorten URL&body=${this.#elements.shortUrl.textContent}`);
+                        window.open(`mailto:?subject=Shorten URL&body=${this._elements.shortUrl.textContent}`);
                         break;
                 }
             });
@@ -85,7 +93,7 @@ class ShareModal extends ModalWrapper {
     }
 
     showModal(url) {
-        this.#elements.shortUrl.textContent = url;
+        this._elements.shortUrl.textContent = url;
         super.show();
     }
     hideModal() {
@@ -93,4 +101,10 @@ class ShareModal extends ModalWrapper {
     }
 }
 
-window.shareModal = new ShareModal();
+// For Browser (script tag)
+if (typeof window !== "undefined" && !window.shareModal) {
+    window.shareModal = new ShareModal();
+}
+
+// For ES6 modules
+export default ShareModal;
