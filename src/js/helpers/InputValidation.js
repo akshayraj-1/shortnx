@@ -12,6 +12,8 @@ import validator from "../../utils/validator.util";
 
 class InputValidation {
 
+    static patterns = validator.patterns;
+
     /**
      * Generic input validation
      * @param {HTMLInputElement} input

@@ -2,7 +2,7 @@ const UrlModel = require("../models/url.model");
 const UrlAnalyticsModel = require("../models/urlanalytics.model");
 const validator = require("../utils/validator.util")
 const { createJSONSuccessResponse, createJSONFailureResponse } = require("../utils/response.util");
-const { clientRequestInfo } = require("../utils/clientInfo.util");
+const { clientRequestInfo } = require("../utils/client-info.util");
 
 /**
  * Create Shorten URL
