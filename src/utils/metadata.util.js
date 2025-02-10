@@ -4,7 +4,7 @@
  */
 
 const metaScrapper = require("metadata-scraper");
-const customRedis = require("../services/credis.service");
+const customRedis = require("../services/custom-redis.service");
 
 async function getMetaData(url) {
     try {

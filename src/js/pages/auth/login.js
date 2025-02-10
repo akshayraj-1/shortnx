@@ -1,3 +1,7 @@
+import Toast from "../../components/Toast";
+import LoadingModal from "../../components/LoadingModal";
+import InputValidation from "../../helpers/InputValidation";
+
 const email = document.getElementById("email");
 const password = document.getElementById("password");
 const btnLogin = document.getElementById("btn-login");
@@ -22,7 +26,7 @@ btnLogin.addEventListener("click", async () => {
     };
 
     try {
-        loadingModal.show();
+        LoadingModal.getInstance().show();
         const response = await fetch("/auth/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -42,13 +46,13 @@ btnLogin.addEventListener("click", async () => {
                 InputValidation.toggleErrorState(email, message);
                 InputValidation.toggleErrorState(password, message);
             } else {
-                toast.showToast(message);
+                Toast.getInstance().showToast(message);
             }
         }
 
     } catch (error) {
-        toast.showToast(error.message);
+        Toast.getInstance().showToast(error.message);
     } finally {
-        loadingModal.hide();
+        LoadingModal.getInstance().hide();
     }
 });

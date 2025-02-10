@@ -2,7 +2,7 @@ const UrlModel = require("../models/url.model");
 const UrlAnalyticsModel = require("../models/urlanalytics.model");
 const validator = require("../utils/validator.util")
 const { createJSONSuccessResponse, createJSONFailureResponse } = require("../utils/response.util");
-const { clientRequestInfo } = require("../utils/clientInfo.util");
+const { clientRequestInfo } = require("../utils/client-info.util");
 
 /**
  * Create Shorten URL
@@ -39,7 +39,10 @@ async function createShortURL(payload) {
         });
 
         const result = await urlDoc.save();
-        return createJSONSuccessResponse(201, "URL created successfully", result);
+        return createJSONSuccessResponse(201, "URL created successfully", {
+            originalUrl: result.originalUrl,
+            shortenUrl: process.env.SERVER_BASE_URL + "/" + result.shortUrlId
+        });
 
     } catch (error) {
         console.log(`URL SERVICE ERROR: ${error.message}`);

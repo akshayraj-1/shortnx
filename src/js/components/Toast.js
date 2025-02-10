@@ -8,7 +8,7 @@
 // but using a class makes the code more organized and easier to manage,
 // also for the UI components class approach is more recommended
 
-export default class Toast {
+class Toast {
     _elements;
     #queue = [];
     #styles = {
@@ -23,6 +23,10 @@ export default class Toast {
     };
 
     constructor() {
+
+        // Singleton
+        if (window.__toast_instance) return window.__toast_instance;
+
         this._elements = {};
         this._elements.container = document.createElement("div");
         this._elements.toast = document.createElement("div");
@@ -32,6 +36,14 @@ export default class Toast {
 
         this._elements.container.appendChild(this._elements.toast);
         document.body.prepend(this._elements.container);
+
+        // Storing the instance because the webpack encloses the classes into a separate closure function,
+        // so inorder to maintain the same instance, I am using window object
+        window.__toast_instance = this;
+    }
+
+    static getInstance() {
+        return window.__toast_instance || new Toast();
     }
 
     showToast(message) {
@@ -58,6 +70,5 @@ export default class Toast {
 }
 
 // Required because of the webpack, it strips off the unused classes in the build
-if (typeof window !== "undefined" && !window.toast) {
-    window.toast = new Toast();
-}
+window.__toast_instance ||= null;
+export default Toast;

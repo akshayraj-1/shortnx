@@ -1,12 +1,18 @@
-import CreateLinkModal from "../../components/CreateLinkModal";
+import EventBus from "../../helpers/EventBus";
+import LinkModal from "../../components/LinkModal";
 
-window.createLinkModal = new CreateLinkModal();
+
+const eventbus = EventBus.getInstance();
 const btnCreateLink = document.getElementById("btn-create-link");
 const btnSortLinks = document.getElementById("btn-sort-links");
 
 btnCreateLink.addEventListener("click", () => showCreateLinkModal());
 
 
+eventbus.on("link_created", (data) => {
+    window.alert(JSON.stringify(data));
+});
+
 function showCreateLinkModal() {
-    createLinkModal.showModal();
+    LinkModal.getInstance().showCreateModal(eventbus,"link_created");
 }

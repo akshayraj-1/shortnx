@@ -1,9 +1,9 @@
 const { isAuthenticated } = require('../middlewares/auth.middleware');
-const { getGoogleOAuthURL, getUserFromAuthCode } = require("../services/googleOAuth.service");
+const { getGoogleOAuthURL, getUserFromAuthCode } = require("../services/google-oauth.service");
 const { generateRandomString } = require("../utils/random.util");
 const { hashPassword, comparePassword } = require("../utils/hash.util");
 const { getRefreshToken, getAccessToken } = require("../utils/token.util");
-const logManager = require("../utils/logManager.util");
+const logManager = require("../utils/log-manager.util");
 const UserModel = require("../models/user.model");
 
 // Render the login page

@@ -1,28 +1,41 @@
 import ModalWrapper from "./ModalWrapper";
-import InputValidation from "./InputValidation";
-
+import InputValidation from "../helpers/InputValidation";
 
 /**
- * @type {CreateLinkModal}
+ * @type {LinkModal}
  * @description  Class to create/edit links
  *
  */
-class CreateLinkModal extends ModalWrapper {
-    #createMode = true;
+class LinkModal extends ModalWrapper {
+
+    static Modes = {
+        CREATE_LINK: 1,
+        UPDATE_LINK: 2
+    };
+
+    #mode = LinkModal.Modes.CREATE_LINK;
     #styles = {
         modal: {
             default: ["flex-1", "w-full", "max-w-3xl", "py-9", "bg-colorSurface", "rounded-xl"],
+        },
+        btnSubmit: {
+            default: [
+                "relative", "flex", "justify-center", "items-center", "gap-2",
+                "text-[0.9rem]", "text-white", "text-center", "mt-8", "px-6", "py-2.5",
+                "w-full", "bg-colorPrimary", "rounded-lg", "cursor-pointer", "select-none", "transition-shadow",
+                "hover:shadow-lg", "hover:shadow-colorAccent/25",
+                "disabled:text-[#c9c9cc]", "disabled:bg-[#f1f1f1]", "disabled:hover:shadow-none"
+            ]
         }
     };
 
     constructor() {
-        // Using window object to keep the instance because the webpack encloses the classes into
-        // a separate closure function, so inorder to maintain the same instance, we need to use window
-        if (typeof window !== "undefined" && window.__toast_instance) return window.__toast_instance;
-        super(document.createElement("div"));
-        if (typeof window !== "undefined") window.__toast_instance = this;
-        
+
+        // Singleton
+        if (window.__link_modal) return window.__link_modal;
+
         // Continue Setup
+        super(document.createElement("div"));
         this._elements.modal.className = this.#styles.modal.default.join(" ");
         this._elements.modal.innerHTML = `
               <div class="flex flex-col px-6 sm:px-8 md:px-10 size-full">
@@ -143,13 +156,18 @@ class CreateLinkModal extends ModalWrapper {
                             </div>
                         </div>
                     </div>
-                     <button data-ml-btn-submit disabled class="relative flex justify-center items-center gap-2 text-[0.9rem] text-white text-center mt-8 px-6 py-2.5 w-full bg-colorPrimary rounded-lg 
-                     cursor-pointer select-none transition-shadow hover:shadow-lg hover:shadow-colorAccent/25 disabled:bg-colorPrimaryDark disabled:pointer-events-none disabled:hover:shadow-none">
+                     <button data-ml-btn-submit class="${this.#styles.btnSubmit.default.join(" ")}">
                             Create Link
                      </button>            
                </div>
             `;
         this.#init();
+
+        window.__link_modal = this;
+    }
+
+    static getInstance() {
+        return window.__link_modal || new LinkModal();
     }
 
     #init() {
@@ -165,25 +183,43 @@ class CreateLinkModal extends ModalWrapper {
         this._elements.colors = this._elements.modal.querySelectorAll('input[name="foreground"]');
         this._elements.qrlogo = this._elements.modal.querySelector(`svg[slot="icon"] rect`);
 
+
+        let debounce = null;
+        const updateShortLink = (shortUrlId, color) => {
+            if (color) {
+                this._elements.qrcode.setAttribute('module-color', `${color}`);
+                this._elements.qrcode.setAttribute('position-ring-color', `${color}`);
+                this._elements.qrcode.setAttribute('position-center-color', `${color}`);
+                this._elements.qrlogo.setAttribute('fill', `${color}`);
+            }
+            if (shortUrlId) {
+                if (shortUrlId === this._elements.inputShortLink.value) {
+                    if (debounce) clearTimeout(debounce);
+                    debounce = setTimeout(() => {
+                        if (shortUrlId.length > 5 && shortUrlId.length < 13) {
+                            InputValidation.toggleErrorState(this._elements.inputShortLink.parentNode);
+                            this._elements.qrcode.contents = `https://shortnx.in/${shortUrlId}`;
+                            this._elements.qrcode.animateQRCode('MaterializeIn');
+                        } else {
+                            InputValidation.toggleErrorState(this._elements.inputShortLink.parentNode, "Length should be between 6-12");
+                        }
+                    }, 500);
+                } else {
+                    this._elements.inputShortLink.value = shortUrlId;
+                    InputValidation.toggleErrorState(this._elements.inputShortLink.parentNode);
+                    this._elements.qrcode.contents = `https://shortnx.in/${shortUrlId}`;
+                    this._elements.qrcode.animateQRCode('MaterializeIn');
+                }
+            }
+        }
+
         // Close Modal
         this._elements.btnClose.addEventListener("click", () => this.hideModal());
 
         // QR Code Generation
         this._elements.qrcode.addEventListener("codeRendered", () => this._elements.qrcode.animateQRCode("MaterializeIn"));
-        this._elements.colors.forEach(color => {
-            color.addEventListener("change", () => {
-                this._elements.qrcode.setAttribute('module-color', `${color.value}`);
-                this._elements.qrcode.setAttribute('position-ring-color', `${color.value}`);
-                this._elements.qrcode.setAttribute('position-center-color', `${color.value}`);
-                this._elements.qrlogo.setAttribute('fill', `${color.value}`);
-            });
-        });
-        this._elements.btnGenerateRandomId.addEventListener("click", () => {
-            InputValidation.toggleErrorState(this._elements.inputShortLink.parentNode);
-            this._elements.inputShortLink.value = Math.random().toString(36).substring(7);
-            this._elements.qrcode.contents = `https://shortnx.in/${this._elements.inputShortLink.value}`;
-            this._elements.qrcode.animateQRCode('MaterializeIn');
-        });
+        this._elements.colors.forEach(color => color.addEventListener("change", () => updateShortLink(null, color.value)));
+        this._elements.btnGenerateRandomId.addEventListener("click", () => updateShortLink(Math.random().toString(36).substring(7)));
 
         // QR Code Download
         this._elements.btnDownload.addEventListener("click", () => {
@@ -207,9 +243,6 @@ class CreateLinkModal extends ModalWrapper {
             });
         });
 
-
-        let debounce = null;
-
         Array.from([
             this._elements.inputTargetLink,
             this._elements.inputShortLink,
@@ -218,16 +251,7 @@ class CreateLinkModal extends ModalWrapper {
         ]).forEach(input => {
             input.addEventListener("input", (e) => {
                 if (input === this._elements.inputShortLink) {
-                    if (input.value.length > 5 && input.value.length <= 12) {
-                        InputValidation.toggleErrorState(input.parentNode);
-                        if (debounce) clearTimeout(debounce);
-                        debounce = setTimeout(() => {
-                            this._elements.qrcode.contents = `https://shortnx.in/${e.target.value}`;
-                            this._elements.qrcode.animateQRCode('MaterializeIn');
-                        }, 500);
-                    } else {
-                        InputValidation.toggleErrorState(input.parentNode, "Length should be between 6-12");
-                    }
+                    updateShortLink(input.value);
                 } else if (input.value.length > 0) {
                     InputValidation.toggleErrorState(input);
                 }
@@ -235,8 +259,9 @@ class CreateLinkModal extends ModalWrapper {
         });
 
         this._elements.btnSubmit.addEventListener("click", () => {
-            if (this.#createMode) this.#createNewLink();
-        })
+            if (this.#mode === LinkModal.Modes.CREATE_LINK) this.#createLink();
+            else if (this.#mode === LinkModal.Modes.UPDATE_LINK) this.#updateLink();
+        });
 
     }
 
@@ -245,47 +270,35 @@ class CreateLinkModal extends ModalWrapper {
     //  2. Edit
     _toggleMode(mode, data) {
         this._toggleBtnState(this._elements.btnSubmit, true);
-        this.#createMode = mode || false;
-        if (this.#createMode) {
-            this._elements.inputTitle.value = "";
-            this._elements.inputComments.value = "";
-            this._elements.inputTargetLink.value = "";
-            this._elements.inputShortLink.readOnly = false;
+        this.#mode = mode;
+        this._elements.inputTitle.value = data?.title || "";
+        this._elements.inputTargetLink.value = data?.originalUrl || "";
+        this._elements.inputShortLink.readOnly = !!data?.shortUrlId;
+        this._elements.inputComments.value = data?.comments || "";
+        if (this.#mode === LinkModal.Modes.CREATE_LINK) {
+            this._elements.btnSubmit.innerText = "Create Link";
+            this._elements.btnGenerateRandomId.style.display = "block";
             this._elements.btnGenerateRandomId.click();
         } else {
-            this._elements.inputTitle.value = data.title;
-            this._elements.inputShortLink.readOnly = true;
-            this._elements.inputShortLink.value = data.shortenUrl;
-
-        }
-    }
-
-    _toggleBtnState(btn, enabled, loading = false) {
-        btn.disabled = !enabled;
-        if (!enabled && loading) {
-            btn.style.color = "transparent";
-            let loader = btn.querySelector(".dot-loader");
-            if (!loader) {
-                loader = document.createElement("div");
-                loader.classList.add("dot-loader", "absolute", "top-1/2", "left-1/2", "-translate-y-1/2", "-translate-x-1/2");
-                loader.style.width = "32px";
-                btn.prepend(loader);
-            }
-        } else {
-            btn.style.color = "#fff";
-            const loader = btn.querySelector(".dot-loader");
-            if (loader) btn.removeChild(loader);
+            this._elements.btnSubmit.innerText = "Update Link";
+            this._elements.inputShortLink.value = data?.shortUrlId;
+            this._elements.btnGenerateRandomId.style.display = "none";
         }
     }
 
 
-    // TODO: Implement the proper validation for the inputs before continuing
-    async #createNewLink() {
+    async #createLink() {
         // Validate Inputs
         const inputTargetLink = this._elements.inputTargetLink;
         const inputShortLink = this._elements.inputShortLink;
         const inputTitle = this._elements.inputTitle;
         const inputComments = this._elements.inputComments;
+
+        if (!InputValidation.validateURL(inputTargetLink) ||
+            !InputValidation.validateInput(inputShortLink.parentNode, /^[a-zA-Z0-9]{6,12}$/, { error: "Length should be between 6-12" }) ||
+            !InputValidation.validateInput(inputTitle, /^[a-zA-Z0-9 ]{1,50}$/, { error: "Title should be between 1-50" }) ||
+            !InputValidation.validateInput(inputComments, /^[a-zA-Z0-9 ]{0,100}$/,{ error: "Maximum length should be 100" })
+        ) return;
 
         try {
             this._toggleBtnState(this._elements.btnSubmit, false, true);
@@ -302,10 +315,9 @@ class CreateLinkModal extends ModalWrapper {
             });
 
             const data = await response.json();
-            if (response.ok) {
-                window.alert(JSON.stringify(data));
-                window.open(data.shortenUrl);
-                // TODO: Show success modal
+            if (response.ok && data.success) {
+                this._eventbus.emit(this._eventname, data);
+                this.hideModal();
             } else {
                 // Parse the error
                 const error = data.error || {};
@@ -313,8 +325,9 @@ class CreateLinkModal extends ModalWrapper {
                     InputValidation.toggleErrorState(this._elements.inputShortLink.parentNode, "Short link already exists");
                 } else if (/(invalid target url)/i.test(error.message)) {
                     InputValidation.toggleErrorState(this._elements.inputTargetLink, "Please enter a valid url");
+                } else {
+                    window.toast.showToast(error.message);
                 }
-                window.toast.showToast(data.message, "error");
             }
 
         } catch (error) {
@@ -323,12 +336,24 @@ class CreateLinkModal extends ModalWrapper {
             this._toggleBtnState(this._elements.btnSubmit, true);
         }
     }
+    
+    async #updateLink() {
+        
+    }
 
-
-
-    showModal(mode = "create", data = {}) {
+    showModal(mode = LinkModal.Modes.CREATE_LINK, eventbus, eventname, data) {
         this._toggleMode(mode, data);
+        this._eventbus = eventbus;
+        this._eventname = eventname;
         super.show();
+    }
+
+    showCreateModal(eventbus, eventname) {
+        if (eventbus && eventname) this.showModal(LinkModal.Modes.CREATE_LINK, eventbus, eventname);
+    }
+
+    showUpdateModal(eventbus, eventname, data) {
+        if (eventbus && eventname) this.showModal(LinkModal.Modes.UPDATE_LINK, eventbus, eventname, data);
     }
 
     hideModal() {
@@ -337,10 +362,6 @@ class CreateLinkModal extends ModalWrapper {
 
 }
 
-// For Browser (script tag)
-if (typeof window !== "undefined" && !window.createLinkModal) {
-    window.createLinkModal = new CreateLinkModal();
-}
-
-// For ES6 modules
-export default CreateLinkModal;
+// Required because of the webpack, it strips off the unused classes in the build
+window.__link_modal ||= null;
+export default LinkModal;

@@ -3,9 +3,12 @@
  * @description
  * Helper class for form input validation.
  * It has some predefined methods for several validations like email, name, password, url etc...
- * but you can also validate other types of input values using the generic `validateInput` method
+ * but you can also validate other types of input values using the generic `validateInput()` method
  * If you want to show an error message, Please remember to wrap your given input element in some sort of container
  * like `<div><input type="email"></div>`
+ *
+ * @note
+ * You might think this as overkill, instead you can use setCustomValidity() method of HTMLInputElement (https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement/setCustomValidity)
  */
 
 import validator from "../../utils/validator.util";
@@ -146,28 +149,26 @@ class InputValidation {
     static toggleErrorState(input, message = null) {
         const container = input.parentElement;
         let error = container.querySelector(".error-label");
+
         if (!message) {
-            // Remove error
-            if (error) {
-                input.classList.remove("ring-1", "ring-red-500");
-                input.classList.add("focus:ring-1", "focus:ring-slate-300");
-                error.remove();
-            }
+            error?.remove();
+            input.classList.replace("ring-red-500", "focus:ring-slate-300");
+            input.classList.remove("ring-1", "focus:ring-red-500", "focus-within:ring-red-300");
             return;
         }
-        // Add error
-        input.classList.remove("focus:ring-1", "focus:ring-slate-300");
+
+        input.classList.replace("focus:ring-slate-300", "ring-red-500");
         input.classList.add("ring-1", "ring-red-500", "focus:ring-1", "focus:ring-red-500", "focus-within:ring-red-300");
         input.focus();
-        if (error) {
-            error.textContent = message;
-        } else {
+
+        if (!error) {
             error = document.createElement("span");
             error.className = "error-label text-[0.8rem] text-red-500";
-            error.textContent = message;
             input.insertAdjacentElement("afterend", error);
         }
+        error.textContent = message;
     }
+
 }
 
 // For Browser (script tag)
