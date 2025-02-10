@@ -39,7 +39,10 @@ async function createShortURL(payload) {
         });
 
         const result = await urlDoc.save();
-        return createJSONSuccessResponse(201, "URL created successfully", result);
+        return createJSONSuccessResponse(201, "URL created successfully", {
+            originalUrl: result.originalUrl,
+            shortenUrl: process.env.SERVER_BASE_URL + "/" + result.shortUrlId
+        });
 
     } catch (error) {
         console.log(`URL SERVICE ERROR: ${error.message}`);

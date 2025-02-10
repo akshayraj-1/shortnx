@@ -43,7 +43,13 @@ class ModalWrapper {
         document.body.prepend(this._elements.backdrop);
     }
 
-    show(cancellable = false, callback = () => {}) {
+    /**
+     *
+     * @param {boolean} cancellable - Cancel on click outside
+     * @param {EventBus|null} eventbus - Event bus to emit events
+     * @param {string|null} eventname - Event name to emit
+     */
+    show(cancellable = false, eventbus = null, eventname = null) {
 
         this._elements.backdrop.removeAttribute("aria-hidden");
         this._elements.modalWrapper.removeAttribute("aria-hidden");
@@ -57,11 +63,16 @@ class ModalWrapper {
         setTimeout(() => {
             this._elements.modalWrapper.focus();
             document.body.style.overflow = "hidden";
-            callback();
+            if (eventbus && eventname) eventbus.emit(eventname);
         }, 0);
     }
 
-    hide(callback = () => {}) {
+    /**
+     *
+     * @param {EventBus|null} eventbus - Event bus to emit events
+     * @param {string|null} eventname - Event name to emit
+     */
+    hide(eventbus = null, eventname = null) {
         this._elements.backdrop.setAttribute("aria-hidden", "true");
         this._elements.modalWrapper.setAttribute("aria-hidden", "true");
 
@@ -72,9 +83,30 @@ class ModalWrapper {
             this._elements.backdrop.classList.remove(...this.#styles.backdrop.show);
             this._elements.backdrop.classList.add(...this.#styles.backdrop.hide);
             document.body.style.overflow = "auto";
-            callback();
+            if (eventbus && eventname) eventbus.emit(eventname);
         }, 300);
     }
+
+
+    // Helper function to toggle button state
+    _toggleBtnState(btn, enabled, loading = false) {
+        btn.disabled = !enabled;
+        if (!enabled && loading) {
+            btn.style.color = "transparent";
+            let loader = btn.querySelector(".dot-loader");
+            if (!loader) {
+                loader = document.createElement("div");
+                loader.classList.add("dot-loader", "absolute", "top-1/2", "left-1/2", "-translate-y-1/2", "-translate-x-1/2");
+                loader.style.width = "32px";
+                btn.prepend(loader);
+            }
+        } else {
+            btn.style.color = "#fff";
+            const loader = btn.querySelector(".dot-loader");
+            if (loader) btn.removeChild(loader);
+        }
+    }
+
 }
 
 export default ModalWrapper;

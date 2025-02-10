@@ -1,5 +1,5 @@
 const { validateAccessToken, decodeToken, getAccessToken } = require("../utils/token.util");
-const logManager = require("../utils/logManager.util");
+const logManager = require("../utils/log-manager.util");
 const UserModel = require("../models/user.model");
 
 async function isAuthenticated(req, res) {

@@ -1,9 +1,9 @@
 const { isAuthenticated, validateAuthUser} = require('../middlewares/auth.middleware');
 const { disableCache } = require("../middlewares/cache.middleware");
 const { getMetaData } = require("../utils/metadata.util");
-const { getClientBrowser } = require("../utils/clientInfo.util");
+const { getClientBrowser } = require("../utils/client-info.util");
 const urlService = require("../services/url.service");
-const customRedis = require("../services/credis.service");
+const customRedis = require("../services/custom-redis.service");
 
 
 // Create short url
@@ -26,18 +26,7 @@ async function createShortURL (req, res) {
             creator: userId, comments
         });
 
-        if (response.success) {
-            return res.status(201).json({
-                success: true,
-                message: "Url created successfully",
-                data: {
-                    originalUrl: targetUrl,
-                    shortenUrl: process.env.SERVER_BASE_URL + "/" + response.data.shortUrlId
-                }
-            });
-        } else {
-            return res.status(500).json(response);
-        }
+        return res.status(response.statusCode).json(response);
 
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });

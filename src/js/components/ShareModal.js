@@ -1,6 +1,5 @@
 import ModalWrapper from "./ModalWrapper";
 
-
 /**
  * @type {ShareModal}
  *
@@ -30,11 +29,10 @@ class ShareModal extends ModalWrapper {
     constructor() {
 
         // Singleton
-        if (typeof window !== "undefined" && window.__share_modal_instance) return window.__share_modal_instance;
-        super(document.createElement("div"));
-        if (typeof window !== "undefined") window.__share_modal_instance = this;
+        if (window.__share_modal_instance) return window.__share_modal_instance;
 
         // Continue Setup
+        super(document.createElement("div"));
         this._elements.modal.className = this.#styles.modal.default.join(" ");
         this._elements.modal.innerHTML = `
              <div class="flex items-center justify-between">
@@ -58,7 +56,16 @@ class ShareModal extends ModalWrapper {
                 </div>
         `;
         this.#init();
+
+        // Storing the instance because the webpack encloses the classes into a separate closure function,
+        // so inorder to maintain the same instance, I am using window object
+        window.__share_modal_instance = this;
     }
+
+    static getInstance() {
+        return window.__share_modal_instance || new ShareModal();
+    }
+
     #init() {
         this._elements.shortUrl = this._elements.modal.querySelector("[data-ms-short-url]");
         this._elements.btnClose = this._elements.modal.querySelector("[data-ms-btn-close]");
@@ -101,10 +108,6 @@ class ShareModal extends ModalWrapper {
     }
 }
 
-// For Browser (script tag)
-if (typeof window !== "undefined" && !window.shareModal) {
-    window.shareModal = new ShareModal();
-}
-
-// For ES6 modules
+// Required because of the webpack, it strips off the unused classes in the build
+window.__share_modal_instance ||= null;
 export default ShareModal;

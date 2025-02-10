@@ -68,7 +68,7 @@ function isAlphaNumeric(input, options = {}) {
  * @returns {boolean}
  */
 function validate(input, options = {}) {
-    if (!input || options === null) return false;
+    if (options === null) return false;
 
     let pattern = "";
 
@@ -91,9 +91,9 @@ function validate(input, options = {}) {
 }
 
 
-const validator = { validate, isEmail, isAlphaNumeric, isURL };
+const validator = { patterns, validate, isEmail, isAlphaNumeric, isURL };
 export default validator;
-export { validate, isEmail, isAlphaNumeric, isURL };
+export { patterns, validate, isEmail, isAlphaNumeric, isURL };
 
 
 if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
