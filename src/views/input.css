@@ -59,7 +59,7 @@ html, body {
     before:size-full
     before:bg-[url('/images/blur.webp')]
     before:bg-no-repeat before:bg-right-bottom before:bg-contain
-    before:opacity-15 before:blur-2xl;
+    before:opacity-10 before:blur-2xl;
 }
 
 .modal-backdrop {

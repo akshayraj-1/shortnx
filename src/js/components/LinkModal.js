@@ -16,7 +16,7 @@ class LinkModal extends ModalWrapper {
     #mode = LinkModal.Modes.CREATE_LINK;
     #styles = {
         modal: {
-            default: ["flex-1", "w-full", "max-w-3xl", "py-9", "bg-colorSurface", "rounded-xl"],
+            default: ["flex-1", "size-full", "sm:max-h-[85vh]", "max-w-3xl", "mt-auto", "sm:my-auto", "py-9", "bg-colorSurface", "rounded-xl"],
         },
         btnSubmit: {
             default: [
@@ -48,7 +48,7 @@ class LinkModal extends ModalWrapper {
                         </h3>
                         <button data-ml-btn-close class="icon-close-md text-[1.2rem] text-textPrimary"></button>
                     </div>
-                    <div class="h-full flex flex-wrap gap-5 px-1 mt-10 overflow-y-auto overflow-x-hidden no-scrollbar" style="max-height: calc(100vh - 200px);">
+                    <div class="h-full flex flex-wrap gap-5 px-1 mt-10 overflow-y-auto overflow-x-hidden no-scrollbar" style="max-height: calc(100vh - 200px)">
                         <div class="flex-1 flex flex-col gap-4 min-w-3xs">
                             <div class="flex flex-col gap-1.5">
                                 <label for="input-target-link" class="text-sm text-textSecondary font-medium">Target link</label>
