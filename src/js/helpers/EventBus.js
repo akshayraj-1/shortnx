@@ -7,15 +7,15 @@ class EventBus {
     _events = {};
 
     constructor() {
-        if (window.__event_bus_instance) return window.__event_bus_instance;
-        window.__event_bus_instance = this;
+        if (window.__event_bus_instance__) return window.__event_bus_instance__;
+        window.__event_bus_instance__ = this;
     }
 
     static getInstance() {
-        if (!window.__event_bus_instance) {
-            window.__event_bus_instance = new EventBus();
+        if (!window.__event_bus_instance__) {
+            window.__event_bus_instance__ = new EventBus();
         }
-        return window.__event_bus_instance;
+        return window.__event_bus_instance__;
     }
 
     on(event, callback) {
@@ -30,6 +30,6 @@ class EventBus {
 }
 
 
-window.__event_bus_instance ||= null;
+window.__event_bus_instance__ ||= null;
 
 export default EventBus;

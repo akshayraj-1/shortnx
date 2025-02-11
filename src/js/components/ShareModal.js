@@ -29,7 +29,7 @@ class ShareModal extends ModalWrapper {
     constructor() {
 
         // Singleton
-        if (window.__share_modal_instance) return window.__share_modal_instance;
+        if (window.__share_modal_instance__) return window.__share_modal_instance__;
 
         // Continue Setup
         super(document.createElement("div"));
@@ -59,11 +59,11 @@ class ShareModal extends ModalWrapper {
 
         // Storing the instance because the webpack encloses the classes into a separate closure function,
         // so inorder to maintain the same instance, I am using window object
-        window.__share_modal_instance = this;
+        window.__share_modal_instance__ = this;
     }
 
     static getInstance() {
-        return window.__share_modal_instance || new ShareModal();
+        return window.__share_modal_instance__ || new ShareModal();
     }
 
     #init() {
@@ -109,5 +109,5 @@ class ShareModal extends ModalWrapper {
 }
 
 // Required because of the webpack, it strips off the unused classes in the build
-window.__share_modal_instance ||= null;
+window.__share_modal_instance__ ||= null;
 export default ShareModal;
