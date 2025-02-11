@@ -12,7 +12,6 @@ class QRCodeModal extends ModalWrapper {
         window.__qrcode_modal_instance__ = this;
     }
 
-
 }
 
 

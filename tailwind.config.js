@@ -5,22 +5,22 @@ module.exports = {
   content: ["./src/**/*.{html,js,ejs}", "./public/**/*.{html,js,ejs}"],
   plugins: [
       plugin(function ({ addUtilities }) {
-          addUtilities({
-            ".no-scrollbar": {
-                "-ms-overflow-style": "none",
-                "scrollbar-width": "none",
-            },
-            ".no-scrollbar::-webkit-scrollbar": {
-                display: "none",
-            },
-            ".rotate-y-180": {
-              transform: "rotateY(180deg)",
-            },
-            ".field-sizing-content": {
-              "field-sizing": "content",
-            }
-          });
-      })
+        addUtilities({
+          ".no-scrollbar": {
+            "-ms-overflow-style": "none",
+            "scrollbar-width": "none",
+          },
+          ".no-scrollbar::-webkit-scrollbar": {
+            display: "none",
+          },
+          ".rotate-y-180": {
+            transform: "rotateY(180deg)",
+          },
+          ".field-sizing-content": {
+            "field-sizing": "content",
+          }
+        });
+      }),
   ],
   theme: {
     container: {
@@ -31,9 +31,9 @@ module.exports = {
     },
     extend: {
       colors: {
-        colorPrimary: "#6139ff",
-        colorPrimaryDark: "#5130d9",
-        colorAccent: "#8f7cf5",
+        colorPrimary: "#2563eb",
+        colorPrimaryDark: "#2157cc",
+        colorAccent: "#306ef2",
         colorBackground: "#ffffff",
         colorBorder: "#e8ebf2",
         colorSurface: "#ffffff", // Card, Modals background
