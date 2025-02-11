@@ -10,7 +10,7 @@ class LoadingModal extends ModalWrapper {
     constructor() {
 
         // Singleton
-        if (window.__loading_modal_instance) return window.__loading_modal_instance;
+        if (window.__loading_modal_instance__) return window.__loading_modal_instance__;
 
         // Continue Setup
         super(document.createElement("div"));
@@ -18,15 +18,15 @@ class LoadingModal extends ModalWrapper {
 
         // Storing the instance because the webpack encloses the classes into a separate closure function,
         // so inorder to maintain the same instance, I am using window object
-        window.__loading_modal_instance = this;
+        window.__loading_modal_instance__ = this;
     }
 
     static getInstance() {
-        return window.__loading_modal_instance || new LoadingModal();
+        return window.__loading_modal_instance__ || new LoadingModal();
     }
 
 }
 
 // Required because of the webpack, it strips off the unused classes in the build
-window.__loading_modal_instance ||= null;
+window.__loading_modal_instance__ ||= null;
 export default LoadingModal;

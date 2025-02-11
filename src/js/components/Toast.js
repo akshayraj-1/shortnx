@@ -25,7 +25,7 @@ class Toast {
     constructor() {
 
         // Singleton
-        if (window.__toast_instance) return window.__toast_instance;
+        if (window.__toast_instance__) return window.__toast_instance__;
 
         this._elements = {};
         this._elements.container = document.createElement("div");
@@ -39,11 +39,11 @@ class Toast {
 
         // Storing the instance because the webpack encloses the classes into a separate closure function,
         // so inorder to maintain the same instance, I am using window object
-        window.__toast_instance = this;
+        window.__toast_instance__ = this;
     }
 
     static getInstance() {
-        return window.__toast_instance || new Toast();
+        return window.__toast_instance__ || new Toast();
     }
 
     showToast(message) {
@@ -70,5 +70,5 @@ class Toast {
 }
 
 // Required because of the webpack, it strips off the unused classes in the build
-window.__toast_instance ||= null;
+window.__toast_instance__ ||= null;
 export default Toast;
