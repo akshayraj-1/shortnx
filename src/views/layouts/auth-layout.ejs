@@ -17,7 +17,7 @@ const bg = "data:image/webp;base64,UklGRqZfAABXRUJQVlA4WAoAAAAQAAAAOQIADQMAQUxQS
 </head>
 <body class="relative flex flex-row size-full overflow-hidden">
 <div class="hidden md:flex flex-1 h-screen bg-cover bg-center bg-no-repeat overflow-hidden" style="background-image: url('<%= bg %>')">
-    <img class="p-12 size-full object-contain" draggable="false" src="/images/login_1.webp" alt="image">
+    <img onload="this.style.opacity=1" class="p-12 size-full object-contain opacity-0 transition-opacity duration-300" draggable="false" src="/images/login_1.webp" alt="image">
 </div>
 <div class="relative flex-1 px-6 md:px-9 overflow-y-scroll">
     <%- body -%>
