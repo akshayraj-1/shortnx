@@ -131,12 +131,12 @@ function getTimeElapsed(timestamp) {
     const hours = Math.floor(elapsedSec / (60 * 60));
     const mins = Math.floor(elapsedSec / 60);
 
-    if (years > 0) return `${years} year${years > 1 && 's'} ago`;
-    if (months > 0) return `${months} month${months > 1 && 's'} ago`;
-    if (weeks > 0) return `${weeks} week${weeks > 1 && 's'} ago`;
-    if (days > 0) return `${days} day${days > 1 && 's'} ago`;
-    if (hours > 0) return `${hours} hour${hours > 1 && 's'} ago`;
-    if (mins > 0) return `${mins} min${mins > 1 && 's'} ago`;
+    if (years > 0) return `${years} year${years > 1 ? 's' : ''} ago`;
+    if (months > 0) return `${months} month${months > 1 ? 's' : ''} ago`;
+    if (weeks > 0) return `${weeks} week${weeks > 1 ? 's' : ''} ago`;
+    if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`;
+    if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+    if (mins > 0) return `${mins} min${mins > 1 ? 's' : ''} ago`;
     if (elapsedSec > 30) return "few secs ago";
     return "just now";
 }
