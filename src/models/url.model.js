@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const urlSchema = new mongoose.Schema({
+const UrlSchema = new mongoose.Schema({
     title: {
         type: String,
         default: null
@@ -20,7 +20,7 @@ const urlSchema = new mongoose.Schema({
     },
     comments: {
         type: String,
-        default: null
+        default: ""
     },
     status: {
         type: String,
@@ -33,6 +33,6 @@ const urlSchema = new mongoose.Schema({
     }
 }, { timestamps: true, versionKey: false });
 
-const UrlModel = mongoose.model("Url", urlSchema);
+const UrlModel = mongoose.model("Url", UrlSchema);
 
 module.exports = UrlModel;

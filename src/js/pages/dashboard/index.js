@@ -1,3 +1,4 @@
+import { switchVisibilities } from "../../helpers/ui-helpers";
 const tabs = document.querySelectorAll(".tab-default");
 const sidebar = document.getElementById("sidebar");
 const sidebarContainer = document.getElementById("sidebar-container");
@@ -60,8 +61,10 @@ async function loadContent(tab) {
     abortController = new AbortController();
     const signal = abortController.signal;
 
-    const content = document.getElementById("content");
+    const content = document.getElementById("view-tab-content");
     content.innerHTML = "";
+    switchVisibilities(["#view-tab-loading"], ["#view-tab-content"]);
+
     try {
         const response = await fetch(`/user/tabs/${tab}`, { signal });
         const data = await response.text();
@@ -76,6 +79,8 @@ async function loadContent(tab) {
         // to parse the created range, so that the js can also be executed for the dynamic content
         content.innerHTML = "";
         content.append(document.createRange().createContextualFragment(data));
+        switchVisibilities(["#view-tab-content"], ["#view-tab-loading"]);
+
     } catch (error) {
         console.error(error);
     }

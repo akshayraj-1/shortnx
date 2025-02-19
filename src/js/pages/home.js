@@ -34,14 +34,14 @@ btnShorten.addEventListener("click", async () => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ targetUrl: url })
         });
-        const data = await response.json();
-        if (!data.success) {
-            toast.showToast(data.message);
+        const parsedResponse = await response.json();
+        if (!parsedResponse.success) {
+            toast.showToast(parsedResponse.message);
             return;
         }
         inputUrl.value = "";
         inputUrl.blur();
-        shareModal.showModal(data.data.shortenUrl);
+        shareModal.showModal(parsedResponse.data.shortenUrl);
 
     } catch (error) {
         toast.showToast(error.message);

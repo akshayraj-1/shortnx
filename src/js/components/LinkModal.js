@@ -1,5 +1,7 @@
 import ModalWrapper from "./ModalWrapper";
 import InputValidation from "../helpers/InputValidation";
+import { toggleButtonLoading } from "../helpers/ui-helpers";
+import validator from "../../utils/validator.util";
 
 /**
  * @type {LinkModal}
@@ -16,7 +18,7 @@ class LinkModal extends ModalWrapper {
     #mode = LinkModal.Modes.CREATE_LINK;
     #styles = {
         modal: {
-            default: ["flex-1", "size-full", "sm:max-h-[85vh]", "max-w-3xl", "mt-auto", "sm:my-auto", "py-9", "bg-colorSurface", "rounded-xl"],
+            default: ["flex-1", "h-full", "sm:max-h-[85vh]", "max-w-3xl", "mt-auto", "sm:my-auto", "py-9", "bg-colorSurface", "rounded-xl"],
         },
         btnSubmit: {
             default: [
@@ -24,7 +26,6 @@ class LinkModal extends ModalWrapper {
                 "text-[0.9rem]", "text-white", "text-center", "mt-8", "px-6", "py-2.5",
                 "w-full", "bg-colorPrimary", "rounded-lg", "cursor-pointer", "select-none", "transition-shadow",
                 "hover:shadow-lg", "hover:shadow-colorAccent/25",
-                "disabled:text-[#c9c9cc]", "disabled:bg-[#f1f1f1]", "disabled:hover:shadow-none"
             ]
         }
     };
@@ -41,8 +42,8 @@ class LinkModal extends ModalWrapper {
               <div class="flex flex-col px-6 sm:px-8 md:px-10 size-full">
                     <div class="flex justify-between items-center w-full">
                         <h3 class="text-lg sm:text-xl font-semibold">
-                            <img class="inline-block me-1.5 size-6 object-contain"
-                                 src="/images/ic_link.png"
+                            <img data-ml-favicon onload="this.style.opacity=1" class="inline-block me-1.5 size-[25px] object-contain rounded-full opacity-0 transition-opacity duration-300"
+                                 src="https://cdn.shortnx.in/images/gradients/?q=default"
                                  alt="icon"/>
                             Create link
                         </h3>
@@ -53,7 +54,7 @@ class LinkModal extends ModalWrapper {
                             <div class="flex flex-col gap-1.5">
                                 <label for="input-target-link" class="text-sm text-textSecondary font-medium">Target link</label>
                                 <input data-ml-input-target-link
-                                       class="input-default text-[0.9rem]"
+                                       class="input-default text-[0.9rem] whitespace-nowrap"
                                        type="text"
                                 />
                             </div>
@@ -88,7 +89,7 @@ class LinkModal extends ModalWrapper {
                         <div class="flex flex-col gap-5 w-full sm:w-auto">
                             <div class="flex flex-col gap-1.5">
                                 <span class="text-sm text-textSecondary font-medium">QR Code</span>
-                                <div class="p-0.5 mx-auto border w-full bg-white border-colorBorder rounded-lg overflow-hidden">
+                                <div class="p-0.5 mx-auto border w-fit bg-white border-slate-300 rounded-lg overflow-hidden">
                                     <qr-code
                                           id="qr1"
                                           contents="https://shortnx.in/"
@@ -171,6 +172,7 @@ class LinkModal extends ModalWrapper {
     }
 
     #init() {
+        this._elements.favicon = this._elements.modal.querySelector("[data-ml-favicon]");
         this._elements.btnClose = this._elements.modal.querySelector("[data-ml-btn-close]");
         this._elements.btnGenerateRandomId = this._elements.modal.querySelector("[data-ml-btn-generate]");
         this._elements.inputTargetLink = this._elements.modal.querySelector("[data-ml-input-target-link]");
@@ -225,7 +227,7 @@ class LinkModal extends ModalWrapper {
         this._elements.btnDownload.addEventListener("click", () => {
             // Change btn state to loading
             let prevText = this._elements.btnDownload.innerHTML;
-            this._elements.btnDownload.textContent = "Saving...";
+            this._elements.btnDownload.innerText = "Saving...";
             this._elements.btnDownload.disabled = true;
             // Generate QR Code
             html2canvas(this._elements.qrcode.parentNode, {
@@ -243,6 +245,7 @@ class LinkModal extends ModalWrapper {
             });
         });
 
+        let lastOrigin = null;
         Array.from([
             this._elements.inputTargetLink,
             this._elements.inputShortLink,
@@ -253,6 +256,14 @@ class LinkModal extends ModalWrapper {
                 if (input === this._elements.inputShortLink) {
                     updateShortLink(input.value);
                 } else if (input.value.length > 0) {
+                    if (input === this._elements.inputTargetLink && validator.isURL(input.value)) {
+                        const origin = new URL(input.value);
+                        if (origin !== lastOrigin) {
+                            lastOrigin = origin;
+                            this._elements.favicon.style.opacity = 0;
+                            this._elements.favicon.src = this._getFavIcon(origin);
+                        }
+                    }
                     InputValidation.toggleErrorState(input);
                 }
             });
@@ -265,12 +276,10 @@ class LinkModal extends ModalWrapper {
 
     }
 
-    // TODO: Implement the modes:
-    //  1. Create
-    //  2. Edit
     _toggleMode(mode, data) {
-        this._toggleBtnState(this._elements.btnSubmit, true);
+        toggleButtonLoading(this._elements.btnSubmit, false);
         this.#mode = mode;
+        this._elements.favicon.src = this._getFavIcon(data?.originalUrl);
         this._elements.inputTitle.value = data?.title || "";
         this._elements.inputTargetLink.value = data?.originalUrl || "";
         this._elements.inputShortLink.readOnly = !!data?.shortUrlId;
@@ -286,6 +295,10 @@ class LinkModal extends ModalWrapper {
         }
     }
 
+    _getFavIcon(url) {
+        return `https://cdn.shortnx.in/images/icons/?url=${url}`
+    }
+
 
     async #createLink() {
         // Validate Inputs
@@ -295,13 +308,13 @@ class LinkModal extends ModalWrapper {
         const inputComments = this._elements.inputComments;
 
         if (!InputValidation.validateURL(inputTargetLink) ||
-            !InputValidation.validateInput(inputShortLink.parentNode, /^[a-zA-Z0-9]{6,12}$/, { error: "Length should be between 6-12" }) ||
-            !InputValidation.validateInput(inputTitle, /^[a-zA-Z0-9 ]{1,50}$/, { error: "Title should be between 1-50" }) ||
-            !InputValidation.validateInput(inputComments, /^[a-zA-Z0-9 ]{0,100}$/,{ error: "Maximum length should be 100" })
+            !InputValidation.validateInput(inputShortLink.parentNode, /^[a-zA-Z0-9]{6,12}$/, { error: "Should be between 6-12" }) ||
+            !InputValidation.validateInput(inputTitle, /^[a-zA-Z0-9 -]{0,50}$/, { error: "Should be less than 50" }) ||
+            !InputValidation.validateInput(inputComments, /^[a-zA-Z0-9 ]{0,100}$/,{ error: "Should be less than 100" })
         ) return;
 
         try {
-            this._toggleBtnState(this._elements.btnSubmit, false, true);
+            toggleButtonLoading(this._elements.btnSubmit, true);
             const payload = JSON.stringify({
                 title: this._elements.inputTitle.value,
                 targetUrl: this._elements.inputTargetLink.value,
@@ -314,13 +327,13 @@ class LinkModal extends ModalWrapper {
                 body: payload
             });
 
-            const data = await response.json();
-            if (response.ok && data.success) {
-                this._eventbus.emit(this._eventname, data);
-                this.hideModal();
+            const parsedResponse = await response.json();
+            if (response.ok && parsedResponse.success) {
+                // No hiding the modal it's up to the caller
+                this._eventbus.emit(this._eventname, parsedResponse.data);
             } else {
                 // Parse the error
-                const error = data.error || {};
+                const error = parsedResponse.error || {};
                 if (error.name === "ALREADY_EXISTS" || error.message?.includes("already exists")) {
                     InputValidation.toggleErrorState(this._elements.inputShortLink.parentNode, "Short link already exists");
                 } else if (/(invalid target url)/i.test(error.message)) {
@@ -329,16 +342,15 @@ class LinkModal extends ModalWrapper {
                     window.toast.showToast(error.message);
                 }
             }
-
         } catch (error) {
             console.log(error);
         } finally {
-            this._toggleBtnState(this._elements.btnSubmit, true);
+            toggleButtonLoading(this._elements.btnSubmit, false);
         }
     }
-    
+
     async #updateLink() {
-        
+        // TODO: Implement Update Link method
     }
 
     showModal(mode = LinkModal.Modes.CREATE_LINK, eventbus, eventname, data) {

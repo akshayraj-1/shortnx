@@ -71,8 +71,16 @@
         </div>
     </div>
     <%# Tab Content %>
-    <div id="content" class="relative flex-1 h-full mt-2 bg-colorBackground overflow-auto sm:border-t sm:border-l sm:border-slate-200 sm:rounded-2xl">
+    <div class="relative flex-1 mt-1 h-full bg-colorBackground overflow-auto sm:border-t sm:border-l sm:border-slate-200 sm:rounded-tl-2xl">
+        <div id="view-tab-content" data-hidden="true" class="flex flex-col relative size-full">
 
+        </div>
+        <%- include("../partials/Loader.ejs", {
+            id: "view-tab-loading",
+            variant: "circular-fade-spinner",
+            size: "32px",
+            color: "lightgray"
+        }) %>
     </div>
 
 </div>

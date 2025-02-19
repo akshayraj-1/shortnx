@@ -15,7 +15,7 @@ module.exports = (env, argv) => {
         entry: entries,
         output: {
             path: path.resolve(__dirname, "public/js"),
-            filename: isProduction ? "[name].min.js" : "[name].js",
+            filename: "[name].min.js",
             clean: true,
         },
         mode: isProduction ? "production" : "development",
@@ -23,33 +23,42 @@ module.exports = (env, argv) => {
         optimization: {
             minimize: isProduction,
             usedExports: true,
-            minimizer: [new TerserPlugin({
-                terserOptions: {
-                    mangle: {
-                        toplevel: true,
-                        properties: {
-                            regex: /^_/,
+            concatenateModules: true,
+            minimizer: [
+                new TerserPlugin({
+                    terserOptions: {
+                        mangle: {
+                            toplevel: true,
+                            properties: {
+                                regex: /^_/,
+                                keep_quoted: false
+                            },
                         },
+                        format: {
+                            comments: false,
+                            beautify: false,
+                            ascii_only: true
+                        },
+                        compress: {
+                            drop_console: false,
+                            drop_debugger: true,
+                            passes: 10,
+                            booleans: true,
+                            conditionals: true,
+                            sequences: true,
+                            unused: true,
+                            collapse_vars: true,
+                            dead_code: true,
+                            reduce_vars: true,
+                            // pure_funcs: ['console.log'],
+                            hoist_funs: true,
+                            hoist_props: true,
+                            hoist_vars: true,
+                        }
                     },
-                    format: {
-                        comments: false,
-                        beautify: false
-                    },
-                    compress: {
-                        drop_console: false,
-                        drop_debugger: true,
-                        passes: 5,
-                        booleans: true,
-                        conditionals: true,
-                        sequences: true,
-                        unused: true,
-                        collapse_vars: true,
-                        dead_code: true,
-                        reduce_vars: true,
-                    }
-                },
-                extractComments: false
-            })],
+                    extractComments: false
+                })
+            ],
         },
         devtool: isProduction ? false : "source-map",
         module: {

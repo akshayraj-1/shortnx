@@ -14,7 +14,7 @@ class LoadingModal extends ModalWrapper {
 
         // Continue Setup
         super(document.createElement("div"));
-        this._elements.modal.innerHTML = '<div class="loader"></div>';
+        this._elements.modal.innerHTML = '<div class="loader" style="--loader-color: #fff"></div>';
 
         // Storing the instance because the webpack encloses the classes into a separate closure function,
         // so inorder to maintain the same instance, I am using window object

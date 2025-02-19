@@ -37,16 +37,16 @@ app.use(session({
     resave: false,
     saveUninitialized: false, // true -> session will be created even if there is no data being stored
     secret: process.env.SESSION_SECRET,
+    cookie: { secure: process.env.NODE_ENV === "production" },
     store: MongoStore.create({
         // FIXME: Share the same client instance with the express-session middleware
         // Right now we are creating a separate client instance
         mongoUrl: process.env.MONGO_URI,
-        dbName: "shortnx",
+        dbName: process.env.MONGO_DBNAME,
         autoRemove: "interval",
         autoRemoveInterval: 60 * 24, // 24 hr
         crypto: { secret: process.env.SESSION_SECRET }
-    }),
-    cookie: { secure: process.env.NODE_ENV === "production" }
+    })
 }));
 
 // EJS/View Engine Setup
@@ -88,7 +88,10 @@ app.use((req, res) => {
 // Connect to database
 {
     console.log("Connecting to database...");
-    mongoose.connect(process.env.MONGO_URI, { dbName: "shortnx", serverSelectionTimeoutMS: 5000 }).then(_ => {
+    mongoose.connect(process.env.MONGO_URI, {
+        dbName: process.env.MONGO_DBNAME,
+        serverSelectionTimeoutMS: 5000
+    }).then(_ => {
         console.info("Connected to database!");
         app.listen(process.env.PORT, () => {
             console.log(`Server running on port: ${process.env.PORT}`);

@@ -2,8 +2,32 @@ const { isAuthenticated, validateAuthUser} = require('../middlewares/auth.middle
 const { disableCache } = require("../middlewares/cache.middleware");
 const { getMetaData } = require("../utils/metadata.util");
 const { getClientBrowser } = require("../utils/client-info.util");
+const { normalizeError } = require("../utils/error.util");
 const urlService = require("../services/url.service");
 const customRedis = require("../services/custom-redis.service");
+
+
+// Get urls of the user
+
+async function getUserURLs(req, res) {
+
+    const { page = 0, limit = 10 } = req.query;
+
+    try {
+        const userId = await isAuthenticated(req, res) ? req.session.user.userId : null;
+
+        if (!userId) {
+            return res.status(401).json({ success: false, message: "Unauthorized access" });
+        }
+
+        const response = await urlService.getUserURLs(userId, page, limit);
+        return res.status(response.statusCode).json(response);
+
+    } catch(error) {
+        res.status(500).json({ success: false, message: normalizeError(error) });
+    }
+
+}
 
 
 // Create short url
@@ -29,7 +53,7 @@ async function createShortURL (req, res) {
         return res.status(response.statusCode).json(response);
 
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        res.status(500).json({ success: false, message: normalizeError(error) });
     }
 }
 
@@ -82,11 +106,11 @@ const getTargetURL = [disableCache, async function (req, res) {
     } catch (error) {
         res.render("pages/404", {
             title: "Page Not Found",
-            error: error.message
+            error: normalizeError(error)
         });
     }
 }];
 
 // TODO: Implement other methods: Update, Delete, Get Users All Urls etc...
 
-module.exports = { createShortURL, getTargetURL };
+module.exports = { createShortURL, getTargetURL, getUserURLs };

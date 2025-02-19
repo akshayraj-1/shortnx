@@ -1,7 +1,36 @@
 <%
-var classNames = classNames || "";
+const variants = {
+    dot: "dot-loader",
+    circular: "loader",
+    "circular-fade-spinner": "circular-fade-spinner"
+};
+
+var id = id || "";
+var variant = variant || variants.dot;
+var size = size ? size : "32px";
+var color = color || "#fff";
+
 %>
 
-<div class="flex justify-center items-center size-full">
-
+<div id="<%= id %>" class="relative flex justify-center items-center size-full">
+    <% if (variant === variants.dot) { %>
+        <div class="<%= variants.dot %>" style="--loader-color: <%= color %>; --loader-size: <%= size %>"></div>
+    <% } else if (variant === variants.circular) { %>
+        <div class="<%= variants.circular %>" style="--loader-color: <%= color %>; --loader-size: <%= size %>"></div>
+    <% } else if (variant === variants["circular-fade-spinner"]) { %>
+        <div class="<%= variants["circular-fade-spinner"] %>" style="--loader-color: <%= color %>; --loader-size: <%= size %>">
+            <div class="bar1"></div>
+            <div class="bar2"></div>
+            <div class="bar3"></div>
+            <div class="bar4"></div>
+            <div class="bar5"></div>
+            <div class="bar6"></div>
+            <div class="bar7"></div>
+            <div class="bar8"></div>
+            <div class="bar9"></div>
+            <div class="bar10"></div>
+            <div class="bar11"></div>
+            <div class="bar12"></div>
+        </div>
+    <% } %>
 </div>
