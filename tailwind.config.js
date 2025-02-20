@@ -35,7 +35,7 @@ module.exports = {
         colorPrimaryDark: "#2157cc",
         colorAccent: "#306ef2",
         colorBackground: "#ffffff",
-        colorBorder: "#e8ebf2",
+        colorBorder: "#e5e5e5",
         colorSurface: "#ffffff", // Card, Modals background
         colorSurfaceSecondary: "#f4f6f7",
         textPrimary: "#2f2e41",

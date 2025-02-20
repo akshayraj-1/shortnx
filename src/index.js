@@ -30,33 +30,41 @@ app.use(express.urlencoded({
 }));
 app.use(express.json());
 app.use(cookieParser());
+app.use(mongoSanitize()); // Just to prevent MongoDB injection
+
+// Session Setup
 app.use(session({
     resave: false,
     saveUninitialized: false, // true -> session will be created even if there is no data being stored
     secret: process.env.SESSION_SECRET,
+    cookie: { secure: process.env.NODE_ENV === "production" },
     store: MongoStore.create({
         // FIXME: Share the same client instance with the express-session middleware
         // Right now we are creating a separate client instance
         mongoUrl: process.env.MONGO_URI,
-        dbName: "shortnx",
+        dbName: process.env.MONGO_DBNAME,
         autoRemove: "interval",
         autoRemoveInterval: 60 * 24, // 24 hr
         crypto: { secret: process.env.SESSION_SECRET }
-    }),
-    cookie: { secure: process.env.NODE_ENV === "production" }
+    })
 }));
-// Just to prevent mongo injection
-app.use(mongoSanitize());
 
 // EJS/View Engine Setup
 app.engine("ejs", ejsmate);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-// Routes Setup
+// {
+//     // Mimic the delay in the dev environment
+//     // Remove in the production stage
+//     app.use((req, res, next) => {
+//         setTimeout(next, Math.random() * 3000);
+//     });
+// }
 
-// Subdomain Routing
-// I am using subdomain routing for the api routes
+
+// Routes Setup
+// Subdomain Routing for the api routes
 app.use((req, res, next) => {
     const hostname = req.hostname;
     if (hostname.match(/^api/)) {
@@ -78,10 +86,15 @@ app.use((req, res) => {
 
 
 // Connect to database
-console.warn("Connecting to database...");
-mongoose.connect(process.env.MONGO_URI, { dbName: "shortnx", serverSelectionTimeoutMS: 5000 }).then(_ => {
-    console.info("Connected to database!");
-    app.listen(process.env.PORT, () => {
-        console.info(`Server running on port: ${process.env.PORT}`);
-    });
-}).catch(error => console.error(`Failed to connect to database: ${error}`));
+{
+    console.log("Connecting to database...");
+    mongoose.connect(process.env.MONGO_URI, {
+        dbName: process.env.MONGO_DBNAME,
+        serverSelectionTimeoutMS: 5000
+    }).then(_ => {
+        console.info("Connected to database!");
+        app.listen(process.env.PORT, () => {
+            console.log(`Server running on port: ${process.env.PORT}`);
+        });
+    }).catch(error => console.error(`Failed to connect to database: ${error}`));
+}

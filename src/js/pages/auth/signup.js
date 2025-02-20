@@ -1,6 +1,6 @@
 import Toast from "../../components/Toast";
-import LoadingModal from "../../components/LoadingModal";
 import InputValidation from "../../helpers/InputValidation";
+import { toggleButtonLoading, toggleDisable } from "../../helpers/ui-helpers";
 
 const name = document.getElementById("name");
 const email = document.getElementById("email");
@@ -29,7 +29,8 @@ btnSignUp.addEventListener("click", async () => {
     };
 
     try {
-        LoadingModal.getInstance().show();
+        toggleButtonLoading(btnSignUp, true);
+        toggleDisable("#btn-google-auth", true);
         const response = await fetch("/auth/signup", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -50,9 +51,10 @@ btnSignUp.addEventListener("click", async () => {
             }
         }
 
-    } catch (error) {
+    } catch (erro) {
         Toast.getInstance().showToast("Something went wrong");
     } finally {
-        LoadingModal.getInstance().hide();
+        toggleButtonLoading(btnSignUp, false);
+        toggleDisable("#btn-google-auth", false);
     }
 });

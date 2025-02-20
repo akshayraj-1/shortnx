@@ -15,7 +15,7 @@
 <nav class="sticky sm:hidden top-0 left-0 flex items-center justify-between px-6 py-3 w-full bg-[#f5f5f5]">
     <i id="btn-toggle-menu" class="icon-menu-alt-04 text-2xl text-textPrimary cursor-pointer"></i>
     <a class="mx-auto" href="/">
-        <img class="h-4 object-contain select-none" draggable="false" src="/images/logo.svg" alt="logo">
+        <img class="h-5 object-contain select-none" draggable="false" src="/images/logo.svg" alt="logo">
     </a>
     <img class="size-7 object-cover rounded-full cursor-pointer" alt="<%= user.name %>" src="<%= user.picture %>">
 </nav>
@@ -71,8 +71,16 @@
         </div>
     </div>
     <%# Tab Content %>
-    <div id="content" class="relative flex-1 h-full mt-2 bg-colorBackground overflow-auto sm:border-t sm:border-l sm:border-slate-200 sm:rounded-2xl">
+    <div class="relative flex-1 mt-1 h-full bg-colorBackground overflow-auto sm:border-t sm:border-l sm:border-slate-200 sm:rounded-tl-2xl">
+        <div id="view-tab-content" data-hidden="true" class="flex flex-col relative size-full">
 
+        </div>
+        <%- include("../partials/Loader.ejs", {
+            id: "view-tab-loading",
+            variant: "circular-fade-spinner",
+            size: "32px",
+            color: "lightgray"
+        }) %>
     </div>
 
 </div>

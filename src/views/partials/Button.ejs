@@ -26,7 +26,7 @@ var onClick = onClick || "";
         <%- children %>
     </button>
 <% } else if (type === "link") { %>
-    <a class="<%= styles[variant] %> <%= classNames %>"
+    <a id="<%= id %>" class="<%= styles[variant] %> <%= classNames %>"
        href="<%= href %>">
         <%- children %>
     </a>

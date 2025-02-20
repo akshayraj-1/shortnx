@@ -39,10 +39,11 @@ async function createShortURL(payload) {
         });
 
         const result = await urlDoc.save();
-        return createJSONSuccessResponse(201, "URL created successfully", {
-            originalUrl: result.originalUrl,
-            shortenUrl: process.env.SERVER_BASE_URL + "/" + result.shortUrlId
-        });
+        const responseObj = {
+            ...result.toObject(),
+            shortenUrl: process.env.SERVER_BASE_URL + "/" + shortUrlId
+        }
+        return createJSONSuccessResponse(201, "URL created successfully", responseObj);
 
     } catch (error) {
         console.log(`URL SERVICE ERROR: ${error.message}`);
@@ -86,7 +87,7 @@ async function updateURLAnalytics(req, shortUrlId, originalUrl) {
         const { ip, city, region, country, timezone, deviceType, platform, browser } = await clientRequestInfo(req);
 
         const urlAnalyticsDoc = new UrlAnalyticsModel({
-            shortenUrl: shortUrlId,
+            shortUrlId: shortUrlId,
             originalUrl: originalUrl,
             localIp: ip,
             geoLocation: { city, country, region },
@@ -111,5 +112,36 @@ async function updateURLAnalytics(req, shortUrlId, originalUrl) {
 // TODO: Implement Delete URL method
 // TODO: Implement Get All URLs method (User's URLs)
 
+/**
+ *
+ * @param {string} userId
+ * @param {number} page
+ * @param {number} limit
+ * @returns {Promise<{success: boolean, statusCode: number, message: string, error: Error|null, data: object|null}>}
+ */
+async function getUserURLs(userId, page = 1, limit = 10) {
+    try {
 
-module.exports = { createShortURL, getTargetURL, updateURLAnalytics };
+        if (!userId) return createJSONFailureResponse(400, new Error("User Id not provided"));
+        const skip = Math.max(0, page - 1) * limit;
+
+        const urls = await UrlModel.find(
+            { creator: userId },
+            null,
+            { limit: limit, skip: skip, sort: { createdAt: "desc" } }
+        ).lean().exec();
+
+        return createJSONSuccessResponse(200, "Successful", {
+            urls: urls,
+            count: urls.length,
+            currentPage: page
+        });
+
+    } catch (error) {
+        console.log(`URL SERVICE ERROR ${error.message}`);
+        return createJSONFailureResponse(500, error);
+    }
+}
+
+
+module.exports = { createShortURL, getUserURLs, getTargetURL, updateURLAnalytics };

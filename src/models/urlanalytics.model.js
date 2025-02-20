@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
-const urlAnalyticsSchema = new mongoose.Schema({
-    shortenUrl: {
+const UrlAnalyticsSchema = new mongoose.Schema({
+    shortUrlId: {
         type: String,
         required: true
     },
@@ -25,6 +25,6 @@ const urlAnalyticsSchema = new mongoose.Schema({
     browser: String,
 }, { timestamps: true, versionKey: false });
 
-const UrlAnalyticsModel = mongoose.model("UrlAnalytics", urlAnalyticsSchema);
+const UrlAnalyticsModel = mongoose.model("UrlAnalytics", UrlAnalyticsSchema);
 
 module.exports = UrlAnalyticsModel;

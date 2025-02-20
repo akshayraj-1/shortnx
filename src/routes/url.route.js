@@ -5,5 +5,7 @@ const router = Router();
 
 router.post("/create", urlController.createShortURL);
 
+router.get("/get-user-urls", urlController.getUserURLs);
+
 
 module.exports = router;
