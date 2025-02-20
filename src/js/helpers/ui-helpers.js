@@ -1,20 +1,21 @@
 function getElementsRef(target) {
-    const elements = [];
     if (typeof target === "string") {
+        // Id
         if (target.startsWith("#")) {
-            elements.push(document.getElementById(target.slice(1)));
-        } else if (target.startsWith(".")) {
-            elements.push(...document.getElementsByClassName(target.slice(1)));
-        } else {
-            throw new Error("Invalid target type");
+            const element = document.getElementById(target.slice(1));
+            return element ? [element] : [];
         }
-    } else if (target instanceof Element) {
-        elements.push(target);
-    } else {
-        throw new Error("Invalid target type");
+        // Classname
+        if (target.startsWith(".")) {
+            return Array.from(document.getElementsByClassName(target.slice(1)));
+        }
+        // Tags
+        return Array.from(document.querySelectorAll(target));
     }
-
-    return elements;
+    if (target instanceof Element) {
+        return [target];
+    }
+    throw new Error("Invalid target type");
 }
 
 
@@ -26,32 +27,24 @@ export function toggleVisibility(target, forceVisible) {
         if (element === null) return;
 
         if (!elementDisplayValue.has(element)) {
-            // if contains any tailwind display class like flex or grid
-            const computedDisplay = getComputedStyle(element).display;
-            let display = "";
+            let display = getComputedStyle(element).display;
             if (element.classList.contains("flex")) display = "flex";
             else if (element.classList.contains("grid")) display = "grid";
-            else if (computedDisplay != null) display = computedDisplay;
             elementDisplayValue.set(element, display);
         }
-        if (forceVisible === true) {
+
+        const isHidden = element.getAttribute("data-hidden") === "true" ||
+            element.classList.contains("hidden") ||
+            getComputedStyle(element).display === "none";
+
+        if (forceVisible ?? isHidden) {
             element.removeAttribute("data-hidden");
             element.classList.remove("hidden");
-        } else if (forceVisible === false) {
+            element.style.display = elementDisplayValue.get(element) || "block";
+        } else {
             element.setAttribute("data-hidden", "true");
             element.classList.add("hidden");
-        } else {
-            const isHidden = element.getAttribute("data-hidden") === "true" ||
-                                    element.classList.contains("hidden") ||
-                                    getComputedStyle(element).display === "none";
-
-            if (isHidden) {
-                element.removeAttribute("data-hidden");
-                element.classList.remove("hidden");
-            } else {
-                element.setAttribute("data-hidden", "true");
-                element.classList.add("hidden");
-            }
+            element.style.display = "none";
         }
     });
 }
@@ -66,55 +59,39 @@ const anchorHrefs = new WeakMap();
 export function toggleDisable(target, forceDisable = false) {
     const elements = getElementsRef(target);
     elements.forEach(element => {
-        if (forceDisable) {
-            if (element.tagName === "A") {
-                anchorHrefs.set(element, element.href);
+        if (element.tagName === "A") {
+            if (forceDisable ?? element.hasAttribute("href")) {
+                // Disable
+                anchorHrefs.set(element, element.getAttribute("href") || "");
                 element.removeAttribute("href");
-                element.classList.add("opacity-40", "hover:shadow-none", "pointer-events-none");
+                element.classList.add("opacity-40", "hover:shadow-none", "pointer-events-none")
             } else {
-                element.disabled = true;
-                element.classList.add("disabled:opacity-40", "disabled:hover:shadow-none");
+                // Enable
+                const href = anchorHrefs.get(element);
+                if (href) element.setAttribute("href", href);
+                element.classList.remove("opacity-40", "hover:shadow-none", "pointer-events-none");
+                anchorHrefs.delete(element);
             }
         } else {
-            if (element.tagName === "A") {
-                const enabled = element.hasAttribute("href");
-                if (enabled) {
-                    // Disabling
-                    anchorHrefs.set(element, element.href);
-                    element.removeAttribute("href");
-                    element.classList.add("opacity-40", "hover:shadow-none", "pointer-events-none");
-                } else {
-                    // Enabling
-                    element.setAttribute("href", anchorHrefs.get(element));
-                    element.classList.remove("opacity-40", "hover:shadow-none", "pointer-events-none");
-                    anchorHrefs.delete(element);
-                }
-            } else {
-                const enabled = !element.disabled;
-                if (enabled) {
-                    // Disabling
-                    element.disabled = true;
-                    element.classList.add("disabled:opacity-40", "disabled:hover:shadow-none");
-                } else {
-                    // Enabling
-                    element.disabled = false;
-                    element.classList.remove("disabled:opacity-40", "disabled:hover:shadow-none");
-
-                }
-            }
+            const isDisabled = forceDisable ?? !element.disabled;
+            element.disabled = isDisabled;
+            element.classList.toggle("disabled:opacity-40", isDisabled);
+            element.classList.toggle("disabled:hover:shadow-none", isDisabled);
         }
     });
 }
 
 const btnTextColors = new WeakMap();
 export function toggleButtonLoading(btn, loading = false) {
-    if (btnTextColors.has(btn)) {
+    if (!btnTextColors.has(btn)) {
         btnTextColors.set(btn, getComputedStyle(btn).color);
     }
     btn.disabled = loading;
+
     if (loading) {
         btn.style.color = "transparent";
         btn.classList.add("disabled:bg-opacity-40", "disabled:hover:shadow-none");
+
         let loader = btn.querySelector(".dot-loader");
         if (!loader) {
             loader = document.createElement("div");
@@ -130,3 +107,40 @@ export function toggleButtonLoading(btn, loading = false) {
         btnTextColors.delete(btn);
     }
 }
+export function positionDropdown(dropdown, button, options = {}) {
+    const { position = "below", offset = 8, margin = 10 } = options;
+
+    const buttonRect = button.getBoundingClientRect();
+    const dropdownRect = dropdown.getBoundingClientRect();
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+
+    let top, left;
+
+    // Calculate position
+    if (position === "below") {
+        top = buttonRect.bottom + offset;
+    } else if (position === "above") {
+        top = buttonRect.top - dropdownRect.height - offset;
+    }
+
+    left = buttonRect.left;
+
+    // Make sure the menu fits within the viewport
+    if (left + dropdownRect.width + margin > viewportWidth) {
+        left = viewportWidth - dropdownRect.width - margin;
+    }
+
+    if (top + dropdownRect.height + margin > viewportHeight) {
+        top = position === "below" ? buttonRect.top - dropdownRect.height - offset : buttonRect.bottom + offset;
+    }
+
+    dropdown.classList.remove("hidden", "opacity-0", "scale-95");
+    dropdown.classList.add("absolute", "z-50", "bg-white", "border", "border-slate-200", "rounded-md", "shadow-md", "min-w-[150px]", "transition-transform", "transition-opacity", "duration-200", "opacity-100", "scale-100");
+
+    dropdown.style.top = `${top}px`;
+    dropdown.style.left = `${left}px`;
+
+    console.log("Dropdown position set:", dropdown.style.top, dropdown.style.left);
+}
+
