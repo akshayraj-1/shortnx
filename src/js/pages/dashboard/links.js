@@ -1,7 +1,7 @@
 import EventBus from "../../helpers/EventBus";
 import LinkModal from "../../components/LinkModal";
 import Toast from "../../components/Toast";
-import { switchVisibilities } from "../../helpers/ui-helpers";
+import { switchVisibilities, positionDropdown } from "../../helpers/ui-helpers";
 
 const eventbus = EventBus.getInstance();
 const btnCreateLink = document.getElementById("btn-create-link");
@@ -72,9 +72,7 @@ function prependNewLink(linkData) {
 // Append Only New Links (No Full Re-render)
 function appendLinks(urls) {
     const fragment = document.createDocumentFragment();
-    urls.forEach(url => {
-        fragment.appendChild(createLinkItem(url));
-    });
+    urls.forEach(url => fragment.appendChild(createLinkItem(url)));
     linksContainer.appendChild(fragment);
 }
 
@@ -93,7 +91,6 @@ function createLinkItem(data) {
     const originalUrl = div.querySelector("[data-lc-original-url]");
     const clicks = div.querySelector("[data-lc-clicks]");
     const createdAt = div.querySelector("[data-lc-created-at]");
-    const btnCopy = div.querySelector("[data-lc-btn-copy]");
 
     icon.src = `https://cdn.shortnx.in/images/icons/?url=${data.originalUrl}`;
 
@@ -103,49 +100,36 @@ function createLinkItem(data) {
     originalUrl.textContent = data.originalUrl.replace(/^https?:\/\//, "");
     originalUrl.href = data.originalUrl;
 
-    clicks.textContent = `${data.clicks} click${data.clicks !== 1 ? 's' : ''}`;
+    clicks.textContent = data.clicks;
 
-    createdAt.textContent = getTimeElapsed(data.createdAt);
-
-
-    btnCopy.addEventListener("click", () => {
-        window.navigator.clipboard.writeText(`${window.origin}/${data.shortUrlId}`)
-            .then(_ => Toast.getInstance().showToast("Copied to clipboard"));
+    createdAt.textContent = new Date(data.createdAt).toLocaleString("en-US", {
+        month: "short", day: "numeric", year: "numeric"
     });
-
 
     return div;
 }
 
+(function () {
+
+    // Add Event Listener (Event Delegation)
+    linksContainer.addEventListener("click", function (event) {
+        const target = event.target;
+        if (target.closest("[data-lc-btn-copy]")) {
+            const linkCard = target.closest("[data-id]");
+            if (!linkCard) return;
+            const shortUrl = linkCard.querySelector("[data-lc-short-url]").href;
+
+            navigator.clipboard.writeText(shortUrl)
+                .then(() => Toast.getInstance().showToast("Copied to clipboard"));
+        }
+    });
+
+    // Initial Load
+    loadLinks(currentPage).then(success => {
+        if (!success) {
+            switchVisibilities(["#view-no-links"], ["#view-links", "#view-links-loading"]);
+        }
+    });
+})();
 
 
-function getTimeElapsed(timestamp) {
-    const currDate = new Date();
-    const actualDate = new Date(timestamp);
-    const elapsedSec = Math.floor((currDate - actualDate) / 1000);
-
-    const years = Math.floor(elapsedSec / (365 * 24 * 60 * 60));
-    const months = Math.floor(elapsedSec / (30 * 24 * 60 * 60));
-    const weeks = Math.floor(elapsedSec / (7 * 24 * 60 * 60));
-    const days = Math.floor(elapsedSec / (24 * 60 * 60));
-    const hours = Math.floor(elapsedSec / (60 * 60));
-    const mins = Math.floor(elapsedSec / 60);
-
-    if (years > 0) return `${years} year${years > 1 ? 's' : ''} ago`;
-    if (months > 0) return `${months} month${months > 1 ? 's' : ''} ago`;
-    if (weeks > 0) return `${weeks} week${weeks > 1 ? 's' : ''} ago`;
-    if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`;
-    if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
-    if (mins > 0) return `${mins} min${mins > 1 ? 's' : ''} ago`;
-    if (elapsedSec > 30) return "few secs ago";
-    return "just now";
-}
-
-
-
-// Initial Load
-loadLinks(currentPage).then(success => {
-    if (!success) {
-        switchVisibilities(["#view-no-links"], ["#view-links", "#view-links-loading"]);
-    }
-});

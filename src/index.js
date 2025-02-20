@@ -54,13 +54,13 @@ app.engine("ejs", ejsmate);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-{
-    // Mimic the delay in the dev environment
-    // Remove in the production stage
-    app.use((req, res, next) => {
-        setTimeout(next, Math.random() * 3000);
-    });
-}
+// {
+//     // Mimic the delay in the dev environment
+//     // Remove in the production stage
+//     app.use((req, res, next) => {
+//         setTimeout(next, Math.random() * 3000);
+//     });
+// }
 
 
 // Routes Setup

@@ -1,34 +1,41 @@
-<div tabindex="0" class="relative flex gap-x-3.5 px-4 sm:px-6 py-4 sm:py-5 w-full min-w-[350px] bg-white border border-slate-200 rounded-xl transition-shadow hover:shadow-card">
-    <img data-lc-icon alt="icon" onload="this.style.opacity=1" class="size-6 object-cover border border-slate-300 rounded-full hidden sm:inline-block opacity-0 transition-opacity duration-300" src="https://cdn.shortnx.in/images/icons/?url=hello"/>
+<div tabindex="0"
+     class="relative flex gap-x-5 px-4 sm:px-6 py-4 sm:py-5 w-full min-w-[350px] bg-white border border-slate-200 rounded-xl transition-shadow hover:shadow-card">
+    <img data-lc-icon alt="icon" onload="this.style.opacity=1"
+         class="size-6 object-cover border border-slate-300 rounded-full hidden sm:inline-block opacity-0 transition-opacity duration-300"
+         src="https://cdn.shortnx.in/images/icons/?url=hello"/>
 
     <div class="flex-1 flex flex-col gap-1.5 overflow-hidden">
-        <a data-lc-short-url class="truncate text-[15px] font-medium text-textPrimary cursor-pointer" href="/" target="_blank">
+        <a data-lc-short-url class="truncate text-[15px] font-medium text-textPrimary cursor-pointer" href="/"
+           target="_blank">
         </a>
 
-        <div class="flex items-center gap-1 text-[13px] text-textSecondary/60 w-full overflow-hidden">
+        <div class="flex items-center text-[13px] text-textSecondary/60 gap-1 w-full overflow-hidden">
             <i class="icon-arrow-undo-down-right flex-shrink-0"></i>
-            <a
-                    data-lc-original-url
-                    class="truncate font-normal transition-colors hover:underline hover:underline-offset-2 hover:text-textSecondary flex-1 min-w-0"
-                    href="/"
-                    target="_blank">
-            </a>
+            <div class="flex items-center min-w-0 overflow-hidden">
+                <a data-lc-original-url
+                   class="truncate font-normal transition-colors hover:underline hover:underline-offset-2 hover:text-textSecondary min-w-0"
+                   href="/" target="_blank">
+                    Your Link Text
+                </a>
+                <span class="flex items-center flex-shrink-0 whitespace-nowrap pl-2">
+                    <i class="pr-2">•</i><span data-lc-created-at>2 days ago</span>
+                </span>
+            </div>
         </div>
 
-        <div class="flex items-center gap-3 mt-2.5 font-medium">
-            <div class="flex justify-center gap-1.5 text-textSecondary/60 px-2.5 py-1 border border-neutral-200 rounded-md">
-                <svg class="self-baseline" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="11" height="11" fill="currentColor">
-                    <path d="M12,24c-1.65,0-3-1.35-3-3V3c0-1.65,1.35-3,3-3s3,1.35,3,3V21c0,1.65-1.35,3-3,3Zm9,0c-1.65,0-3-1.35-3-3V9c0-1.65,1.35-3,3-3s3,1.35,3,3v12c0,1.65-1.35,3-3,3Zm-18,0c-1.65,0-3-1.35-3-3v-6c0-1.65,1.35-3,3-3s3,1.35,3,3v6c0,1.65-1.35,3-3,3Z"/>
-                </svg>
-                <span data-lc-clicks class="self-baseline text-xs">0 Clicks</span>
-            </div>
-            <span data-lc-created-at class="text-xs text-textSecondary/50">2 days ago</span>
-        </div>
 
     </div>
 
     <div class="self-start flex items-center gap-3 text-textSecondary flex-shrink-0">
-        <button data-lc-btn-copy class="icon-copy-alt p-2 border border-slate-200 rounded-md hover:bg-neutral-100/80"></button>
+        <button class="flex justify-center gap-1.5 px-3 py-1.5 text-sm border border-neutral-200 rounded-md hover:bg-neutral-100/80">
+            <svg class="self-baseline" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1"
+                 viewBox="0 0 24 24" width="11" height="11" fill="#306ef2">
+                <path d="M12,24c-1.65,0-3-1.35-3-3V3c0-1.65,1.35-3,3-3s3,1.35,3,3V21c0,1.65-1.35,3-3,3Zm9,0c-1.65,0-3-1.35-3-3V9c0-1.65,1.35-3,3-3s3,1.35,3,3v12c0,1.65-1.35,3-3,3Zm-18,0c-1.65,0-3-1.35-3-3v-6c0-1.65,1.35-3,3-3s3,1.35,3,3v6c0,1.65-1.35,3-3,3Z"/>
+            </svg>
+            <span class="self-baseline"><span data-lc-clicks class="me-1">0</span><span class="hidden sm:inline-block">clicks</span></span>
+        </button>
+        <button data-lc-btn-copy
+                class="icon-copy-alt p-2 border border-slate-200 rounded-md hover:bg-neutral-100/80"></button>
         <button data-lc-btn-menu class="icon-more-vertical text-[18px]"></button>
     </div>
 </div>

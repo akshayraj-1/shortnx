@@ -92,19 +92,6 @@ html, body {
     before:scale-150;
 }
 
-.label-or {
-    @apply
-    relative
-    before:absolute
-    before:top-1/2 before:left-1/2 before:-translate-x-1/2
-    before:h-[1px] before:w-20
-    before:bg-slate-300
-    after:content-['or'] after:absolute
-    after:left-1/2 after:top-1/2 after:-translate-x-1/2 after:-translate-y-1/2
-    after:px-2 after:text-textSecondary
-    after:bg-colorSurface;
-}
-
 .tab-default {
     @apply
     relative
