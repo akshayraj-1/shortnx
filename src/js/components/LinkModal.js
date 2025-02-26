@@ -1,6 +1,6 @@
 import ModalWrapper from "./ModalWrapper";
 import InputValidation from "../helpers/InputValidation";
-import { toggleButtonLoading } from "../helpers/ui-helpers";
+import { toggleButtonLoading, toggleDisable } from "../helpers/ui-helpers";
 import validator from "../../utils/validator.util";
 
 /**
@@ -9,26 +9,7 @@ import validator from "../../utils/validator.util";
  *
  */
 class LinkModal extends ModalWrapper {
-
-    static Modes = {
-        CREATE_LINK: 1,
-        UPDATE_LINK: 2
-    };
-
-    #mode = LinkModal.Modes.CREATE_LINK;
-    #styles = {
-        modal: {
-            default: ["flex-1", "h-full", "sm:max-h-[85vh]", "max-w-3xl", "mt-auto", "sm:my-auto", "py-9", "bg-colorSurface", "rounded-xl"],
-        },
-        btnSubmit: {
-            default: [
-                "relative", "flex", "justify-center", "items-center", "gap-2",
-                "text-[0.9rem]", "text-white", "text-center", "mt-8", "px-6", "py-2.5",
-                "w-full", "bg-colorPrimary", "rounded-lg", "cursor-pointer", "select-none", "transition-shadow",
-                "hover:shadow-lg", "hover:shadow-colorAccent/25",
-            ]
-        }
-    };
+    #mode = "create";
 
     constructor() {
 
@@ -37,9 +18,25 @@ class LinkModal extends ModalWrapper {
 
         // Continue Setup
         super(document.createElement("div"));
-        this._elements.modal.className = this.#styles.modal.default.join(" ");
-        this._elements.modal.innerHTML = `
-              <div class="flex flex-col px-6 sm:px-8 md:px-10 size-full">
+        this._elements.modal.className = "flex-1 h-full sm:max-h-[85vh] max-w-3xl mt-auto sm:my-auto py-9 bg-colorSurface rounded-xl";
+        this._elements.modal.innerHTML = this.#getTemplate();
+        this.#init();
+
+        window.__link_modal = this;
+    }
+
+    static getInstance() {
+        return window.__link_modal || new LinkModal();
+    }
+
+    /**
+     * Returns the HTML template for the modal
+     * @returns {string}
+     * @private
+     */
+    #getTemplate() {
+        return `
+        <div class="flex flex-col px-6 sm:px-8 md:px-10 size-full">
                     <div class="flex justify-between items-center w-full">
                         <h3 class="text-lg sm:text-xl font-semibold">
                             <img data-ml-favicon onload="this.style.opacity=1" class="inline-block me-1.5 size-[25px] object-contain rounded-full opacity-0 transition-opacity duration-300"
@@ -157,18 +154,11 @@ class LinkModal extends ModalWrapper {
                             </div>
                         </div>
                     </div>
-                     <button data-ml-btn-submit class="${this.#styles.btnSubmit.default.join(" ")}">
+                     <button data-ml-btn-submit class="relative flex justify-center items-center gap-2 text-[0.9rem] text-white text-center mt-8 px-6 py-2.5 w-full bg-colorPrimary rounded-lg cursor-pointer select-none transition-shadow hover:shadow-lg hover:shadow-colorAccent/25">
                             Create Link
                      </button>            
                </div>
-            `;
-        this.#init();
-
-        window.__link_modal = this;
-    }
-
-    static getInstance() {
-        return window.__link_modal || new LinkModal();
+        `;
     }
 
     #init() {
@@ -260,8 +250,7 @@ class LinkModal extends ModalWrapper {
                         const origin = new URL(input.value);
                         if (origin !== lastOrigin) {
                             lastOrigin = origin;
-                            this._elements.favicon.style.opacity = 0;
-                            this._elements.favicon.src = this._getFavIcon(origin);
+                            this.#updateFavicon(origin);
                         }
                     }
                     InputValidation.toggleErrorState(input);
@@ -270,8 +259,8 @@ class LinkModal extends ModalWrapper {
         });
 
         this._elements.btnSubmit.addEventListener("click", () => {
-            if (this.#mode === LinkModal.Modes.CREATE_LINK) this.#createLink();
-            else if (this.#mode === LinkModal.Modes.UPDATE_LINK) this.#updateLink();
+            if (this.#mode === "create") this.#createLink();
+            else this.#updateLink();
         });
 
     }
@@ -279,12 +268,12 @@ class LinkModal extends ModalWrapper {
     _toggleMode(mode, data) {
         toggleButtonLoading(this._elements.btnSubmit, false);
         this.#mode = mode;
-        this._elements.favicon.src = this._getFavIcon(data?.originalUrl);
+        this.#updateFavicon(data?.originalUrl);
         this._elements.inputTitle.value = data?.title || "";
         this._elements.inputTargetLink.value = data?.originalUrl || "";
         this._elements.inputShortLink.readOnly = !!data?.shortUrlId;
         this._elements.inputComments.value = data?.comments || "";
-        if (this.#mode === LinkModal.Modes.CREATE_LINK) {
+        if (this.#mode === "create") {
             this._elements.btnSubmit.innerText = "Create Link";
             this._elements.btnGenerateRandomId.style.display = "block";
             this._elements.btnGenerateRandomId.click();
@@ -295,8 +284,10 @@ class LinkModal extends ModalWrapper {
         }
     }
 
-    _getFavIcon(url) {
-        return `https://cdn.shortnx.in/images/icons/?url=${url}`
+    #updateFavicon(origin) {
+        const favicon = this._elements.favicon;
+        favicon.style.opacity = 0;
+        favicon.src = `https://cdn.shortnx.in/images/icons/?url=${origin}`;
     }
 
 
@@ -315,6 +306,7 @@ class LinkModal extends ModalWrapper {
 
         try {
             toggleButtonLoading(this._elements.btnSubmit, true);
+            toggleDisable(this._elements.btnClose, true);
             const payload = JSON.stringify({
                 title: this._elements.inputTitle.value,
                 targetUrl: this._elements.inputTargetLink.value,
@@ -346,6 +338,7 @@ class LinkModal extends ModalWrapper {
             console.log(error);
         } finally {
             toggleButtonLoading(this._elements.btnSubmit, false);
+            toggleDisable(this._elements.btnClose, false);
         }
     }
 
@@ -353,19 +346,18 @@ class LinkModal extends ModalWrapper {
         // TODO: Implement Update Link method
     }
 
-    showModal(mode = LinkModal.Modes.CREATE_LINK, eventbus, eventname, data) {
+    /**
+     *
+     * @param {string} mode
+     * @param {EventBus} eventbus
+     * @param {string} eventname
+     * @param {object|null} data
+     */
+    showModal(mode = "create", eventbus, eventname, data) {
         this._toggleMode(mode, data);
         this._eventbus = eventbus;
         this._eventname = eventname;
         super.show();
-    }
-
-    showCreateModal(eventbus, eventname) {
-        if (eventbus && eventname) this.showModal(LinkModal.Modes.CREATE_LINK, eventbus, eventname);
-    }
-
-    showUpdateModal(eventbus, eventname, data) {
-        if (eventbus && eventname) this.showModal(LinkModal.Modes.UPDATE_LINK, eventbus, eventname, data);
     }
 
     hideModal() {
