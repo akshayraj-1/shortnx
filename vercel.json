@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "name": "shortnx",
   "builds": [
     {
       "src": "src/index.js",
